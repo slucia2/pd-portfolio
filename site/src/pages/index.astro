@@ -640,8 +640,18 @@ const albums = [
     .contact { padding: 32px 24px 64px; }
     .contact-card { flex-direction: column; align-items: flex-start; gap: 22px; }
   }
-  .about-alt .about-grid { grid-template-columns: 1.45fr 1fr; }
+  .about-alt .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
   .about-alt .about-bio h2 { margin-bottom: 18px; }
+
+  @media (min-width: 1025px) {
+    .about-alt .about-grid {
+      grid-template-columns: 1.45fr 1fr;
+      gap: 48px;
+    }
+  }
 
   /* tone swatches shared by chips, profile rows, spines
      (color is set too so the active spine ring can use currentColor) */
@@ -898,6 +908,12 @@ const albums = [
   @media (min-width: 1920px) {
     h1 { font-size: 44px; }
   }
+  @media (max-width: 1024px) {
+    .about { padding: 72px 40px 8px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-alt .about-grid { gap: 36px; }
+    .about-cards { width: 100%; max-width: 520px; }
+  }
   @media (max-width: 760px) {
     .hero { padding: 36px 24px 8px; }
     h1 { font-size: 30px; }
@@ -908,6 +924,17 @@ const albums = [
     .quest { min-height: 96px; }
     .about { padding: 64px 24px 8px; }
     .about-grid { grid-template-columns: 1fr; gap: 28px; }
+    .about-alt .about-grid { gap: 28px; }
+    .about-cards { max-width: none; }
     .about-facts { position: static; }
+    .panel-offclock { padding: 20px 18px 22px; }
+    .spin-row { gap: 16px; }
+    .spin-title { white-space: normal; }
+    .shelf-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .shelf-info { width: 100%; }
   }
 </style>
