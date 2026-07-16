@@ -1,0 +1,429 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import { cases } from '../../data/cases';
+
+const c = cases.find((x) => x.slug === 'myintake')!;
+const next = cases.find((x) => x.slug === 'site-architecture')!;
+
+const studies = [
+  { theme: 'INFORMATION OVERLOAD', name: 'Nijor et al. · J Patient Saf 2022', map: 'Overloading doctors with too much data raises error rates. Design response: the clinic view is a curated snapshot, not the full chart.' },
+  { theme: 'CARE FRAGMENTATION', name: 'Kern et al. · JAMA Intern Med 2024', map: '35% of Medicare patients saw 5+ physicians in 2019, and records don’t follow the patient. Design response: a portable profile the patient owns.' },
+  { theme: 'MEDICATION SAFETY', name: 'AHRQ Medication Reconciliation · NCBI', map: 'The endorsed fix is a complete, portable, patient-maintained list, but it’s never been properly productized. We made it a core feature.' },
+  { theme: 'MEDICATION SAFETY', name: 'Gleason et al. (MATCH) · J Gen Intern Med 2010', map: '85% of admitted patients’ medication errors originate in history-taking. Design response: accurate patient-provided history, ready the moment a clinic scans.' },
+  { theme: 'PATIENT ACCESS', name: 'Alomar et al. · JMIR 2024', map: 'Access to records correlates with engagement, but portals require patients to log in and pull the data. Design response: the QR code pushes the record to the clinic instead.' },
+  { theme: 'PATIENT ENGAGEMENT', name: 'AJMC · M Health Fairview 2025', map: 'Only 54% of people who activated a hospital portal ever logged in again, over 13 years. Design response: no patient login required at the clinic.' },
+];
+
+const jobs = [
+  { who: 'PATIENTS', job: 'Get through a new-provider appointment without being asked questions I can’t answer, and have something to show that proves what I’m taking.' },
+  { who: 'CAREGIVERS', job: 'Hold and present accurate information for someone who can’t self-advocate, without a formal power-of-attorney process every time.' },
+  { who: 'CLINICAL STAFF', job: 'Start the encounter with accurate medication and allergy data already in hand, instead of reconstructing it verbally or by calling around.' },
+  { who: 'PROVIDERS', job: 'Prescribe with confidence that the history is complete, even for a patient who just arrived from another system, state, or country.' },
+];
+
+const findings = [
+  'Basic patient information is the highest-stakes gap. Providers can’t treat safely without it, and patients can’t recall the details from memory.',
+  'Intake is manually reconstructed at every visit. No persistent layer of patient information follows anyone from provider to provider.',
+  'The workaround that actually works is physical proof: written lists, photos, papers from hospitals. Memory stalls the encounter. Something tangible moves it.',
+  'Most patients don’t engage with existing portals: fragmented, hard to maintain, English-only in practice, and dependent on tech skills many patients don’t have.',
+  'The system fails hardest on people who don’t speak English fluently, don’t have stable housing, or don’t have one regular doctor. Interviewees described these as core users, not edge cases.',
+];
+
+const inScope = [
+  { name: 'PATIENT HEALTH PROFILE', why: 'The minimum information every new encounter needs: meds, doses, allergies, diagnoses, surgeries.' },
+  { name: 'SHAREABLE SUMMARY VIEW', why: 'A read-only version to show at intake, the pharmacy counter, or mid-encounter.' },
+  { name: 'CAREGIVER / DELEGATE ACCESS', why: 'The record exists independently of which person attends the appointment.' },
+  { name: 'LOW-BARRIER DATA ENTRY', why: 'Photo capture of pill bottles and documents as input: the workaround patients already use, made first-class.' },
+  { name: 'CARE TEAM DIRECTORY', why: 'Cut for scope, then brought back: interview data supported it more than the first pass suggested.' },
+  { name: 'SYMPTOM & CONDITION LOG', why: 'Cut, then brought back: a father who couldn’t say how long his child’s cough had lasted made the case.' },
+];
+
+const cut = [
+  { name: 'APPOINTMENT REMINDERS', why: 'No interviewee described scheduling as a failure point. The problem is what patients bring, not whether they attend.' },
+  { name: 'EMERGENCY / CRISIS MODE', why: 'Not surfaced in any interview as a primary breakdown. A genuinely different job from clinic workflow.' },
+  { name: 'INSURANCE & BILLING', why: 'Never mentioned as friction in the care encounter itself.' },
+];
+
+const featureLayers = [
+  { name: 'PROFILE: THE HEALTH IDENTITY LAYER', items: [
+    { name: 'Profile builder', tag: 'SHIPPED' },
+    { name: 'Family profiles: one account, many people', tag: 'SHIPPED' },
+    { name: 'FHIR / portal import', tag: 'ROADMAP' },
+  ]},
+  { name: 'SHARING: THE PORTABILITY LAYER', items: [
+    { name: 'Persistent QR code', tag: 'SHIPPED' },
+    { name: 'Shareable link, no clinic login', tag: 'SHIPPED' },
+    { name: 'Curated clinic view', tag: 'SHIPPED' },
+  ]},
+  { name: 'UPDATES: THE CONTINUITY LAYER', items: [
+    { name: 'Patient self-update, logged with timestamp', tag: 'SHIPPED' },
+    { name: 'Post-visit push from clinic', tag: 'ROADMAP' },
+    { name: 'FHIR auto-sync', tag: 'ROADMAP' },
+  ]},
+  { name: 'PREVENTIVE: THE PROACTIVE LAYER', items: [
+    { name: 'Care checklist: screenings & vaccines', tag: 'SHIPPED' },
+    { name: 'Reminder cards', tag: 'ROADMAP' },
+    { name: 'Shared care checklist for caregivers', tag: 'ROADMAP' },
+  ]},
+];
+
+const prdAreas = [
+  { area: 'HEALTH PROFILE', detail: 'Meds with active/inactive status, allergies, conditions, prescribed-vs-actual dose, photo input', prio: '4× P0 · 1× P1' },
+  { area: 'SHAREABLE VIEW', detail: 'Read-only summary, QR + link share, pharmacy verification, provider-facing clinic view', prio: '4× P0' },
+  { area: 'CAREGIVER ACCESS', detail: 'Delegate authorization, delegated editing, patient-controlled revocable permissions', prio: '3× P1' },
+  { area: 'CARE TEAM DIRECTORY', detail: 'Provider + specialist list, pharmacy and prescribers, caregiver visibility', prio: '2× P1 · 1× P2' },
+  { area: 'SYMPTOM LOG', detail: 'Onset + duration tracking, photo capture of symptoms', prio: '1× P1 · 1× P2' },
+  { area: 'ACCESSIBILITY', detail: 'Low-friction onboarding, language support, proxy-navigable UI (hand your phone to someone)', prio: '2× P0 · 1× P2' },
+];
+
+const journey = [
+  { phase: 'BEFORE VISIT', title: 'Quick profile review', text: 'Patient checks the profile is current and updates anything that changed since last visit.', chip: 'SELF-UPDATE' },
+  { phase: 'AT CHECK-IN', title: 'Share with provider', text: 'Sends the link by text, turns the phone to show the screen, or hands over the QR. Opens in any browser.', chip: 'QR / LINK' },
+  { phase: 'DURING VISIT', title: 'Provider reads curated view', text: 'Allergies, meds, conditions, and reason for visit, surfaced in the order staff need them.', chip: 'CLINIC VIEW' },
+  { phase: 'AFTER VISIT', title: 'Patient updates profile', text: 'New diagnosis or prescription goes into the profile while it’s fresh, prompted by one question: “anything changed?”', chip: 'SELF-UPDATE' },
+  { phase: 'NEXT VISIT', title: 'Profile is current', text: 'The next provider sees an up-to-date record immediately, without re-asking the same questions.', chip: 'NO RE-INTAKE' },
+];
+
+const powerups = [
+  { name: 'FIRST REAL AI WORKFLOW', text: 'My first project going all-in on agentic AI. The real learning was the scaffolding that makes it reliable: a review.md the agent checks before big changes, skill.md files for patterns worth repeating, and disciplined git push/pull so a new session picks up cleanly where the last one stopped.', wide: true },
+  { name: 'RESEARCH PRESSURE-TEST', text: 'Used Claude to challenge my own research findings. It caught claims drifting past what interviews actually supported, before a flawed premise could reach the requirements doc.', wide: false },
+  { name: 'INTERVIEWS TO REQUIREMENTS, FAST', text: 'AI accelerated mapping findings to jobs, journey breakdowns, and 20 traced requirements: days of documentation work compressed into hours.', wide: false },
+  { name: 'BUILDING WITH AI', text: 'Claude Code and OpenCode on React, Supabase, and Vercel. Explicit instructions not to rewrite working files, and a defined what-NOT-to-build list, kept generation on scope.', wide: false },
+  { name: 'DEMO-DRIVEN POLISH', text: 'The whole loop worked end to end. Polish time went where the live demo would linger: clinic view and care checklist. A seeded medication conflict tested that discrepancies surfaced clearly.', wide: false },
+];
+
+const results = [
+  '1st place, solo project. Judged on market validation, execution, working prototype, and traction.',
+  'Working app: the full loop, from patient profile to QR code to clinic view, ran live at the final pitch.',
+  '100% of interviewees said they’d use or try the product.',
+  'Epic (hospital records) sandbox registered for testing. Import isn’t built yet; a mock version covered the demo.',
+];
+---
+<CaseStudy
+  case={c}
+  intro="A health profile patients carry, and any clinic can scan. No integration, no login, no IT approval. Built solo, concept to working app, in 14 days."
+  meta={[
+    { key: 'ROLE', value: 'Solo designer & builder' },
+    { key: 'YEAR', value: '2026' },
+    { key: 'PROGRAM', value: 'UW Startup Sprint · 14 days' },
+  ]}
+  heroAlt="MyIntake landing page: your health, in your hands"
+  problem="Health records don't travel between systems, so intake often starts from scratch at every new provider."
+  outcome="1st place, solo project. The full loop, from patient profile to QR code to clinic view, working live at the final pitch."
+>
+  <section class="sec">
+    <div class="sec-label">THE CONTEXT</div>
+    <h2 class="sec-heading">14 days, zero to a working, tested app.</h2>
+    <p class="sec-body">UW's iStartup Launch Sprint: judged on market validation, execution, and traction. I was the solo designer and builder: research, requirements, prototype, then an AI-assisted build.</p>
+    <div class="case-grid-3">
+      <div class="case-card accent">
+        <div class="case-card-label">RESULT</div>
+        <div class="case-stat-num">1st</div>
+        <div class="case-card-body">place, solo project.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-card-label">DISCOVERY</div>
+        <div class="case-stat-num">12</div>
+        <div class="case-card-body">interviews across every care setting.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-card-label">REQUIREMENTS</div>
+        <div class="case-stat-num">20</div>
+        <div class="case-card-body">requirements, all interview-traced.</div>
+      </div>
+    </div>
+    <figure class="case-fig tall">
+      <iframe src="/live/myintake-landing.html" title="MyIntake landing page, the shipped product" loading="lazy" tabindex="-1"></iframe>
+      <figcaption>The shipped product: landing page</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">THE PROBLEM</div>
+    <h2 class="sec-heading">Health information exists. It just doesn't travel.</h2>
+    <p class="sec-body">Hospital systems don't talk to each other, so intake often starts from scratch at every new provider. Doctors can't treat safely without an accurate history, and patients can't recall it all from memory. It fails hardest for people who don't speak English fluently, don't have stable housing, or don't have one regular doctor.</p>
+    <div class="case-grid-3">
+      <div class="case-card accent">
+        <div class="case-stat-num">27%</div>
+        <div class="case-card-body">of hospital prescribing errors stem from incomplete medication histories at admission.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-stat-num">1.5M</div>
+        <div class="case-card-body">people harmed by medication errors every year in the US.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-stat-num">$3.5B</div>
+        <div class="case-card-body">in annual hospital costs from drug-related injuries alone.</div>
+      </div>
+    </div>
+    <div class="case-source">Source: Tam et al., CMAJ 2005 · peer-reviewed systematic review</div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">MARKET RESEARCH</div>
+    <h2 class="sec-heading">The demand is real. The gap is structural.</h2>
+    <p class="sec-body">Patient portals only work inside one hospital system. Switch providers, move, or need care elsewhere, and the information stays behind. Nothing lets patients carry it everywhere, without every provider signing on first.</p>
+    <div class="case-grid-3">
+      <div class="case-card accent">
+        <div class="case-stat-num">65%</div>
+        <div class="case-card-body">accessed health records online in 2024, up from 25% in 2014.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-stat-num">37–54%</div>
+        <div class="case-card-body">actual portal adoption, despite near-universal availability.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-stat-num">0</div>
+        <div class="case-card-body">portable patient-owned layers that work across providers without integration: the gap MyIntake fills.</div>
+      </div>
+    </div>
+    <div class="case-source">Sources: ASTP/ONC Data Brief No.77, 2025 · Cao &amp; Cao, Frontiers in Communication 2024 · peer-reviewed</div>
+    <h3 class="sec-subhead">The research base: 13 peer-reviewed studies, each mapping a finding to a product decision.</h3>
+    <div class="case-grid-2">
+      {studies.map((st) => (
+        <div class="case-card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+            <span class="case-card-label" style="margin-bottom:0">{st.theme}</span>
+            <span class="case-card-tag">{st.name}</span>
+          </div>
+          <div class="case-card-body">{st.map}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">IDEATION: JOBS TO BE DONE</div>
+    <h2 class="sec-heading">Four actors, one shared failure: information that doesn't show up when it's needed.</h2>
+    <p class="sec-body">What each person needed done: framed during ideation, then pressure-tested in the interviews.</p>
+    <div class="case-grid-2">
+      {jobs.map((j) => (
+        <div class="case-card">
+          <div class="case-card-label">{j.who}</div>
+          <div class="case-card-body">{j.job}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">USER RESEARCH</div>
+    <h2 class="sec-heading">Every care setting told the same story: basic information doesn't show up when it's needed.</h2>
+    <p class="sec-body">12 interviews: a hospital doctor, a pediatrician, a medical assistant, and a pharmacy technician, plus patients and caregivers.</p>
+    <div class="case-grid-2">
+      <div class="case-card">
+        <div class="case-quote-text">"We spend too much time just getting basic information."</div>
+        <div class="case-quote-who">Medical assistant · primary care</div>
+      </div>
+      <div class="case-card">
+        <div class="case-quote-text">"Most issues come from patients not having clear, accurate info."</div>
+        <div class="case-quote-who">Pharmacy tech · CVS</div>
+      </div>
+    </div>
+    <h3 class="sec-subhead">Key findings</h3>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+      {findings.map((f) => (
+        <div class="case-check">
+          <span class="tick dash" aria-hidden="true"></span>
+          <span class="case-card-body">{f}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">SCOPE &amp; REQUIREMENTS</div>
+    <h2 class="sec-heading">Cut twice: from sprawling wellness companion to one thin, complete loop.</h2>
+    <p class="sec-body">The first concept covered health logs, symptom tracking, cost navigation, family history, and more: too much for 14 days. Two scoping passes later, the test was simple: one handshake judges could watch work, start to finish.</p>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px">
+      <span class="case-tag" style="text-decoration:line-through">Wellness companion</span>
+      <span style="color:var(--muted-3)">→</span>
+      <span class="case-tag">✕ ER angle</span>
+      <span style="color:var(--muted-3)">→</span>
+      <span class="case-tag">✕ Schools angle</span>
+      <span style="color:var(--muted-3)">→</span>
+      <span class="case-tag accent">✓ One loop: patient shares, clinic reads</span>
+    </div>
+    <div class="case-grid-2">
+      <div class="case-card">
+        <div class="case-card-label">PART 1 · PATIENT SIDE</div>
+        <div class="case-card-body">A profile with only the fields clinics actually need: name, date of birth, insurance, allergies, current medications, reason for visit. Plus a QR code that doesn't expire, and an "anything changed?" prompt at return visits.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">PART 2 · CLINIC SIDE: ZERO SETUP</div>
+        <div class="case-card-body">Scan the QR and a read-only view opens on any device. No account, no install, no IT approval. A clinic can use it the moment a patient shows up with a code.</div>
+      </div>
+    </div>
+
+    <h3 class="sec-subhead">Features earned their slot by tracing to a breakdown someone actually described.</h3>
+    <p class="sec-body">Findings mapped to opportunities, opportunities to features. Two features were cut for scope, then brought back after rechecking interview data. Three were cut for good: not bad ideas, just ideas no interview supported.</p>
+    <div class="case-grid-2">
+      {inScope.map((e) => (
+        <div class="case-card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+            <span class="case-card-label" style="margin-bottom:0">{e.name}</span>
+            <span class="case-card-tag">✓ IN SCOPE</span>
+          </div>
+          <div class="case-card-body">{e.why}</div>
+        </div>
+      ))}
+    </div>
+    <figure class="case-fig">
+      <video class="crop-left" src="/images/myintake/insurance-cards.mp4" autoplay muted loop playsinline></video>
+      <figcaption>Low-barrier data entry, shipped: photo-first insurance cards, front &amp; back</figcaption>
+    </figure>
+    <div class="case-grid-3" style="margin-top:16px">
+      {cut.map((x) => (
+        <div class="case-card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+            <span class="case-card-label" style="margin-bottom:0">{x.name}</span>
+            <span class="case-card-tag">✕ CUT</span>
+          </div>
+          <div class="case-card-body">{x.why}</div>
+        </div>
+      ))}
+    </div>
+
+    <h3 class="sec-subhead">The feature map: four layers, tagged by what actually shipped.</h3>
+    <div class="case-grid-2">
+      {featureLayers.map((ly) => (
+        <div class="case-card">
+          <div class="case-card-label">{ly.name}</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            {ly.items.map((it) => (
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px">
+                <span class="case-card-body">{it.name}</span>
+                <span class:list={['case-tag', { accent: it.tag === 'SHIPPED' }]}>{it.tag}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    <figure class="case-fig">
+      <video src="/images/myintake/add-from-provider.mp4" autoplay muted loop playsinline></video>
+      <figcaption>Roadmap preview, mockup: hospital record import. Conflicts flagged and resolved per item</figcaption>
+    </figure>
+
+    <h3 class="sec-subhead">20 requirements, every one traced back to an interview.</h3>
+    <p class="sec-body">Six feature areas, 8 must-have (P0). Priority key: P0 must-have for the sprint · P1 important · P2 nice-to-have.</p>
+    <div class="case-grid-2">
+      {prdAreas.map((a) => (
+        <div class="case-card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+            <span class="case-card-label" style="margin-bottom:0">{a.area}</span>
+            <span class="case-card-tag">{a.prio}</span>
+          </div>
+          <div class="case-card-body">{a.detail}</div>
+        </div>
+      ))}
+    </div>
+    <div class="case-grid-2">
+      <div class="case-requirement">
+        <div class="case-card-label">PRD-01 · P0 · PATIENT</div>
+        <div class="case-quote-text">"Store my current medications with names, dosages, and active/inactive status, so I can show a provider what I'm actually taking without relying on memory."</div>
+      </div>
+      <div class="case-requirement">
+        <div class="case-card-label">PRD-07 · P0 · PATIENT</div>
+        <div class="case-quote-text">"Share my profile via QR code or link, so I can hand it to a provider without requiring them to download anything or create an account."</div>
+      </div>
+    </div>
+    <div class="case-requirement" style="margin-top:20px">
+      <div class="case-card-label">PRD-20 · P0 · ELDERLY PATIENT</div>
+      <div class="case-quote-text">"Make the interface simple enough that a family member or provider could navigate it on my behalf if I hand them my phone."</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">DESIGN</div>
+    <h2 class="sec-heading">The patient profile, QR code, and clinic view, all working together, live.</h2>
+    <h3 class="sec-subhead">The journey: seeing a new provider (1 of 4 mapped journeys)</h3>
+    <div class="case-grid-2">
+      {journey.map((js) => (
+        <div class="case-card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+            <span class="case-card-label" style="margin-bottom:0">{js.phase}</span>
+            <span class="case-tag accent">{js.chip}</span>
+          </div>
+          <div class="sec-subhead" style="margin-top:0">{js.title}</div>
+          <div class="case-card-body" style="margin-top:6px">{js.text}</div>
+        </div>
+      ))}
+    </div>
+    <h3 class="sec-subhead">The QR handoff, live: patient side and what the clinic sees after scanning.</h3>
+    <figure class="case-fig">
+      <iframe src="/live/MyIntake-HealthProfile_files/MyIntakeQR_files/live.html" title="Share with your doctor: persistent QR code and copyable link" loading="lazy" tabindex="-1"></iframe>
+      <figcaption>1 · Patient generates QR</figcaption>
+    </figure>
+    <figure class="case-fig">
+      <iframe src="/live/MyIntake-HealthProfile_files/MyIntakeQRView_files/live.html" title="Clinic view: what staff see after scanning" loading="lazy" tabindex="-1"></iframe>
+      <figcaption>2 · Clinic scans, views read-only profile</figcaption>
+    </figure>
+    <h3 class="sec-subhead">Multi-profile: one account, many people.</h3>
+    <p class="sec-body">Sarah manages her own profile and her mother Rose's. Caregiver access was a P1 requirement traced straight to the interviews.</p>
+    <figure class="case-fig">
+      <iframe src="/live/MyIntake-HealthProfile_files/MyIntakeSecondProfile_files/live.html" title="Rose Thompson's profile, caregiver-managed" loading="lazy" tabindex="-1"></iframe>
+      <figcaption>Rose's profile, managed from Sarah's account</figcaption>
+    </figure>
+    <div class="case-ridge">
+      <div class="case-ridge-strip">KEY DECISION · POSITIONING</div>
+      <div class="case-ridge-body">
+        <div class="case-ridge-heading">Neither side shows up without the other already there. The fix: make one side free to join.</div>
+        <p class="sec-body">Patients need clinics to accept the profile, and clinics won't adopt a tool patients don't carry. Making the clinic side work with zero setup, just open a link, breaks the standoff.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">AI-ASSISTED BUILD</div>
+    <h2 class="sec-heading">The first project I went all-in on AI. Directing it mattered more than what it generated.</h2>
+    <p class="sec-body">AI was involved in the whole process, not just the code: pressure-testing my research conclusions, compressing findings into a traceable set of requirements, and building the app with Claude Code and OpenCode, on React, Supabase, and Vercel. Every output was checked against the interviews and the requirements. The AI generated, I decided.</p>
+    <div class="case-grid-2">
+      {powerups.map((pw) => (
+        <div class="case-card" style={pw.wide ? 'grid-column:1 / -1' : undefined}>
+          <div class="case-card-label">{pw.name}</div>
+          <div class="case-card-body">{pw.text}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">RESULTS</div>
+    <h2 class="sec-heading">1st place, solo project. The full demo loop, working live.</h2>
+    <div class="case-grid-2" style="gap:14px">
+      {results.map((r) => (
+        <div class="case-card case-check" style="padding:18px 22px">
+          <span class="tick">✓</span>
+          <span class="case-card-body">{r}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec" style="padding-bottom:28px">
+    <div class="sec-label">WHAT I LEARNED</div>
+    <div class="case-grid-2" style="margin-top:14px">
+      <div class="case-check">
+        <span class="tick dash" aria-hidden="true"></span>
+        <span class="case-card-body">AI works best as a collaborator across the whole process. It caught overclaiming in my research before a flawed premise could reach the requirements doc.</span>
+      </div>
+      <div class="case-check">
+        <span class="tick dash" aria-hidden="true"></span>
+        <span class="case-card-body">Going all-in on AI changed how I scope. When build cost drops toward zero, deciding what NOT to build becomes the real bottleneck.</span>
+      </div>
+      <div class="case-check">
+        <span class="tick dash" aria-hidden="true"></span>
+        <span class="case-card-body">The skill on display is judgment: knowing when to redirect, what to constrain, and what not to build.</span>
+      </div>
+    </div>
+  </section>
+
+  <a href={`/work/${next.slug}/`} class="case-next" style={`--accent-dark:${next.accentDark}`}>
+    <div>
+      <div class="case-next-label">NEXT CASE STUDY · NO.{next.no}</div>
+      <div class="case-next-title">{next.title}: three platforms, one content structure</div>
+    </div>
+    <span class="case-next-arrow">OPEN →</span>
+  </a>
+</CaseStudy>

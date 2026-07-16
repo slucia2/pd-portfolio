@@ -1,0 +1,54 @@
+---
+import Base from './Base.astro';
+import type { CaseStudy } from '../data/cases';
+
+interface Props {
+  case: CaseStudy;
+  intro: string;
+  meta: { key: string; value: string }[];
+  heroAlt: string;
+  problem: string;
+  outcome: string;
+}
+
+const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
+---
+<Base title={`${c.title} · Sam Lucia`} description={intro} width="case">
+  <main
+    class="case-main"
+    style={`--accent:${c.accent};--accent-dark:${c.accentDark};--accent-tint:${c.accentTint};--accent-border:${c.accentBorder}`}
+  >
+    <a href="/" class="case-breadcrumb">◂ BACK TO CASE STUDIES</a>
+    <h1 class="case-title">{c.title}</h1>
+    <p class="case-intro">{intro}</p>
+    <div class="case-meta">
+      {meta.map((m) => (
+        <span><span class="k">{m.key}</span>&nbsp; {m.value}</span>
+      ))}
+    </div>
+    <div class="case-rule"></div>
+    {!c.hideCaseHero && (
+      <img
+        src={c.image}
+        alt={heroAlt}
+        class="case-hero"
+        style={[
+          c.imagePosition ? `object-position:${c.imagePosition}` : '',
+          c.imageFit === 'contain' ? 'height:auto;object-fit:contain;background:#fff' : '',
+        ].filter(Boolean).join(';') || undefined}
+      />
+    )}
+    <div class="case-opener">
+      <div>
+        <div class="sec-label">THE PROBLEM</div>
+        <div class="sec-body" style="margin-top:0">{problem}</div>
+      </div>
+      <div>
+        <div class="sec-label">THE OUTCOME</div>
+        <div class="sec-body" style="margin-top:0">{outcome}</div>
+      </div>
+    </div>
+
+    <slot />
+  </main>
+</Base>

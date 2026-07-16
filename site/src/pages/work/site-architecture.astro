@@ -1,0 +1,246 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import { cases } from '../../data/cases';
+
+const c = cases.find((x) => x.slug === 'site-architecture')!;
+const next = cases.find((x) => x.slug === 'enterprise-permissions')!;
+
+const inventory = [
+  { label: 'SITE COMPLEXITY', text: 'High. Diverse content structures across 58 SharePoint sites, with complex sub-navigation throughout.' },
+  { label: 'UPDATE FREQUENCY', text: 'Highly varied by microsite. Reported average for homepages: about once a month.' },
+  { label: 'CONTENT TYPES', text: 'Primarily text- and image-heavy resources, documents, news, and training.' },
+  { label: 'ACCESS RESTRICTIONS', text: 'Available to all internal employees, with specific restrictions for contract, care, and global service partners.' },
+  { label: 'VOLUME', text: 'Over 9,000 pages. 7,850,130 page views in 2024.' },
+  { label: 'ENGAGEMENT', text: '3,500 pages with any views at all: 62% of the collection.' },
+];
+
+const factors = [
+  { name: 'RELEVANCE', text: 'What is the content purpose and audience?' },
+  { name: 'ACCURACY', text: 'Is content up to date? Do components function properly?' },
+  { name: 'COMPLETENESS', text: 'Does it follow design standards? What is the scope end to end?' },
+  { name: 'ENGAGEMENT', text: 'Is the content visited, and to what degree? How do users interact?' },
+  { name: 'REDUNDANCY', text: 'Can the content be consolidated or removed?' },
+];
+
+const quotes = [
+  { text: 'I want to be able to find the information I’m used to in a similar place.', who: 'CARD SORT PARTICIPANT' },
+  { text: 'I like that I won’t have to switch between platforms.', who: 'CARD SORT PARTICIPANT' },
+  { text: 'Will I be able to find my most needed resources quickly?', who: 'CARD SORT PARTICIPANT' },
+  { text: 'I’ve noticed this section has a lot of outdated pages.', who: 'CARD SORT PARTICIPANT' },
+];
+
+const results = [
+  'Content topics reduced from 60 to 38: 37% fewer.',
+  'Total pages reduced 68%, from 9,000 to 3,000.',
+  'Structure validated through user research and business collaboration across three platforms.',
+  'Surfaced the need for a governance model, opening how content gets managed and maintained going forward.',
+  'Navigation shipped on time for MVP launch: reduced click depth, no developer dependency for updates, a pattern adopted across the platform.',
+];
+---
+<CaseStudy
+  case={c}
+  intro="Consolidating three enterprise platforms into a unified information architecture: 37% fewer content topics, 68% fewer pages."
+  meta={[
+    { key: 'ROLE', value: 'IA & content strategy' },
+    { key: 'YEAR', value: '2024' },
+    { key: 'SCOPE', value: '58 sites audited' },
+  ]}
+  heroAlt="Site hierarchy: one root branching into four color-coded L1 categories, each cascading through deeper levels"
+  problem="Over 9,000 pages scattered and duplicated across SharePoint, AEM, and Bigtincan, with no unified structure to bring them together."
+  outcome="A validated architecture: 60 topics down to 38, 9,000 pages down to 3,000, shipped as the platform's navigation."
+>
+  <section class="sec">
+    <div class="sec-label">THE CONTEXT</div>
+    <h2 class="sec-heading">One employee experience, three platforms' worth of content.</h2>
+    <p class="sec-body">T-Mobile was consolidating three core internal platforms into a single employee experience, but lacked a unified content structure. Content was scattered and duplicated, making it hard for employees to find what they needed. I owned the inventory, heuristic analysis, and initial categorization for T-Nation, the platform's largest repository: a full audit across 58 SharePoint sites. Then card sorting and business validation alongside UX researchers and content SMEs.</p>
+    <div class="case-grid-3">
+      <div class="case-card accent">
+        <div class="case-card-label">TOPICS</div>
+        <div class="case-stat-num">60→38</div>
+        <div class="case-card-body">content topics, 37% fewer.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-card-label">PAGES</div>
+        <div class="case-stat-num">9K→3K</div>
+        <div class="case-card-body">pages, 68% fewer.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-card-label">VALIDATION</div>
+        <div class="case-stat-num">39</div>
+        <div class="case-card-body">employees in card sorts.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">CONTENT INVENTORY</div>
+    <h2 class="sec-heading">Before any architecture decision: a clear picture of everything that existed.</h2>
+    <p class="sec-body">There were no centralized metrics of what content existed, how relevant it was, or how it was used. I pulled metrics for content across T-Nation's 58 SharePoint sites: page volume, engagement, update frequency, access restrictions, and content type. Partner teams ran the same process on the other platforms.</p>
+    <h3 class="sec-subhead">Example: the T-Nation inventory, the platform's largest content repository.</h3>
+    <div class="case-grid-3">
+      {inventory.map((iv) => (
+        <div class="case-card">
+          <div class="case-card-label">{iv.label}</div>
+          <div class="case-card-body">{iv.text}</div>
+        </div>
+      ))}
+    </div>
+    <div class="case-grid-3">
+      <div class="case-card accent">
+        <div class="case-stat-num">9,000+</div>
+        <div class="case-card-body">pages across the T-Nation collection alone.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-stat-num">7.85M</div>
+        <div class="case-card-body">page views in 2024.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-stat-num">62%</div>
+        <div class="case-card-body">of pages with any visits at all: 3,500 of 9,000.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">HEURISTIC ANALYSIS</div>
+    <h2 class="sec-heading">Five factors decided what migrated, what consolidated, and what got removed.</h2>
+    <p class="sec-body">Using the inventory metrics, I analyzed each content area for migration value. The analysis reduced topics from 60 to 38 and pages from 9,000 to 2,000.</p>
+    <ol class="case-factors">
+      {factors.map((fc, i) => (
+        <li class="case-factor">
+          <span class="case-factor-num">{String(i + 1).padStart(2, '0')}</span>
+          <div class="case-factor-body">
+            <div class="case-card-label">{fc.name}</div>
+            <div class="case-card-body">{fc.text}</div>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <figure class="case-fig">
+      <img src="/images/site-architecture/sa-heuristic.png" alt="Campuses site heuristic analysis: relevance, accuracy, completeness, views, and content recommendation" />
+      <figcaption>Example: Campuses site heuristic analysis</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">CATEGORIZATION &amp; CARD SORTING</div>
+    <h2 class="sec-heading">A proposed taxonomy, pressure-tested by 39 employees across three archetypes.</h2>
+    <p class="sec-body">I mapped topics into an initial two-level hierarchy, drawing on existing site maps, SME input, content journeys, and AI-assisted grouping exploration. Then a hybrid card sort: participants sorted into provided groups and could create their own, surfacing gaps and validating whether the structure matched how employees naturally group content.</p>
+    <div class="case-grid-3">
+      <div class="case-card accent">
+        <div class="case-card-label">CORPORATE</div>
+        <div class="case-stat-num">38%</div>
+        <div class="case-card-body">back-office employees supporting business functions.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-card-label">RETAIL</div>
+        <div class="case-stat-num">34%</div>
+        <div class="case-card-body">frontline workers serving customers in stores.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-card-label">CARE</div>
+        <div class="case-stat-num">28%</div>
+        <div class="case-card-body">over-the-phone service support for customers.</div>
+      </div>
+    </div>
+    <div class="case-grid-2" style="gap:14px">
+      {quotes.map((q) => (
+        <div class="case-card">
+          <div class="case-quote-text">"{q.text}"</div>
+          <div class="case-quote-who">{q.who}</div>
+        </div>
+      ))}
+    </div>
+    <figure class="case-fig bare">
+      <img src="/images/site-architecture/sa-cardsort.png" alt="The hybrid card sort and resulting user categorization" />
+      <figcaption>The hybrid card sort, and how users actually grouped content</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">BUSINESS VALIDATION</div>
+    <h2 class="sec-heading">The research went to the people who own the content.</h2>
+    <p class="sec-body">We presented the proposed structure and user-generated site map to content owners and the project team. The first two levels of hierarchy were largely approved, with taxonomy revisions and category re-prioritization. Content teams then mapped the remaining topics and pages into the full four-level hierarchy.</p>
+    <figure class="case-fig bare">
+      <img src="/images/site-architecture/sa-hierarchy.png" alt="Approved L1 categories and the four-level site mapping" />
+      <figcaption>Approved categories, mapped into the four-level hierarchy</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">FINAL TOUCHES</div>
+    <h2 class="sec-heading">Placing platform features where the content structure couldn't reach.</h2>
+    <p class="sec-body">With the core IA approved and mapped, I worked with development and platform governance teams to place platform features across top navigation, side navigation, profile, and home page: features addressing gaps research surfaced outside the core content structure.</p>
+    <figure class="case-fig bare">
+      <img src="/images/site-architecture/sa-features.png" alt="Feature placement across top navigation, side navigation, profile dropdown, and home" />
+      <figcaption>Feature placement across the platform shell</figcaption>
+    </figure>
+    <div class="case-ridge">
+      <div class="case-ridge-strip">WHY IT WORKED</div>
+      <div class="case-ridge-body">
+        <div class="case-ridge-heading">Audit first, architecture second. Every category earned its place with usage data behind it.</div>
+        <p class="sec-body">The content audit forced a close examination of every page and section across platforms, raising the bar of understanding for all partner teams. It also surfaced the need for a stronger governance model, opening the discussion of how content gets managed going forward.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">FROM STRUCTURE TO NAVIGATION</div>
+    <h2 class="sec-heading">The IA became the platform's navigation. I designed that too, in two weeks.</h2>
+    <p class="sec-body">A year later, with delivery behind schedule, I was brought back to design the primary navigation end to end. The side nav surfaces the IA directly: L1 categories always present, L2 revealed on click, L3 in a flyout on hover. Categories expand in place instead of routing through landing pages, and the structure mirrors the site backend dynamically, so content teams manage it without developers.</p>
+    <figure class="case-fig bare">
+      <img src="/images/site-architecture/sa-nav-mvp.png" alt="The MVP navigation: L1 categories in the side nav, mirroring the IA" />
+      <figcaption>The MVP navigation: the approved L1 categories, live in the side nav</figcaption>
+    </figure>
+    <figure class="case-fig bare">
+      <img src="/images/site-architecture/sa-nav-spec.png" alt="Annotated interaction spec: L2 opens on click, L3 flyout on hover, splitting into two columns past 8 items" />
+      <figcaption>The interaction spec: L3 flyout on hover, two columns past 8 items, tablet falls back to click</figcaption>
+    </figure>
+    <div class="case-grid-2">
+      <div class="case-card accent">
+        <div class="case-card-label">ONE MODEL, EVERY DEVICE</div>
+        <div class="case-card-body">Desktop pushes page content, tablet overlays, mobile opens each level as a focused view. Frontline employees work primarily on tablets, so mobile-first wasn't optional.</div>
+      </div>
+      <div class="case-card accent">
+        <div class="case-card-label">THE LATE CURVEBALL</div>
+        <div class="case-card-body">The VP of Brand flagged logo visibility after nav development was complete. Working with a Sr. UXR, I benchmarked logo and nav behavior across widely used services, mapped four options by impact and effort, and turned the selected fix around in three days, through accessibility review and IT handoff.</div>
+      </div>
+    </div>
+    <figure class="case-fig bare">
+      <img src="/images/site-architecture/sa-benchmark.png" alt="Competitive benchmarking of hamburger menus, nav collapse, and logo placement across Gmail, Canva, Outlook, Workday, Spotify, and more" />
+      <figcaption>The benchmark: logo and nav behavior across 12 widely used services</figcaption>
+    </figure>
+    <figure class="case-fig bare">
+      <img src="/images/site-architecture/sa-nav-pick.png" alt="The selected recommendation, Navigation D: highest impact, closest alignment with benchmarks" />
+      <figcaption>The VP's pick: consistent logo visibility across all nav states, shipped in three days</figcaption>
+    </figure>
+    <div class="case-ridge">
+      <div class="case-ridge-strip">WHY IT WORKED</div>
+      <div class="case-ridge-body">
+        <div class="case-ridge-heading">The IA didn't just inform the navigation. It became the navigation, and one content teams can run.</div>
+        <p class="sec-body">Because the side nav mirrors the site backend dynamically, content teams manage the structure directly, without developers. Designing for a tablet-first frontline and turning the late logo curveball around in three days kept a behind-schedule launch on track.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-bottom:28px">
+    <div class="sec-label">RESULTS</div>
+    <h2 class="sec-heading">A validated foundation for migrating and managing content at scale.</h2>
+    <div class="case-grid-2" style="gap:14px">
+      {results.map((r) => (
+        <div class="case-card case-check" style="padding:18px 22px">
+          <span class="tick">✓</span>
+          <span class="case-card-body">{r}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <a href={`/work/${next.slug}/`} class="case-next" style={`--accent-dark:${next.accentDark}`}>
+    <div>
+      <div class="case-next-label">NEXT CASE STUDY · NO.{next.no}</div>
+      <div class="case-next-title">{next.title}: access for 150K+ employees</div>
+    </div>
+    <span class="case-next-arrow">OPEN →</span>
+  </a>
+</CaseStudy>

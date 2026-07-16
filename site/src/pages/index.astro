@@ -1,0 +1,913 @@
+---
+import Base from '../layouts/Base.astro';
+import CartridgeCard from '../components/CartridgeCard.astro';
+import { cases } from '../data/cases';
+
+const TANKS_URL = 'https://tanksvscats-psi.vercel.app/';
+
+const sideQuests = [
+  { label: 'Easy Chinese', sub: 'Language app', glyph: 'circle', hover: '#E0AC2C', href: 'https://easychineselearning-rosy.vercel.app/welcome' },
+  { label: 'ClaimRunner', sub: 'AI startup', glyph: 'triangle', hover: '#42B46E', href: 'https://www.claimrunner.ai/' },
+  { label: 'ScamRanger', sub: 'Mobile app', glyph: 'diamond', hover: '#3076C4', href: null, soon: true },
+  { label: 'Tanks!', sub: 'Browser game', glyph: 'square', hover: '#C42B25', modal: true },
+];
+
+const profile = [
+  { k: 'CURRENTLY', v: 'Looking for my next product design role', tone: 'green' },
+  { k: 'BASED', v: 'Seattle, WA', tone: 'blue' },
+  { k: 'FOCUS', v: 'Complex systems & enterprise tools', tone: 'gold' },
+  { k: 'WORKS IN', v: 'Figma, prototyping, front-end', tone: 'red' },
+];
+
+const interests = [
+  { label: 'Trail running', tone: 'green' },
+  { label: 'Mandarin', tone: 'blue' },
+  { label: 'Catio ops', tone: 'gold' },
+  { label: 'Book club', tone: 'red' },
+];
+
+const shelf = [
+  { title: 'User Friendly', author: 'Cliff Kuang', note: 'A Fresh Perspectives selection', tone: 'red', h: 92 },
+  { title: 'The Starless Sea', author: 'Erin Morgenstern', note: 'A favorite. A story within a story within a story.', tone: 'green', h: 84 },
+  { title: 'Monkey King: Journey to the West', author: "Wu Cheng'en", note: 'A classic Chinese adventure', tone: 'gold', h: 96 },
+  { title: 'Designing with the Mind in Mind', author: 'Jeff Johnson', note: 'Cognitive psychology for interface design', tone: 'blue', h: 88 },
+];
+const defaultBook = 0;
+
+const albums = [
+  { title: 'Lady', side: 'SIX FOOT BLONDE · SONG', color: '#F5C84B', audioSrc: '/audio/lady-six-foot-blonde.mp3' },
+  { title: 'Pelican Town', side: 'CONCERNEDAPE · GAME OST', color: '#5FA8E8', audioSrc: '/audio/pelican-town.mp3' },
+  { title: 'Come and Get Your Love', side: 'REDBONE · SONG', color: '#42B46E', audioSrc: '/audio/come-and-get-your-love.mp3' },
+];
+---
+<Base title="Sam Lucia · Product Designer">
+  <main class="home">
+    <section class="hero">
+      <div class="eyebrow">■ SELECT A CASE STUDY</div>
+      <h1>I'm Sam, a product designer<br />for the messy middle.</h1>
+      <div class="subline">Complex systems, tools &amp; workflows · T-Mobile, UW-IT</div>
+    </section>
+
+    <section class="grid">
+      {cases.map((c) => <CartridgeCard case={c} />)}
+
+      <div class="quests">
+        {sideQuests.map((q) => (
+          q.href ? (
+            <a class="quest" href={q.href} target="_blank" rel="noopener" style={`--hover-border:${q.hover}`}>
+              <span class="quest-go external-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9.5"></circle>
+                  <path d="M8.5 15.5 15.5 8.5M10 8.5h5.5V14"></path>
+                </svg>
+              </span>
+              <span class:list={['glyph', q.glyph]}></span>
+              <span class="quest-label">{q.label}</span>
+              <span class="quest-sub">{q.sub}</span>
+            </a>
+          ) : q.modal ? (
+            <button class="quest" type="button" data-open-tanks aria-haspopup="dialog" style={`--hover-border:${q.hover}`}>
+              <span class="quest-go play-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9.5"></circle>
+                  <path class="play-mark__triangle" d="m10 8 6 4-6 4Z"></path>
+                </svg>
+              </span>
+              <span class:list={['glyph', q.glyph]}></span>
+              <span class="quest-label">{q.label}</span>
+              <span class="quest-sub">{q.sub}</span>
+            </button>
+          ) : (
+            <div class="quest is-soon" style={`--hover-border:${q.hover}`}>
+              <span class="quest-soon">Soon</span>
+              <span class:list={['glyph', q.glyph]}></span>
+              <span class="quest-label">{q.label}</span>
+              <span class="quest-sub">{q.sub}</span>
+            </div>
+          )
+        ))}
+      </div>
+    </section>
+
+    <section id="about" class="about about-alt">
+      <div class="about-eyebrow">■ ABOUT</div>
+      <div class="about-grid">
+        <div class="about-bio">
+          <h2>I get excited about building products that help people understand, navigate, and accomplish difficult things.</h2>
+          <p>
+            Long before I knew what UX was, games were building my mental models.
+            From my first handheld Game Boy to early Flash games, I learned how
+            thoughtful navigation, feedback, and storytelling could guide people
+            through a system and toward a goal.
+          </p>
+          <p>
+            Looking back, those experiences shaped how I think and what I love to
+            do today. Whether I'm designing an enterprise workflow, building an
+            AI-powered learning app, or trying to convince my cats to use their new
+            catio, I'm always thinking about how to make interactions feel
+            intuitive, approachable, and rewarding.
+          </p>
+          <p>
+            I started my career working on platform resources, then platforms and
+            systems, while gaining experience across operations and project
+            management. These experiences helped me see products from multiple
+            perspectives, from the user experience to the systems and teams that
+            bring them to life.
+          </p>
+          <p>
+            Outside of work, you'll find me running around Washington, studying
+            Chinese, and staying connected with design communities through Discord
+            and the Fresh Perspective book club.
+          </p>
+          <div class="about-chips">
+            {interests.map((it) => (
+              <span class="about-chip">
+                <span class:list={['chip-sq', it.tone]}></span>
+                {it.label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div class="about-cards">
+          <aside class="panel panel-profile" aria-label="Profile">
+            <div class="panel-head"><span class="head-dot"></span> PROFILE</div>
+            {profile.map((p) => (
+              <div class="prow">
+                <span class:list={['prow-sq', p.tone]}></span>
+                <div class="prow-text">
+                  <span class="prow-k">{p.k}</span>
+                  <span class="prow-v">{p.v}</span>
+                </div>
+              </div>
+            ))}
+          </aside>
+
+          <aside class="panel panel-offclock" aria-label="Off the clock">
+            <div class="panel-head blue"><span class="head-dot"></span> OFF THE CLOCK</div>
+
+            <div class="spin-row">
+              <button id="vinyl" class="vinyl" type="button" aria-label="Change record">
+                <span class="vinyl-disc">
+                  <span class="vinyl-label" style={`background:${albums[0].color}`}></span>
+                </span>
+                <span class="vinyl-arm" aria-hidden="true"></span>
+              </button>
+              <div class="spin-meta">
+                <span class="spin-k">NOW SPINNING · TAP THE RECORD</span>
+                <div class="spin-title" id="albTitle">{albums[0].title}</div>
+                <div class="spin-sub" id="albSide">{albums[0].side}</div>
+                <button id="playBtn" class="play" type="button" aria-pressed="false">
+                  <span class="play-ico play-mark" aria-hidden="true">
+                    <svg class="play-state-icon" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9.5"></circle>
+                      <path class="play-mark__triangle" d="m10 8 6 4-6 4Z"></path>
+                    </svg>
+                    <svg class="pause-state-icon" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9.5"></circle>
+                      <path d="M9.5 8.5v7M14.5 8.5v7"></path>
+                    </svg>
+                  </span>
+                  <span class="play-txt">PLAY</span>
+                </button>
+              </div>
+            </div>
+            <audio id="recordAudio" preload="metadata" src={albums[0].audioSrc}></audio>
+
+            <div class="shelf-label">ON THE SHELF · TAP A SPINE</div>
+            <div class="shelf-row">
+              <div class="shelf">
+                <div class="shelf-books" role="listbox" aria-label="Book shelf">
+                  {shelf.map((b, i) => (
+                    <button
+                      class:list={['spine', b.tone, { active: i === defaultBook }]}
+                      type="button"
+                      style={`height:${b.h}px`}
+                      data-title={b.title}
+                      data-author={b.author}
+                      data-note={b.note}
+                      aria-label={`${b.title} by ${b.author}`}
+                    ></button>
+                  ))}
+                </div>
+                <div class="shelf-plank" aria-hidden="true"></div>
+              </div>
+              <div class="shelf-info">
+                <div class="book-title" id="bookTitle">{shelf[defaultBook].title}</div>
+                <div class="book-author" id="bookAuthor">{shelf[defaultBook].author}</div>
+                <div class="book-note" id="bookNote">{shelf[defaultBook].note}</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="contact-card">
+        <div class="contact-copy">
+          <h2>Let&rsquo;s build something people love to use.</h2>
+          <p>Open to full-time and contract work across systems, enterprise, internal, and consumer tools. Email is the fastest way to reach me.</p>
+        </div>
+        <a class="btn-email" href="mailto:samuel.d.lucia@gmail.com">
+          <span class="btn-email-ico" aria-hidden="true">✉</span> EMAIL SAM
+        </a>
+      </div>
+    </section>
+
+    <dialog class="tanks-modal" data-tanks-modal aria-label="Tanks vs. Cats">
+      <div class="tanks-modal__bar">
+        <strong>TANKS vs. CATS</strong>
+        <div class="tanks-modal__actions">
+          <a class="open-external" href={TANKS_URL} target="_blank" rel="noopener">
+            Open
+            <span class="external-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9.5"></circle>
+                <path d="M8.5 15.5 15.5 8.5M10 8.5h5.5V14"></path>
+              </svg>
+            </span>
+          </a>
+          <button type="button" data-close-tanks aria-label="Close">✕</button>
+        </div>
+      </div>
+      <iframe
+        data-tanks-frame
+        title="Tanks vs. Cats"
+        loading="lazy"
+        allow="autoplay; fullscreen"
+        src="about:blank"
+      ></iframe>
+    </dialog>
+  </main>
+</Base>
+
+<script define:vars={{ TANKS_URL }}>
+  const tanksModal = document.querySelector('[data-tanks-modal]');
+  const tanksFrame = document.querySelector('[data-tanks-frame]');
+  const openTanks = document.querySelector('[data-open-tanks]');
+  const closeTanks = document.querySelector('[data-close-tanks]');
+
+  if (tanksModal && tanksFrame && openTanks) {
+    const open = () => {
+      if (tanksFrame.src === 'about:blank' || !tanksFrame.src) tanksFrame.src = TANKS_URL;
+      tanksModal.showModal();
+      requestAnimationFrame(() => tanksFrame.focus());
+    };
+    const close = () => {
+      tanksModal.close();
+      tanksFrame.src = 'about:blank';
+    };
+    openTanks.addEventListener('click', open);
+    closeTanks?.addEventListener('click', close);
+    tanksModal.addEventListener('click', (e) => { if (e.target === tanksModal) close(); });
+    tanksModal.addEventListener('cancel', () => { tanksFrame.src = 'about:blank'; });
+  }
+</script>
+
+<script>
+  const albums = [
+    { title: 'Lady', side: 'SIX FOOT BLONDE · SONG', color: '#F5C84B', audioSrc: '/audio/lady-six-foot-blonde.mp3' },
+    { title: 'Pelican Town', side: 'CONCERNEDAPE · GAME OST', color: '#5FA8E8', audioSrc: '/audio/pelican-town.mp3' },
+    { title: 'Come and Get Your Love', side: 'REDBONE · SONG', color: '#42B46E', audioSrc: '/audio/come-and-get-your-love.mp3' },
+  ];
+
+  const rec = document.getElementById('vinyl');
+  const playBtn = document.getElementById('playBtn');
+  const albTitle = document.getElementById('albTitle');
+  const albSide = document.getElementById('albSide');
+  const recLabel = rec ? rec.querySelector('.vinyl-label') : null;
+  const recordAudio = document.getElementById('recordAudio') as HTMLAudioElement | null;
+  let current = 0;
+  if (recordAudio) recordAudio.volume = 0.4;
+
+  const setPlaybackState = (playing: boolean) => {
+    rec?.classList.toggle('spinning', playing);
+    playBtn?.classList.toggle('is-playing', playing);
+    playBtn?.setAttribute('aria-pressed', String(playing));
+    const text = playBtn?.querySelector('.play-txt');
+    if (text) text.textContent = playing ? 'PAUSE' : 'PLAY';
+  };
+
+  const renderAlbum = () => {
+    if (albTitle) {
+      albTitle.textContent = albums[current].title;
+      albTitle.classList.toggle('is-long', albums[current].title.length > 16);
+    }
+    if (albSide) albSide.textContent = albums[current].side;
+    if (recLabel) recLabel.style.background = albums[current].color;
+    recordAudio?.pause();
+    if (recordAudio && albums[current].audioSrc) {
+      recordAudio.src = albums[current].audioSrc;
+      recordAudio.load();
+      playBtn?.removeAttribute('disabled');
+    } else if (recordAudio) {
+      recordAudio.removeAttribute('src');
+      recordAudio.load();
+      playBtn?.setAttribute('disabled', '');
+    }
+    setPlaybackState(false);
+  };
+
+  if (rec) {
+    rec.addEventListener('click', () => {
+      current = (current + 1) % albums.length;
+      renderAlbum();
+    });
+  }
+
+  if (rec && playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (!recordAudio?.src) return;
+      if (recordAudio.paused) recordAudio.play().catch(() => setPlaybackState(false));
+      else recordAudio.pause();
+    });
+  }
+  recordAudio?.addEventListener('play', () => setPlaybackState(true));
+  recordAudio?.addEventListener('pause', () => setPlaybackState(false));
+  recordAudio?.addEventListener('ended', () => setPlaybackState(false));
+
+  const bookTitle = document.getElementById('bookTitle');
+  const bookAuthor = document.getElementById('bookAuthor');
+  const bookNote = document.getElementById('bookNote');
+  document.querySelectorAll('.shelf .spine').forEach((book) => {
+    book.addEventListener('click', () => {
+      document.querySelectorAll('.shelf .spine').forEach((b) => b.classList.remove('active'));
+      book.classList.add('active');
+      if (bookTitle) bookTitle.textContent = book.getAttribute('data-title');
+      if (bookAuthor) bookAuthor.textContent = book.getAttribute('data-author');
+      if (bookNote) bookNote.textContent = book.getAttribute('data-note');
+    });
+  });
+</script>
+
+<style>
+  .home {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+  .hero {
+    padding: 46px 56px 8px;
+    text-align: center;
+  }
+  .eyebrow {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--red);
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .subline {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 44px 72px 0;
+  }
+  .quests {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+  }
+  .quest {
+    position: relative;
+    background: #fff;
+    border: 2px dashed #C6C9CE;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    font: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    transition: transform .18s, border-color .18s;
+    min-height: 44px;
+  }
+  .quest .glyph { margin-bottom: 6px; }
+  .quest:hover {
+    transform: translateY(-3px);
+    border: 2px solid var(--hover-border);
+  }
+  .quest-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #5A5C62;
+  }
+  .quest-sub {
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted-3);
+  }
+  .quest-go {
+    position: absolute;
+    top: 9px; right: 11px;
+    color: var(--hover-border);
+    opacity: 0;
+    transform: translate(-2px, 2px);
+    transition: opacity .18s, transform .18s;
+  }
+  .external-mark {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .external-mark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .play-mark {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .play-mark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .play-mark .play-mark__triangle {
+    fill: currentColor;
+    stroke: none;
+  }
+  .quest:hover .quest-go { opacity: 1; transform: translate(0, 0); }
+  .quest.is-soon { cursor: default; }
+  .quest.is-soon:hover { transform: none; border: 2px dashed #C6C9CE; }
+
+  .tanks-modal {
+    /* proportioned to the game page so it fills with no scroll and no dead space */
+    width: min(1180px, 94vw, calc(94vh * 30 / 21));
+    max-width: 94vw;
+    aspect-ratio: 30 / 21;
+    max-height: 94vh;
+    padding: 0;
+    border: 3px solid #242a31;
+    border-radius: 16px;
+    background: #fbfaf7;
+    overflow: hidden;
+  }
+  .tanks-modal[open] { display: flex; flex-direction: column; }
+  .tanks-modal__bar { flex: none; }
+  .tanks-modal::backdrop { background: rgba(20, 24, 20, .55); }
+  .tanks-modal__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 14px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .06em;
+    color: var(--ink);
+    border-bottom: 2px solid #242a31;
+  }
+  .tanks-modal__actions { display: flex; align-items: center; gap: 14px; }
+  .tanks-modal__actions a,
+  .tanks-modal__actions button {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .06em;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .tanks-modal__actions a:hover,
+  .tanks-modal__actions button:hover { color: var(--red); }
+  .open-external { display: inline-flex; align-items: center; gap: 5px; }
+  .open-external .external-mark { width: 16px; height: 16px; }
+  [data-tanks-frame] {
+    display: block;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #faf9f6;
+  }
+  .quest-soon {
+    position: absolute;
+    top: 9px; right: 10px;
+    font-family: var(--font-pixel);
+    font-size: 6.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted-3);
+    background: #F1F2F4;
+    padding: 3px 5px;
+    border-radius: 4px;
+  }
+  .glyph.square { width: 12px; height: 12px; background: #C42B25; border-radius: 2px; }
+  .glyph.circle { width: 12px; height: 12px; background: #F5C84B; border-radius: 50%; }
+  .glyph.triangle { width: 14px; height: 12px; background: #7CE38B; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .glyph.diamond { width: 12px; height: 12px; background: #5FA8E8; transform: rotate(45deg); }
+
+  .about {
+    padding: 96px 72px 8px;
+    scroll-margin-top: 80px;
+  }
+  .about-eyebrow {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--green-dark);
+    margin-bottom: 26px;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about-bio h2 {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.3;
+    margin: 0 0 20px;
+  }
+  .about-bio p {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--body);
+    margin: 0 0 16px;
+  }
+  .about-bio p:last-child { margin-bottom: 0; }
+  .about-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 2px dashed #C6C9CE;
+    border-radius: 12px;
+    padding: 4px 20px;
+    position: sticky;
+    top: 40px;
+  }
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(29, 42, 51, .08);
+  }
+  .fact:last-child { border-bottom: none; }
+  .fact-k {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .05em;
+    color: var(--muted-3);
+  }
+  .fact-v {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ===== About (alt / comparison) ===== */
+  .about-alt { padding-top: 40px; }
+
+  .contact { padding: 40px 72px 80px; scroll-margin-top: 80px; }
+  .contact-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 32px 40px;
+    border: 1.5px solid rgba(29, 42, 51, .16);
+    border-radius: 18px;
+    background: #fff;
+  }
+  .contact-copy { max-width: 560px; }
+  .contact-copy h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -.01em;
+  }
+  .contact-copy p {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .btn-email {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 20px;
+    background: var(--gold);
+    color: var(--ink);
+    border-radius: 10px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .04em;
+    box-shadow: 0 2px 0 var(--gold-dark);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn-email:hover { transform: translateY(-2px); box-shadow: 0 4px 0 var(--gold-dark); }
+  @media (max-width: 640px) {
+    .contact { padding: 32px 24px 64px; }
+    .contact-card { flex-direction: column; align-items: flex-start; gap: 22px; }
+  }
+  .about-alt .about-grid { grid-template-columns: 1.45fr 1fr; }
+  .about-alt .about-bio h2 { margin-bottom: 18px; }
+
+  /* tone swatches shared by chips, profile rows, spines
+     (color is set too so the active spine ring can use currentColor) */
+  .green { background: var(--green); color: var(--green); }
+  .blue { background: var(--blue-dark); color: var(--blue-dark); }
+  .gold { background: var(--gold); color: var(--gold-dark); }
+  .red { background: var(--red); color: var(--red); }
+  .green-dark { background: var(--green-dark); color: var(--green-dark); }
+
+  .about-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .about-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 16px;
+    border: 1.5px solid rgba(29, 42, 51, .18);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    background: #fff;
+    transition: transform .15s, border-color .15s;
+  }
+  .about-chip:hover { transform: translateY(-2px); border-color: var(--ink); }
+  .chip-sq { width: 11px; height: 11px; border-radius: 3px; }
+
+  .about-cards { display: flex; flex-direction: column; gap: 18px; }
+
+  .panel { border-radius: 16px; padding: 22px 22px 24px; }
+  .panel-profile {
+    background: rgba(124, 227, 139, .10);
+    border: 1.5px solid rgba(44, 122, 77, .30);
+  }
+  .panel-offclock {
+    background: rgba(95, 168, 232, .10);
+    border: 1.5px solid rgba(48, 118, 196, .30);
+    padding: 24px 28px 26px;
+  }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .04em;
+    color: var(--green-dark);
+    background: none;
+    margin-bottom: 18px;
+  }
+  .panel-head.blue { color: var(--blue-dark); }
+  .head-dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .6);
+  }
+
+  .prow {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 0;
+  }
+  .prow + .prow { border-top: 1px solid rgba(29, 42, 51, .07); }
+  .prow-sq { width: 12px; height: 12px; border-radius: 3px; margin-top: 3px; flex: none; }
+  .prow-text { display: flex; flex-direction: column; gap: 3px; }
+  .prow-k {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .05em;
+    color: var(--muted-3);
+  }
+  .prow-v { font-size: 14.5px; font-weight: 600; color: var(--ink); line-height: 1.35; }
+
+  /* Off the clock: record player + separate book shelf */
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .spin-row { display: flex; gap: 28px; align-items: center; }
+  .vinyl {
+    position: relative;
+    width: 118px; height: 118px;
+    flex: none;
+    border: 0;
+    padding: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 1px rgba(29, 42, 51, .12);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .vinyl-disc {
+    position: relative;
+    width: 92px; height: 92px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, #2a2d33 0 30%, #16181c 30% 32%, #2a2d33 32% 44%, #16181c 44% 46%, #2a2d33 46% 60%, #16181c 60% 62%, #2a2d33 62% 100%);
+  }
+  .vinyl.spinning .vinyl-disc { animation: spin 2.4s linear infinite; }
+  .vinyl-label {
+    position: absolute;
+    inset: 36%;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 2px #16181c;
+  }
+  .vinyl-label::after {
+    content: "";
+    position: absolute;
+    inset: 42%;
+    border-radius: 50%;
+    background: #16181c;
+  }
+  .vinyl-arm {
+    position: absolute;
+    top: 12px; right: 10px;
+    width: 50px; height: 8px;
+    background: #B9BDC4;
+    border-radius: 6px;
+    transform-origin: right center;
+    /* parked upright at rest, clear of the disc */
+    transform: rotate(-90deg);
+    transition: transform .55s ease;
+  }
+  .vinyl-arm::after {
+    content: "";
+    position: absolute;
+    left: -3px; top: -2px;
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    background: #8A8F98;
+  }
+  .vinyl.spinning .vinyl-arm { transform: rotate(-42deg); }
+
+  .spin-meta { display: flex; flex-direction: column; }
+  .spin-k {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .05em;
+    color: var(--blue-dark);
+    margin-bottom: 6px;
+  }
+  .spin-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+  .spin-title.is-long { font-size: 14px; }
+  .spin-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted-2);
+    margin-top: 2px;
+    margin-bottom: 12px;
+  }
+  .play {
+    align-self: flex-start;
+    min-width: 96px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: #fff;
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .06em;
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform .15s;
+  }
+  .play:hover { transform: translateY(-2px); }
+  .play:disabled { cursor: not-allowed; opacity: .45; transform: none; }
+  .play.is-playing { background: var(--blue); border-color: var(--blue-dark); color: #fff; }
+  .play-ico { width: 16px; height: 16px; }
+  .pause-state-icon { display: none !important; }
+  .play.is-playing .play-state-icon { display: none; }
+  .play.is-playing .pause-state-icon { display: block !important; }
+
+  .shelf-label {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .05em;
+    color: var(--muted-3);
+    margin: 22px 0 12px;
+  }
+  .shelf-row { display: flex; align-items: center; gap: 32px; }
+  .shelf { flex: none; }
+  .shelf-books {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 0;
+    height: 100px;
+    padding: 0 10px;
+  }
+  .spine {
+    flex: none;
+    width: 24px;
+    border: 0;
+    border-radius: 3px 3px 0 0;
+    cursor: pointer;
+    position: relative;
+    box-shadow:
+      inset -4px 0 0 rgba(0, 0, 0, .16),
+      inset 3px 0 0 rgba(255, 255, 255, .18);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .spine::before {
+    content: "";
+    position: absolute;
+    left: 3px; right: 4px; top: 14px;
+    height: 5px;
+    background: rgba(255, 255, 255, .55);
+  }
+  .spine::after {
+    content: "";
+    position: absolute;
+    left: 3px; right: 4px; bottom: 20px;
+    height: 5px;
+    background: rgba(255, 255, 255, .3);
+  }
+  .spine:hover { transform: translateY(-4px); }
+  .spine.active {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor, 0 6px 12px rgba(0, 0, 0, .16);
+    filter: saturate(1.1);
+    z-index: 1;
+  }
+  .shelf-plank {
+    height: 12px;
+    margin: 0 -6px;
+    border-radius: 7px;
+    background: linear-gradient(#F6D6A6, #EEBB7C);
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, .55), 0 3px 5px rgba(0, 0, 0, .12);
+  }
+  .shelf-info { flex: 1; min-width: 0; }
+  .book-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .book-author { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .book-note { font-size: 11.5px; line-height: 1.4; color: var(--muted-3); margin-top: 7px; }
+
+  @media (min-width: 1440px) {
+    h1 { font-size: 40px; }
+    .subline { font-size: 16px; }
+    .about-bio h2 { font-size: 23px; }
+  }
+  @media (min-width: 1920px) {
+    h1 { font-size: 44px; }
+  }
+  @media (max-width: 760px) {
+    .hero { padding: 36px 24px 8px; }
+    h1 { font-size: 30px; }
+    .grid {
+      grid-template-columns: 1fr;
+      padding: 36px 24px 0;
+    }
+    .quest { min-height: 96px; }
+    .about { padding: 64px 24px 8px; }
+    .about-grid { grid-template-columns: 1fr; gap: 28px; }
+    .about-facts { position: static; }
+  }
+</style>

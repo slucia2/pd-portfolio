@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Page column width preset: nav, footer, and content all follow it */
+  width?: 'home' | 'case';
+}
+
+const { title, width = 'home', description = 'Sam Lucia, product designer for the messy middle. Complex systems, enterprise tools · T-Mobile, Seattle.' } = Astro.props;
+
+const { pathname } = Astro.url;
+const isWork = pathname === '/' || pathname.startsWith('/work');
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class={`w-${width}`}>
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <span class="nav-dot"></span>
+        <span class="nav-name">Sam Lucia</span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class={isWork ? 'active' : undefined}>Work</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
+      </div>
+    </nav>
+
+    <slot />
+
+    <footer class="footer">
+      <span class="footer-pixel">© 2026 SAM LUCIA</span>
+      <span class="footer-mid">Seattle, WA</span>
+      <span class="footer-pixel">PRESS START</span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+---
+import type { CaseStudy } from '../data/cases';
+
+interface Props {
+  case: CaseStudy;
+}
+
+const { case: c } = Astro.props;
+---
+<a
+  href={`/work/${c.slug}/`}
+  class="cartridge"
+  style={`--accent:${c.accent};--accent-dark:${c.accentDark}`}
+>
+  <div class="shell">
+    <div class="ridge-strip">
+      <div class="ridges"><span></span><span></span></div>
+      <span class="ridge-label">{c.cartridgeLabel}</span>
+      <div class="ridges"><span></span><span></span></div>
+    </div>
+    <img
+      src={c.image}
+      alt={c.imageAlt}
+      class:list={['art', { contain: (c.cardFit ?? c.imageFit) === 'contain' }]}
+      style={(c.cardPosition ?? c.imagePosition) ? `object-position:${c.cardPosition ?? c.imagePosition}` : undefined}
+    />
+    <div class="body">
+      <div class="title-row">
+        <span class="title">{c.title}</span>
+        <span class="meta">{c.cardMeta}</span>
+      </div>
+      <div class="desc">{c.description}</div>
+    </div>
+  </div>
+</a>
+
+<style>
+  .cartridge {
+    display: block;
+    cursor: pointer;
+    transition: transform .18s;
+    color: var(--ink);
+  }
+  .cartridge:hover { transform: translateY(-5px); }
+  .shell {
+    background: #fff;
+    border: 2.5px solid var(--ink);
+    border-radius: 14px 14px 8px 8px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
+  .ridge-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 18px;
+    background: var(--accent);
+    border-bottom: 2.5px solid var(--ink);
+  }
+  .ridges { display: flex; gap: 4px; }
+  .ridges span {
+    width: 26px;
+    height: 4px;
+    background: rgba(29, 42, 51, .35);
+    border-radius: 2px;
+  }
+  .ridge-label {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--ink);
+  }
+  .art {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2.5px solid var(--ink);
+  }
+  .art.contain {
+    object-fit: contain;
+    background: #fff;
+    padding: 10px;
+  }
+  .body { padding: 16px 20px 18px; }
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .title { font-size: 17px; font-weight: 700; }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent-dark);
+  }
+  .desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  @media (min-width: 1440px) {
+    .art { height: 235px; }
+    .title { font-size: 18px; }
+    .desc { font-size: 14px; }
+  }
+  @media (min-width: 1920px) {
+    .art { height: 270px; }
+  }
+</style>

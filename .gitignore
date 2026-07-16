@@ -1,0 +1,12 @@
+# dependencies / build
+site/node_modules/
+site/dist/
+site/.astro/
+
+# tooling / local
+.claude/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
