@@ -15,6 +15,8 @@ export interface CaseStudy {
   accentBorder: string;
   image: string;
   imageAlt: string;
+  /** Optional case-page hero video. Homepage cartridge still uses `image`. */
+  heroVideo?: string;
   /** CSS for the card/hero image crop */
   imageFit: 'cover' | 'contain';
   imagePosition?: string;
@@ -42,6 +44,7 @@ export const cases: CaseStudy[] = [
     accentBorder: 'rgba(224,172,44,.55)',
     image: '/images/enterprise-permissions/ep-hero.png',
     imageAlt: 'Enterprise Permissions',
+    heroVideo: '/images/enterprise-permissions/ep-hero.mp4',
     imageFit: 'contain',
     cardFit: 'cover',
     cardPosition: 'top',

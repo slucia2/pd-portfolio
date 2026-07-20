@@ -28,15 +28,31 @@ const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
     </div>
     <div class="case-rule"></div>
     {!c.hideCaseHero && (
-      <img
-        src={c.image}
-        alt={heroAlt}
-        class="case-hero"
-        style={[
-          c.imagePosition ? `object-position:${c.imagePosition}` : '',
-          c.imageFit === 'contain' ? 'height:auto;object-fit:contain;background:#fff' : '',
-        ].filter(Boolean).join(';') || undefined}
-      />
+      c.heroVideo ? (
+        <video
+          class="case-hero"
+          src={c.heroVideo}
+          autoplay
+          muted
+          loop
+          playsinline
+          aria-label={heroAlt}
+          style={[
+            c.imagePosition ? `object-position:${c.imagePosition}` : '',
+            c.imageFit === 'contain' ? 'height:auto;object-fit:contain;background:#fff' : '',
+          ].filter(Boolean).join(';') || undefined}
+        />
+      ) : (
+        <img
+          src={c.image}
+          alt={heroAlt}
+          class="case-hero"
+          style={[
+            c.imagePosition ? `object-position:${c.imagePosition}` : '',
+            c.imageFit === 'contain' ? 'height:auto;object-fit:contain;background:#fff' : '',
+          ].filter(Boolean).join(';') || undefined}
+        />
+      )
     )}
     <div class="case-opener">
       <div>
