@@ -12,13 +12,6 @@ const groupTypes = [
   { name: 'NESTED GROUPS', tag: 'REUSE', text: 'Groups compose into larger groups, so common audiences get defined once and reused, instead of rebuilt per page.' },
 ];
 
-const flow = [
-  { phase: '01 · DEFINE', title: 'Admins create reusable groups', text: 'Dynamic rules for steady audiences, exception groups for temporary access. Ownership and expiration are required, not optional.', chip: 'GROUP MANAGEMENT' },
-  { phase: '02 · APPLY', title: 'Authors permission pages at publish', text: 'Search pages, see publish and permission status, then apply the right groups before go-live, without an IT ticket.', chip: 'APPLY PERMISSIONS' },
-  { phase: '03 · CASCADE', title: 'Inheritance stays a deliberate choice', text: 'Parent access can flow to child pages only when an author confirms it. Visible, reversible, auditable.', chip: 'EXPLICIT ACTION' },
-  { phase: '04 · GOVERN', title: 'Exceptions renew or expire', text: 'Temporary access escalates as the deadline nears, then locks past renewal, so sprawl cannot quietly accumulate.', chip: 'BUILT-IN EXPIRY' },
-];
-
 const results = [
   '3,000+ pages permissioned in month one, with zero platform-admin intervention.',
   '~30 active groups at steady state, adopted across multiple org groups.',
@@ -123,38 +116,20 @@ const results = [
   </section>
 
   <section class="sec">
-    <div class="sec-label">HOW IT WORKS</div>
-    <h2 class="sec-heading">One loop from group definition to page access, with governance at every step.</h2>
-    <p class="sec-body">Admins define reusable audiences. Authors apply them when content ships. Inheritance and expiration keep the system honest after launch.</p>
-    <div class="case-grid-2" style="margin-top:22px">
-      {flow.map((step) => (
-        <div class="case-card">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
-            <span class="case-card-label" style="margin-bottom:0">{step.phase}</span>
-            <span class="case-tag accent">{step.chip}</span>
-          </div>
-          <div class="sec-subhead" style="margin-top:0">{step.title}</div>
-          <div class="case-card-body" style="margin-top:8px">{step.text}</div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section class="sec">
     <div class="sec-label">TWO SURFACES</div>
-    <h2 class="sec-heading">The same group model, shown where each role needs it.</h2>
-    <p class="sec-body">Group Management, in the hero above, is the admin home: owners, membership, applied pages, dynamic rules, and an activity log. Authors never have to live there. They work in Apply Permissions at publish time, with full visibility before go-live.</p>
+    <h2 class="sec-heading">Admins define audiences once. Authors apply them at publish.</h2>
+    <p class="sec-body">The loop is simple: Group Management creates reusable groups with ownership and expiration built in; Apply Permissions attaches those groups before content goes live; inheritance and renewal keep access honest afterward. Group Management, in the hero above, is the admin home. Authors work in Apply Permissions.</p>
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-apply-permissions.png" alt="Apply Permissions: page list with publish status, permission status, and manage actions" />
       <figcaption>Apply Permissions: the author hub, with publish status and permission status side by side</figcaption>
     </figure>
     <div class="case-grid-2" style="margin-top:16px">
       <div class="case-card">
-        <div class="case-card-label">Admins · Group Management</div>
+        <div class="case-card-label">ADMINS · GROUP MANAGEMENT</div>
         <div class="case-card-body">Define reusable audiences once. Dynamic rules keep membership current overnight; exception groups carry owners and expiration so temporary access stays temporary.</div>
       </div>
       <div class="case-card">
-        <div class="case-card-label">Authors · Apply Permissions</div>
+        <div class="case-card-label">AUTHORS · APPLY PERMISSIONS</div>
         <div class="case-card-body">Search pages, filter by publish and permission status, and attach the right groups before content ships, without opening an IT ticket.</div>
       </div>
     </div>
@@ -166,11 +141,11 @@ const results = [
     <p class="sec-body">The platform had no established patterns for search, tables, filtering, or inline validation. I designed them as reusable components from the start, so both surfaces share one interaction language and later features could compose from existing parts.</p>
     <div class="case-grid-2">
       <div class="case-card">
-        <div class="case-card-label">Foundations first</div>
+        <div class="case-card-label">FOUNDATIONS FIRST</div>
         <div class="case-card-body">Search, tables, filters, and validation shipped as shared components. Admins and authors learn one interaction language, and new platform features reuse it instead of inventing another.</div>
       </div>
       <div class="case-card">
-        <div class="case-card-label">Errors at the moment of entry</div>
+        <div class="case-card-label">ERRORS AT THE MOMENT OF ENTRY</div>
         <div class="case-card-body">Bulk imports validate per row: bad entries are flagged inline and skipped, good ones proceed. First-time permission owners never face an all-or-nothing failure.</div>
       </div>
     </div>
@@ -202,11 +177,11 @@ const results = [
     </figure>
     <div class="case-grid-2" style="margin-top:16px">
       <div class="case-card">
-        <div class="case-card-label">Open unless compliance says otherwise</div>
+        <div class="case-card-label">OPEN UNLESS COMPLIANCE SAYS OTHERWISE</div>
         <div class="case-card-body">Content is accessible by default, restricted only where compliance requires it. That kept enterprise resources broadly available and cut ongoing maintenance across a large content set.</div>
       </div>
       <div class="case-card">
-        <div class="case-card-label">Components, same mental model</div>
+        <div class="case-card-label">COMPONENTS, SAME MENTAL MODEL</div>
         <div class="case-card-body">Component permissions follow the same flow as pages, in a tab within Apply Permissions. Global components like navigation and search respond to page-level access automatically: users only see entry points they can open.</div>
       </div>
     </div>

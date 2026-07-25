@@ -4,14 +4,23 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  /** Absolute or site-root path for social preview image */
+  ogImage?: string;
   /** Page column width preset: nav, footer, and content all follow it */
   width?: 'home' | 'case';
 }
 
-const { title, width = 'home', description = 'Sam Lucia, product designer for the messy middle. Complex systems, enterprise tools · T-Mobile, Seattle.' } = Astro.props;
+const {
+  title,
+  width = 'home',
+  description = 'Sam Lucia, product designer for the messy middle. Complex systems, enterprise tools · T-Mobile, Seattle.',
+  ogImage = '/images/landing-hero.png',
+} = Astro.props;
 
 const { pathname } = Astro.url;
 const isWork = pathname === '/' || pathname.startsWith('/work');
+const canonical = new URL(pathname, Astro.site ?? Astro.url);
+const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url);
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +29,17 @@ const isWork = pathname === '/' || pathname.startsWith('/work');
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -28,6 +48,7 @@ const isWork = pathname === '/' || pathname.startsWith('/work');
     />
   </head>
   <body class={`w-${width}`}>
+    <a class="skip-link" href="#main">Skip to content</a>
     <nav class="nav">
       <a href="/" class="nav-brand">
         <span class="nav-dot"></span>

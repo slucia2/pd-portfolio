@@ -6,9 +6,9 @@ import { cases } from '../data/cases';
 const TANKS_URL = 'https://tanksvscats-psi.vercel.app/';
 
 const sideQuests = [
-  { label: 'Easy Chinese', sub: 'Language app', glyph: 'circle', hover: '#E0AC2C', href: 'https://easychineselearning-rosy.vercel.app/welcome' },
-  { label: 'ClaimRunner', sub: 'AI startup', glyph: 'triangle', hover: '#42B46E', href: 'https://www.claimrunner.ai/' },
-  { label: 'ScamRanger', sub: 'Mobile app', glyph: 'diamond', hover: '#3076C4', href: null, soon: true },
+  { label: 'Easy Chinese', sub: 'Language app', glyph: 'circle', hover: '#F5C84B', href: 'https://easychineselearning-rosy.vercel.app/welcome' },
+  { label: 'ClaimRunner', sub: 'AI startup', glyph: 'triangle', hover: '#7CE38B', href: 'https://www.claimrunner.ai/' },
+  { label: 'ScamRanger', sub: 'Mobile app', glyph: 'diamond', hover: '#5FA8E8', href: null, soon: true },
   { label: 'Tanks!', sub: 'Browser game', glyph: 'square', hover: '#C42B25', modal: true },
 ];
 
@@ -41,9 +41,9 @@ const albums = [
 ];
 ---
 <Base title="Sam Lucia · Product Designer">
-  <main class="home">
+  <main id="main" class="home">
     <section class="hero">
-      <div class="eyebrow">■ SELECT A CASE STUDY</div>
+      <div class="eyebrow">■ CASE STUDIES &amp; SIDE QUESTS</div>
       <h1>I'm Sam, a product designer<br />for the messy middle.</h1>
       <div class="subline">Complex systems, tools &amp; journeys · T-Mobile, UW-IT</div>
     </section>
@@ -147,7 +147,7 @@ const albums = [
             <div class="panel-head blue"><span class="head-dot"></span> OFF THE CLOCK</div>
 
             <div class="spin-row">
-              <button id="vinyl" class="vinyl" type="button" aria-label="Change record">
+              <button id="vinyl" class="vinyl" type="button" aria-label={`Change record. Now spinning ${albums[0].title}`}>
                 <span class="vinyl-disc">
                   <span class="vinyl-label" style={`background:${albums[0].color}`}></span>
                 </span>
@@ -155,7 +155,7 @@ const albums = [
               </button>
               <div class="spin-meta">
                 <span class="spin-k">NOW SPINNING · TAP THE RECORD</span>
-                <div class="spin-title" id="albTitle">{albums[0].title}</div>
+                <div class="spin-title" id="albTitle" aria-live="polite">{albums[0].title}</div>
                 <div class="spin-sub" id="albSide">{albums[0].side}</div>
                 <button id="playBtn" class="play" type="button" aria-pressed="false">
                   <span class="play-ico play-mark" aria-hidden="true">
@@ -177,7 +177,7 @@ const albums = [
             <div class="shelf-label">ON THE SHELF · TAP A SPINE</div>
             <div class="shelf-row">
               <div class="shelf">
-                <div class="shelf-books" role="listbox" aria-label="Book shelf">
+                <div class="shelf-books" role="group" aria-label="Book shelf">
                   {shelf.map((b, i) => (
                     <button
                       class:list={['spine', b.tone, { active: i === defaultBook }]}
@@ -187,6 +187,7 @@ const albums = [
                       data-author={b.author}
                       data-note={b.note}
                       aria-label={`${b.title} by ${b.author}`}
+                      aria-pressed={i === defaultBook ? 'true' : 'false'}
                     ></button>
                   ))}
                 </div>
@@ -265,23 +266,17 @@ const albums = [
   }
 </script>
 
-<script>
-  const albums = [
-    { title: 'Lady', side: 'SIX FOOT BLONDE · SONG', color: '#F5C84B', audioSrc: '/audio/lady-six-foot-blonde.mp3' },
-    { title: 'Pelican Town', side: 'CONCERNEDAPE · GAME OST', color: '#5FA8E8', audioSrc: '/audio/pelican-town.mp3' },
-    { title: 'Come and Get Your Love', side: 'REDBONE · SONG', color: '#42B46E', audioSrc: '/audio/come-and-get-your-love.mp3' },
-  ];
-
+<script define:vars={{ albums }}>
   const rec = document.getElementById('vinyl');
   const playBtn = document.getElementById('playBtn');
   const albTitle = document.getElementById('albTitle');
   const albSide = document.getElementById('albSide');
   const recLabel = rec ? rec.querySelector('.vinyl-label') : null;
-  const recordAudio = document.getElementById('recordAudio') as HTMLAudioElement | null;
+  const recordAudio = document.getElementById('recordAudio');
   let current = 0;
   if (recordAudio) recordAudio.volume = 0.4;
 
-  const setPlaybackState = (playing: boolean) => {
+  const setPlaybackState = (playing) => {
     rec?.classList.toggle('spinning', playing);
     playBtn?.classList.toggle('is-playing', playing);
     playBtn?.setAttribute('aria-pressed', String(playing));
@@ -296,6 +291,7 @@ const albums = [
     }
     if (albSide) albSide.textContent = albums[current].side;
     if (recLabel) recLabel.style.background = albums[current].color;
+    if (rec) rec.setAttribute('aria-label', `Change record. Now spinning ${albums[current].title}`);
     recordAudio?.pause();
     if (recordAudio && albums[current].audioSrc) {
       recordAudio.src = albums[current].audioSrc;
@@ -332,8 +328,12 @@ const albums = [
   const bookNote = document.getElementById('bookNote');
   document.querySelectorAll('.shelf .spine').forEach((book) => {
     book.addEventListener('click', () => {
-      document.querySelectorAll('.shelf .spine').forEach((b) => b.classList.remove('active'));
+      document.querySelectorAll('.shelf .spine').forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       book.classList.add('active');
+      book.setAttribute('aria-pressed', 'true');
       if (bookTitle) bookTitle.textContent = book.getAttribute('data-title');
       if (bookAuthor) bookAuthor.textContent = book.getAttribute('data-author');
       if (bookNote) bookNote.textContent = book.getAttribute('data-note');
@@ -563,38 +563,8 @@ const albums = [
     margin: 0 0 16px;
   }
   .about-bio p:last-child { margin-bottom: 0; }
-  .about-facts {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border: 2px dashed #C6C9CE;
-    border-radius: 12px;
-    padding: 4px 20px;
-    position: sticky;
-    top: 40px;
-  }
-  .fact {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(29, 42, 51, .08);
-  }
-  .fact:last-child { border-bottom: none; }
-  .fact-k {
-    font-family: var(--font-pixel);
-    font-size: 8px;
-    letter-spacing: .05em;
-    color: var(--muted-3);
-  }
-  .fact-v {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-  }
 
-  /* ===== About (alt / comparison) ===== */
-  .about-alt { padding-top: 40px; }
+  .about-alt { padding-top: 72px; }
 
   .contact { padding: 40px 72px 80px; scroll-margin-top: 80px; }
   .contact-card {
@@ -926,7 +896,6 @@ const albums = [
     .about-grid { grid-template-columns: 1fr; gap: 28px; }
     .about-alt .about-grid { gap: 28px; }
     .about-cards { max-width: none; }
-    .about-facts { position: static; }
     .panel-offclock { padding: 20px 18px 22px; }
     .spin-row { gap: 16px; }
     .spin-title { white-space: normal; }
