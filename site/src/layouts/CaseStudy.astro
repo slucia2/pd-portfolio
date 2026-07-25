@@ -13,8 +13,9 @@ interface Props {
 
 const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
 ---
-<Base title={`${c.title} · Sam Lucia`} description={intro} width="case">
+<Base title={`${c.title} · Sam Lucia`} description={intro} width="case" ogImage={c.image}>
   <main
+    id="main"
     class="case-main"
     style={`--accent:${c.accent};--accent-dark:${c.accentDark};--accent-tint:${c.accentTint};--accent-border:${c.accentBorder}`}
   >
@@ -36,6 +37,7 @@ const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
           muted
           loop
           playsinline
+          data-autoplay-video
           aria-label={heroAlt}
           style={[
             c.imagePosition ? `object-position:${c.imagePosition}` : '',
@@ -68,3 +70,14 @@ const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
     <slot />
   </main>
 </Base>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    document.querySelectorAll<HTMLVideoElement>('video[data-autoplay-video], .case-fig video').forEach((video) => {
+      video.removeAttribute('autoplay');
+      video.pause();
+      video.currentTime = 0;
+    });
+  }
+</script>

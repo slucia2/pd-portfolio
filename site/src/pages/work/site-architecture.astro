@@ -45,7 +45,7 @@ const results = [
     { key: 'YEAR', value: '2024' },
     { key: 'SCOPE', value: '58 sites audited' },
   ]}
-  heroAlt="Site hierarchy: one root branching into four color-coded L1 categories, each cascading through deeper levels"
+  heroAlt="Approved L1 categories and four-level site hierarchy: Customer support, Company & Culture, Pay & Benefits, People & teams, Development & growth"
   problem="Over 9,000 pages scattered and duplicated across SharePoint, AEM, and Bigtincan, with no unified structure to bring them together."
   outcome="A validated architecture: 60 topics down to 38, 9,000 pages down to 3,000, shipped as the platform's navigation."
 >
@@ -85,26 +85,12 @@ const results = [
         </div>
       ))}
     </div>
-    <div class="case-grid-3">
-      <div class="case-card accent">
-        <div class="case-stat-num">9,000+</div>
-        <div class="case-card-body">pages across the T-Nation collection alone.</div>
-      </div>
-      <div class="case-card accent">
-        <div class="case-stat-num">7.85M</div>
-        <div class="case-card-body">page views in 2024.</div>
-      </div>
-      <div class="case-card accent">
-        <div class="case-stat-num">62%</div>
-        <div class="case-card-body">of pages with any visits at all: 3,500 of 9,000.</div>
-      </div>
-    </div>
   </section>
 
   <section class="sec">
     <div class="sec-label">HEURISTIC ANALYSIS</div>
     <h2 class="sec-heading">Five factors decided what migrated, what consolidated, and what got removed.</h2>
-    <p class="sec-body">Using the inventory metrics, I analyzed each content area for migration value. The analysis reduced topics from 60 to 38 and pages from 9,000 to 2,000.</p>
+    <p class="sec-body">Using the inventory metrics, I analyzed each content area for migration value. The analysis reduced topics from 60 to 38 and pages from 9,000 to 3,000.</p>
     <ol class="case-factors">
       {factors.map((fc, i) => (
         <li class="case-factor">
@@ -152,8 +138,8 @@ const results = [
       ))}
     </div>
     <figure class="case-fig bare">
-      <img src="/images/site-architecture/sa-cardsort.png" alt="The hybrid card sort and resulting user categorization" />
-      <figcaption>The hybrid card sort, and how users actually grouped content</figcaption>
+      <img src="/images/site-architecture/sa-cardsort.png" alt="Hybrid card sort board alongside the resulting user categorization" />
+      <figcaption>Hybrid card sort setup, with the resulting user categorization on the right</figcaption>
     </figure>
   </section>
 
@@ -176,7 +162,7 @@ const results = [
       <figcaption>Feature placement across the platform shell</figcaption>
     </figure>
     <div class="case-ridge">
-      <div class="case-ridge-strip">WHY IT WORKED</div>
+      <div class="case-ridge-strip">WHY THE IA HELD</div>
       <div class="case-ridge-body">
         <div class="case-ridge-heading">Audit first, architecture second. Every category earned its place with usage data behind it.</div>
         <p class="sec-body">The content audit forced a close examination of every page and section across platforms, raising the bar of understanding for all partner teams. It also surfaced the need for a stronger governance model, opening the discussion of how content gets managed going forward.</p>
@@ -185,9 +171,9 @@ const results = [
   </section>
 
   <section class="sec">
-    <div class="sec-label">FROM STRUCTURE TO NAVIGATION</div>
+    <div class="sec-label">NAVIGATION · ONE YEAR LATER</div>
     <h2 class="sec-heading">The IA became the platform's navigation. I designed that too, in two weeks.</h2>
-    <p class="sec-body">A year later, with delivery behind schedule, I was brought back to design the primary navigation end to end. The side nav surfaces the IA directly: L1 categories always present, L2 revealed on click, L3 in a flyout on hover. Categories expand in place instead of routing through landing pages, and the structure mirrors the site backend dynamically, so content teams manage it without developers.</p>
+    <p class="sec-body">In 2025, with delivery behind schedule, I was brought back to design the primary navigation end to end. The side nav surfaces the IA directly: L1 categories always present, L2 revealed on click, L3 in a flyout on hover. Categories expand in place instead of routing through landing pages, and the structure mirrors the site backend dynamically, so content teams manage it without developers.</p>
     <figure class="case-fig bare">
       <img src="/images/site-architecture/sa-nav-mvp.png" alt="The MVP navigation: L1 categories in the side nav, mirroring the IA" />
       <figcaption>The MVP navigation: the approved L1 categories, live in the side nav</figcaption>
@@ -215,7 +201,7 @@ const results = [
       <figcaption>The VP's pick: consistent logo visibility across all nav states, shipped in three days</figcaption>
     </figure>
     <div class="case-ridge">
-      <div class="case-ridge-strip">WHY IT WORKED</div>
+      <div class="case-ridge-strip">WHY THE NAV SHIPPED</div>
       <div class="case-ridge-body">
         <div class="case-ridge-heading">The IA didn't just inform the navigation. It became the navigation, and one content teams can run.</div>
         <p class="sec-body">Because the side nav mirrors the site backend dynamically, content teams manage the structure directly, without developers. Designing for a tablet-first frontline and turning the late logo curveball around in three days kept a behind-schedule launch on track.</p>
@@ -223,7 +209,7 @@ const results = [
     </div>
   </section>
 
-  <section class="sec" style="padding-bottom:28px">
+  <section class="sec">
     <div class="sec-label">RESULTS</div>
     <h2 class="sec-heading">A validated foundation for migrating and managing content at scale.</h2>
     <div class="case-grid-2" style="gap:14px">
@@ -233,6 +219,20 @@ const results = [
           <span class="case-card-body">{r}</span>
         </div>
       ))}
+    </div>
+  </section>
+
+  <section class="sec" style="padding-bottom:28px">
+    <div class="sec-label">WHAT I LEARNED</div>
+    <div class="case-grid-2" style="margin-top:14px">
+      <div class="case-check">
+        <span class="tick dash" aria-hidden="true"></span>
+        <span class="case-card-body">An architecture only sticks when every category can point to usage data, not just stakeholder preference.</span>
+      </div>
+      <div class="case-check">
+        <span class="tick dash" aria-hidden="true"></span>
+        <span class="case-card-body">The IA earns its keep when it becomes the navigation content teams can run without developers.</span>
+      </div>
     </div>
   </section>
 

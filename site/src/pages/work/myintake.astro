@@ -41,7 +41,7 @@ const inScope = [
 const cut = [
   { name: 'APPOINTMENT REMINDERS', why: 'No interviewee described scheduling as a failure point. The problem is what patients bring, not whether they attend.' },
   { name: 'EMERGENCY / CRISIS MODE', why: 'Not surfaced in any interview as a primary breakdown. A genuinely different job from clinic workflow.' },
-  { name: 'INSURANCE & BILLING', why: 'Never mentioned as friction in the care encounter itself.' },
+  { name: 'INSURANCE & BILLING', why: 'Never mentioned as friction in the care encounter itself. Insurance cards still ship as photo capture inside the profile, not as a billing product.' },
 ];
 
 const featureLayers = [
@@ -139,9 +139,25 @@ const results = [
   </section>
 
   <section class="sec">
-    <div class="sec-label">THE PROBLEM</div>
-    <h2 class="sec-heading">Health information exists. It just doesn't travel.</h2>
-    <p class="sec-body">Hospital systems don't talk to each other, so intake often starts from scratch at every new provider. Doctors can't treat safely without an accurate history, and patients can't recall it all from memory. It fails hardest for people who don't speak English fluently, don't have stable housing, or don't have one regular doctor.</p>
+    <div class="sec-label">THE HANDOFF</div>
+    <h2 class="sec-heading">Patient shares a QR. Clinic opens a read-only profile. No login on either side of the scan.</h2>
+    <p class="sec-body">This is the loop the sprint had to prove: a portable patient profile that any clinic can open the moment someone shows up with a code.</p>
+    <div class="case-grid-2" style="margin-top:22px">
+      <figure class="case-fig bare" style="margin-top:0">
+        <img src="/images/myintake/qr-share.png" alt="MyIntake Share screen: persistent QR code and copyable link for Sarah Chen" />
+        <figcaption>Patient side: persistent QR and copyable link</figcaption>
+      </figure>
+      <figure class="case-fig bare" style="margin-top:0">
+        <img src="/images/myintake/clinic-view-top.png" alt="Clinic view: Sarah Chen patient health record with allergies, medications, and conditions" />
+        <figcaption>Clinic side: curated read-only profile after scan</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">EVIDENCE</div>
+    <h2 class="sec-heading">Health information exists. It just doesn't travel, and the stakes show up in the data.</h2>
+    <p class="sec-body">Hospital systems don't talk to each other, so intake often starts from scratch at every new provider. Patient portals only work inside one system. Nothing lets patients carry a usable history everywhere without every provider signing on first.</p>
     <div class="case-grid-3">
       <div class="case-card accent">
         <div class="case-stat-num">27%</div>
@@ -152,33 +168,13 @@ const results = [
         <div class="case-card-body">people harmed by medication errors every year in the US.</div>
       </div>
       <div class="case-card accent">
-        <div class="case-stat-num">$3.5B</div>
-        <div class="case-card-body">in annual hospital costs from drug-related injuries alone.</div>
-      </div>
-    </div>
-    <div class="case-source">Source: Tam et al., CMAJ 2005 · peer-reviewed systematic review</div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-label">MARKET RESEARCH</div>
-    <h2 class="sec-heading">The demand is real. The gap is structural.</h2>
-    <p class="sec-body">Patient portals only work inside one hospital system. Switch providers, move, or need care elsewhere, and the information stays behind. Nothing lets patients carry it everywhere, without every provider signing on first.</p>
-    <div class="case-grid-3">
-      <div class="case-card accent">
-        <div class="case-stat-num">65%</div>
-        <div class="case-card-body">accessed health records online in 2024, up from 25% in 2014.</div>
-      </div>
-      <div class="case-card accent">
-        <div class="case-stat-num">37–54%</div>
-        <div class="case-card-body">actual portal adoption, despite near-universal availability.</div>
-      </div>
-      <div class="case-card accent">
         <div class="case-stat-num">0</div>
         <div class="case-card-body">portable patient-owned layers that work across providers without integration: the gap MyIntake fills.</div>
       </div>
     </div>
-    <div class="case-source">Sources: ASTP/ONC Data Brief No.77, 2025 · Cao &amp; Cao, Frontiers in Communication 2024 · peer-reviewed</div>
-    <h3 class="sec-subhead">The research base: 13 peer-reviewed studies, each mapping a finding to a product decision.</h3>
+    <div class="case-source">Sources: Tam et al., CMAJ 2005 · ASTP/ONC Data Brief No.77, 2025 · Cao &amp; Cao, Frontiers in Communication 2024</div>
+
+    <h3 class="sec-subhead">The research base: 13 peer-reviewed studies, each mapping a finding to a product decision. Six shown here.</h3>
     <div class="case-grid-2">
       {studies.map((st) => (
         <div class="case-card">
@@ -190,12 +186,9 @@ const results = [
         </div>
       ))}
     </div>
-  </section>
 
-  <section class="sec">
-    <div class="sec-label">IDEATION: JOBS TO BE DONE</div>
-    <h2 class="sec-heading">Four actors, one shared failure: information that doesn't show up when it's needed.</h2>
-    <p class="sec-body">What each person needed done: framed during ideation, then pressure-tested in the interviews.</p>
+    <h3 class="sec-subhead">Four actors, one shared failure: information that doesn't show up when it's needed.</h3>
+    <p class="sec-body">What each person needed done: framed during ideation, then pressure-tested in 12 interviews across every care setting.</p>
     <div class="case-grid-2">
       {jobs.map((j) => (
         <div class="case-card">
@@ -204,13 +197,7 @@ const results = [
         </div>
       ))}
     </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-label">USER RESEARCH</div>
-    <h2 class="sec-heading">Every care setting told the same story: basic information doesn't show up when it's needed.</h2>
-    <p class="sec-body">12 interviews: a hospital doctor, a pediatrician, a medical assistant, and a pharmacy technician, plus patients and caregivers.</p>
-    <div class="case-grid-2">
+    <div class="case-grid-2" style="margin-top:16px">
       <div class="case-card">
         <div class="case-quote-text">"We spend too much time just getting basic information."</div>
         <div class="case-quote-who">Medical assistant · primary care</div>
@@ -232,7 +219,7 @@ const results = [
   </section>
 
   <section class="sec">
-    <div class="sec-label">SCOPE &amp; REQUIREMENTS</div>
+    <div class="sec-label">SCOPE</div>
     <h2 class="sec-heading">Cut twice: from sprawling wellness companion to one thin, complete loop.</h2>
     <p class="sec-body">The first concept covered health logs, symptom tracking, cost navigation, family history, and more: too much for 14 days. Two scoping passes later, the test was simple: one handshake judges could watch work, start to finish.</p>
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px">
@@ -256,7 +243,7 @@ const results = [
     </div>
 
     <h3 class="sec-subhead">Features earned their slot by tracing to a breakdown someone actually described.</h3>
-    <p class="sec-body">Findings mapped to opportunities, opportunities to features. Two features were cut for scope, then brought back after rechecking interview data. Three were cut for good: not bad ideas, just ideas no interview supported.</p>
+    <p class="sec-body">Findings mapped to opportunities, opportunities to features. Two features were cut for scope, then brought back after rechecking interview data. Three were cut for good: not bad ideas, just ideas no interview supported as the core encounter failure.</p>
     <div class="case-grid-2">
       {inScope.map((e) => (
         <div class="case-card">
@@ -268,10 +255,6 @@ const results = [
         </div>
       ))}
     </div>
-    <figure class="case-fig">
-      <video class="crop-left" src="/images/myintake/insurance-cards.mp4" autoplay muted loop playsinline></video>
-      <figcaption>Low-barrier data entry, shipped: photo-first insurance cards, front &amp; back</figcaption>
-    </figure>
     <div class="case-grid-3" style="margin-top:16px">
       {cut.map((x) => (
         <div class="case-card">
@@ -283,8 +266,16 @@ const results = [
         </div>
       ))}
     </div>
+    <figure class="case-fig">
+      <video class="crop-left" src="/images/myintake/insurance-cards.mp4" autoplay muted loop playsinline></video>
+      <figcaption>Shipped document capture: photo insurance cards, front and back, inside the patient profile</figcaption>
+    </figure>
+  </section>
 
-    <h3 class="sec-subhead">The feature map: four layers, tagged by what actually shipped.</h3>
+  <section class="sec">
+    <div class="sec-label">REQUIREMENTS</div>
+    <h2 class="sec-heading">Four layers tagged by what shipped, and 20 interview-traced requirements behind them.</h2>
+    <p class="sec-body">Priority key: P0 must-have for the sprint · P1 important · P2 nice-to-have. Six feature areas, 8 must-have (P0).</p>
     <div class="case-grid-2">
       {featureLayers.map((ly) => (
         <div class="case-card">
@@ -305,8 +296,7 @@ const results = [
       <figcaption>Roadmap preview, mockup: hospital record import. Conflicts flagged and resolved per item</figcaption>
     </figure>
 
-    <h3 class="sec-subhead">20 requirements, every one traced back to an interview.</h3>
-    <p class="sec-body">Six feature areas, 8 must-have (P0). Priority key: P0 must-have for the sprint · P1 important · P2 nice-to-have.</p>
+    <h3 class="sec-subhead">Sample requirements, each traced back to an interview.</h3>
     <div class="case-grid-2">
       {prdAreas.map((a) => (
         <div class="case-card">
@@ -336,8 +326,8 @@ const results = [
 
   <section class="sec">
     <div class="sec-label">DESIGN</div>
-    <h2 class="sec-heading">The patient profile, QR code, and clinic view, all working together, live.</h2>
-    <h3 class="sec-subhead">The journey: seeing a new provider (1 of 4 mapped journeys)</h3>
+    <h2 class="sec-heading">The journey in product: share, scan, and manage more than one person.</h2>
+    <h3 class="sec-subhead">Seeing a new provider (1 of 4 mapped journeys)</h3>
     <div class="case-grid-2">
       {journey.map((js) => (
         <div class="case-card">
@@ -350,7 +340,7 @@ const results = [
         </div>
       ))}
     </div>
-    <h3 class="sec-subhead">The QR handoff, live: patient side and what the clinic sees after scanning.</h3>
+    <h3 class="sec-subhead">The QR handoff, live: interactive proof of the stills above.</h3>
     <figure class="case-fig">
       <iframe src="/live/MyIntake-HealthProfile_files/MyIntakeQR_files/live.html" title="Share with your doctor: persistent QR code and copyable link" loading="lazy" tabindex="-1"></iframe>
       <figcaption>1 · Patient generates QR</figcaption>
