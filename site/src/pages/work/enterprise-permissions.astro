@@ -12,6 +12,13 @@ const groupTypes = [
   { name: 'NESTED GROUPS', tag: 'REUSE', text: 'Groups compose into larger groups, so common audiences get defined once and reused, instead of rebuilt per page.' },
 ];
 
+const flow = [
+  { phase: '01 · DEFINE', title: 'Admins create reusable groups', text: 'Dynamic rules for steady audiences, exception groups for temporary access. Ownership and expiration are required, not optional.', chip: 'GROUP MANAGEMENT' },
+  { phase: '02 · APPLY', title: 'Authors permission pages at publish', text: 'Search pages, see publish and permission status, then apply the right groups before go-live, without an IT ticket.', chip: 'APPLY PERMISSIONS' },
+  { phase: '03 · CASCADE', title: 'Inheritance stays a deliberate choice', text: 'Parent access can flow to child pages only when an author confirms it. Visible, reversible, auditable.', chip: 'EXPLICIT ACTION' },
+  { phase: '04 · GOVERN', title: 'Exceptions renew or expire', text: 'Temporary access escalates as the deadline nears, then locks past renewal, so sprawl cannot quietly accumulate.', chip: 'BUILT-IN EXPIRY' },
+];
+
 const results = [
   '3,000+ pages permissioned in month one, with zero platform-admin intervention.',
   '~30 active groups at steady state, adopted across multiple org groups.',
@@ -81,7 +88,7 @@ const results = [
   <section class="sec">
     <div class="sec-label">THE GROUP MODEL</div>
     <h2 class="sec-heading">Four group types, each with explicit ownership and expiration, so groups can't sprawl.</h2>
-    <p class="sec-body">Dynamic groups by default; exception groups for contractors and short-lived access; bulk import; nested reuse. Governance built into the model, not bolted on as policy.</p>
+    <p class="sec-body">Dynamic groups by default; exception groups for contractors and short-lived access; bulk import for migration; nested reuse for shared audiences. Governance is built into the model, not bolted on as policy.</p>
     <div class="case-grid-2" style="margin-top:22px">
       {groupTypes.map((g) => (
         <div class="case-card">
@@ -93,35 +100,74 @@ const results = [
         </div>
       ))}
     </div>
+
+    <h3 class="sec-subhead">Ownership is required at creation, not discovered later in an audit.</h3>
+    <p class="sec-body">Every group names its owners up front. That made accountability visible from day one and gave content teams a clear person to ask when access needed to change.</p>
     <figure class="case-fig bare">
       <img src="/images/enterprise-permissions/ep-set-owners.png" alt="Set Group Owners: searching and selecting named owners at group creation" />
-      <figcaption>Ownership is explicit: every group names its owners at creation</figcaption>
+      <figcaption>Set Group Owners: search, select, and confirm owners before the group exists</figcaption>
     </figure>
+
+    <h3 class="sec-subhead">Exception groups escalate, then lock, so temporary access cannot quietly stick around.</h3>
+    <p class="sec-body">Renewal prompts appear as the deadline nears. Past the deadline, the group requires review before it can keep granting access.</p>
     <div class="case-grid-2" style="margin-top:16px">
       <figure class="case-fig bare" style="margin-top:0">
         <img src="/images/enterprise-permissions/ep-exception-renewal.png" alt="Exception group card: renew within 30 days warning" />
-        <figcaption>30 days out: renewal prompt</figcaption>
+        <figcaption>Within 30 days: renew before the deadline</figcaption>
       </figure>
       <figure class="case-fig bare" style="margin-top:0">
         <img src="/images/enterprise-permissions/ep-exception-review.png" alt="Exception group card: past renewal deadline, requires review" />
-        <figcaption>Past deadline: review required</figcaption>
+        <figcaption>Past deadline: review required to restore access</figcaption>
       </figure>
     </div>
-    <p class="sec-body">Expiration as a first-class rule: exception groups escalate, then lock.</p>
   </section>
 
   <section class="sec">
-    <div class="sec-label">THE DESIGN</div>
-    <h2 class="sec-heading">Two surfaces, one group model: the same interaction language for admins and authors.</h2>
-    <p class="sec-body">Admins define reusable groups in Group Management; authors apply them at publish time in Apply Permissions, with full visibility before go-live.</p>
+    <div class="sec-label">HOW IT WORKS</div>
+    <h2 class="sec-heading">One loop from group definition to page access, with governance at every step.</h2>
+    <p class="sec-body">Admins define reusable audiences. Authors apply them when content ships. Inheritance and expiration keep the system honest after launch.</p>
+    <div class="case-grid-2" style="margin-top:22px">
+      {flow.map((step) => (
+        <div class="case-card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+            <span class="case-card-label" style="margin-bottom:0">{step.phase}</span>
+            <span class="case-tag accent">{step.chip}</span>
+          </div>
+          <div class="sec-subhead" style="margin-top:0">{step.title}</div>
+          <div class="case-card-body" style="margin-top:8px">{step.text}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">TWO SURFACES</div>
+    <h2 class="sec-heading">The same group model, shown where each role needs it.</h2>
+    <p class="sec-body">Group Management, in the hero above, is the admin home: owners, membership, applied pages, dynamic rules, and an activity log. Authors never have to live there. They work in Apply Permissions at publish time, with full visibility before go-live.</p>
     <figure class="case-fig">
-      <img src="/images/enterprise-permissions/ep-apply-permissions.png" alt="Apply Permissions: the central authoring hub for searching pages and tracking publish and permission status" />
-      <figcaption>The two surfaces: Group Management for admins, Apply Permissions for authors</figcaption>
+      <img src="/images/enterprise-permissions/ep-apply-permissions.png" alt="Apply Permissions: page list with publish status, permission status, and manage actions" />
+      <figcaption>Apply Permissions: the author hub, with publish status and permission status side by side</figcaption>
     </figure>
     <div class="case-grid-2" style="margin-top:16px">
       <div class="case-card">
+        <div class="case-card-label">Admins · Group Management</div>
+        <div class="case-card-body">Define reusable audiences once. Dynamic rules keep membership current overnight; exception groups carry owners and expiration so temporary access stays temporary.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">Authors · Apply Permissions</div>
+        <div class="case-card-body">Search pages, filter by publish and permission status, and attach the right groups before content ships, without opening an IT ticket.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">DESIGNED FOR FIRST-TIME OWNERS</div>
+    <h2 class="sec-heading">Familiar patterns, safer defaults, and errors caught at the moment of entry.</h2>
+    <p class="sec-body">The platform had no established patterns for search, tables, filtering, or inline validation. I designed them as reusable components from the start, so both surfaces share one interaction language and later features could compose from existing parts.</p>
+    <div class="case-grid-2">
+      <div class="case-card">
         <div class="case-card-label">Foundations first</div>
-        <div class="case-card-body">The platform had no established patterns for search, tables, filtering, or inline validation. I designed them as reusable components from the start, so both surfaces share one interaction language and later features composed from existing parts instead of new design work.</div>
+        <div class="case-card-body">Search, tables, filters, and validation shipped as shared components. Admins and authors learn one interaction language, and new platform features reuse it instead of inventing another.</div>
       </div>
       <div class="case-card">
         <div class="case-card-label">Errors at the moment of entry</div>
@@ -129,15 +175,15 @@ const results = [
       </div>
     </div>
     <figure class="case-fig">
-      <img src="/images/enterprise-permissions/ep-bulk-import.png" alt="Create Exception Group: member search, bulk import, and per-row inline validation" />
-      <figcaption>The foundational patterns at work: search, bulk import, per-row validation</figcaption>
+      <img src="/images/enterprise-permissions/ep-bulk-import.png" alt="Create Exception Group: member search, bulk import, toast for invalid rows, and per-row inline validation" />
+      <figcaption>Create Exception Group: bulk import keeps valid members and flags bad rows inline</figcaption>
     </figure>
 
-    <h2 class="sec-heading" style="margin-top:44px">A rule builder for two audiences: visual for most, syntax for the advanced.</h2>
-    <p class="sec-body">I also reworked the underlying vocabulary: renaming cryptic HR attributes for non-technical users and cutting the default attribute list by more than half. Simpler inputs made rule creation safer without limiting power users, and the live syntax view validates complex logic as it's built.</p>
+    <h3 class="sec-subhead">A rule builder for two audiences: visual for most, syntax for the advanced.</h3>
+    <p class="sec-body">I reworked the underlying vocabulary: renaming cryptic HR attributes for non-technical users and cutting the default attribute list by more than half. Simpler inputs made rule creation safer without limiting power users, and the live syntax view validates complex logic as it is built.</p>
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-rule-builder.png" alt="Create Dynamic Group: visual rule builder with live rule syntax view" />
-      <figcaption>The rule builder: visual mode with a live syntax view</figcaption>
+      <figcaption>Create Dynamic Group: visual expressions with a live syntax preview</figcaption>
     </figure>
   </section>
 
@@ -147,12 +193,12 @@ const results = [
       <div class="case-ridge-strip">INHERITANCE AT MIGRATION SCALE</div>
       <div class="case-ridge-body">
         <div class="case-ridge-heading">Inheritance is an explicit author action, never a silent cascade.</div>
-        <p class="sec-body">Automatic inheritance wasn't technically feasible at migration scale, and most alternatives were too complex to build or too opaque for authors. Instead, authors choose when parent access flows to child pages, with clear control over which groups apply. Visible, reversible, auditable. A later enhancement let pages inherit from already-permissioned parents, cutting effort further.</p>
+        <p class="sec-body">Automatic inheritance was not technically feasible at migration scale, and most alternatives were too complex to build or too opaque for authors. Instead, authors choose when parent access flows to child pages, with clear control over which groups apply. Visible, reversible, auditable. A later enhancement let pages inherit from already-permissioned parents, cutting effort further.</p>
       </div>
     </div>
     <figure class="case-fig bare">
       <img src="/images/enterprise-permissions/cascade-permissions.png" alt="Apply Permissions: explicit add-parent and replace-child inheritance actions with confirmation" />
-      <figcaption>Inheritance as a deliberate, visible choice: add parent groups, or replace child groups</figcaption>
+      <figcaption>Update child pages: add parent groups, or replace child groups, each with a confirmation</figcaption>
     </figure>
     <div class="case-grid-2" style="margin-top:16px">
       <div class="case-card">
@@ -169,7 +215,7 @@ const results = [
   <section class="sec">
     <div class="sec-label">RESULTS</div>
     <h2 class="sec-heading">Shipped on time. The model held up months after launch.</h2>
-    <p class="sec-body">Adoption wasn't left to chance. I wrote the how-to guides for creating and managing groups and applying permissions, plus a failsafe runbook for dynamic membership, and ran content team onboarding and training at launch.</p>
+    <p class="sec-body">Adoption was not left to chance. I wrote the how-to guides for creating and managing groups and applying permissions, plus a failsafe runbook for dynamic membership, and ran content team onboarding and training at launch.</p>
     <div class="case-grid-2" style="gap:14px">
       {results.map((r) => (
         <div class="case-card case-check" style="padding:18px 22px">
@@ -185,7 +231,7 @@ const results = [
     <div class="case-grid-2" style="margin-top:14px">
       <div class="case-check">
         <span class="tick dash" aria-hidden="true"></span>
-        <span class="case-card-body">Governance works when it's built into the model, not written into a policy doc nobody reads.</span>
+        <span class="case-card-body">Governance works when it is built into the model, not written into a policy doc nobody reads.</span>
       </div>
       <div class="case-check">
         <span class="tick dash" aria-hidden="true"></span>
