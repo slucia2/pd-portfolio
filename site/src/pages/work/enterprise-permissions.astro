@@ -1,15 +1,25 @@
 ---
+/**
+ * Enterprise Permissions case study.
+ */
 import CaseStudy from '../../layouts/CaseStudy.astro';
 import { cases } from '../../data/cases';
 
 const c = cases.find((x) => x.slug === 'enterprise-permissions')!;
 const next = cases.find((x) => x.slug === 'myintake')!;
 
-const groupTypes = [
-  { name: 'DYNAMIC GROUPS', tag: 'THE DEFAULT', text: 'Membership computed from HR attributes: org, role, location. Self-maintaining, so access stays current without manual upkeep.' },
-  { name: 'EXCEPTION GROUPS', tag: 'EXPIRING', text: 'Contractors and short-lived access. Every exception group has an owner and an expiration date, so temporary never becomes permanent.' },
-  { name: 'BULK IMPORT GROUPS', tag: 'MIGRATION', text: 'Existing lists carried over from legacy systems at migration, then converted to dynamic rules over time.' },
-  { name: 'NESTED GROUPS', tag: 'REUSE', text: 'Groups compose into larger groups, so common audiences get defined once and reused, instead of rebuilt per page.' },
+const groupTaxonomy = [
+  { name: 'Dynamic', when: 'Launch · default', text: 'Membership from attribute rules, e.g. all People Managers. Updates save immediately, membership syncs overnight.' },
+  { name: 'Exception', when: 'Launch · expiring', text: 'Manual members for contractors and short-lived needs. Must renew to meet cyber policy. Owners get notified as the date nears.' },
+  { name: 'Bulk dynamic', when: 'Later · at scale', text: 'One rule set, many groups: a group for every value of an attribute (e.g. each store, or HR in each state), instead of building them one by one.' },
+  { name: 'Nested', when: 'Later · reuse', text: 'Compose groups and individuals into one audience. Reuse dynamics without rewriting rules.' },
+];
+
+const researchInsights = [
+  { label: 'FAMILIAR CONVENTIONS', text: 'Admins expect groups, roles, and inheritance language from SharePoint and Azure, but not admin-console complexity.' },
+  { label: 'NEW OPERATORS', text: 'Content authors had never managed access. Defaults had to be safe; power had to be gated, not assumed.' },
+  { label: 'SPRAWL IS THE RISK', text: 'Legacy had thousands of unowned groups. Ownership and expiration became non‑negotiable in the model, not policy docs.' },
+  { label: 'OPAQUE DATA', text: 'HR attributes read like database columns. I inventoried the UXP attribute set and cut/renamed the defaults so authors could build rules without decoding fields.' },
 ];
 
 const flow = [
@@ -19,12 +29,22 @@ const flow = [
   { phase: '04 · GOVERN', title: 'Exceptions renew or expire', text: 'Temporary access escalates as the deadline nears, then locks past renewal, so sprawl cannot quietly accumulate.', chip: 'BUILT-IN EXPIRY' },
 ];
 
-const results = [
-  '3,000+ pages permissioned in month one, with zero platform-admin intervention.',
-  '~30 active groups at steady state, adopted across multiple org groups.',
-  'Scoped post-launch safeguards for the roadmap: ownership requirements, change logs, dynamic-group update warnings.',
-  'Core group model and governance unchanged months after launch.',
-  'The foundational components, search, tables, filtering, validation, became shared patterns other platform features built on.',
+const renameChips = [
+  { from: 'People_manager_flag', to: 'People Manager' },
+  { from: 'Leader_2', to: 'Employee Level' },
+  { from: 'Wrk_loc_cd', to: 'Work Location' },
+];
+
+const resultHighlights = [
+  { stat: '3,000+', label: 'pages permissioned in month one · zero admin intervention' },
+  { stat: '~30', label: 'governed groups at steady state' },
+  { stat: '0', label: 'IT tickets for routine access changes' },
+];
+
+const learnings = [
+  'Governance works when it’s built into the model, not a policy doc.',
+  'Design for the least-technical owner. Safer for everyone, including admins.',
+  'The constraints that mattered most (overnight sync, opaque HR attributes, UI terms that didn’t match the system) I found by testing, not by spec.',
 ];
 ---
 <CaseStudy
@@ -42,7 +62,9 @@ const results = [
   <section class="sec">
     <div class="sec-label">THE CONTEXT</div>
     <h2 class="sec-heading">One intranet for 150,000+ employees, permissions owned by content teams.</h2>
-    <p class="sec-body">T-Mobile consolidated three internal platforms into one intranet for 150,000+ employees and third-party partners. Permissions had to ship with the launch, owned by content teams, not a central admin queue. I was the sole product designer and one of two business owners, leading requirements, the group model, and both admin and author surfaces through MVP, accessibility alignment, QA, and launch onboarding.</p>
+    <p class="sec-body">
+      Three platforms into one intranet for 150K+ employees. Permissions had to ship with launch, owned by content teams, not an IT queue. I was sole designer and one of two business owners across requirements, the group model, both surfaces, a11y, QA, and onboarding.
+    </p>
     <div class="case-grid-3">
       <div class="case-card accent">
         <div class="case-card-label">SCALE</div>
@@ -65,45 +87,50 @@ const results = [
   <section class="sec">
     <div class="sec-label">RESEARCH</div>
     <h2 class="sec-heading">Grounding the model in how permissions already work, and who would run this one.</h2>
-    <p class="sec-body">Access was fragmented across legacy systems and dependent on technical SMEs. Thousands of ad-hoc groups were impossible to audit. No off-the-shelf product fit the scale, and content authors had never managed permissions before. Before designing anything, I ran a cross-market analysis of enterprise permission systems and interviewed the teams who manage access today.</p>
-    <div class="case-grid-2">
-      <div class="case-card">
-        <div class="case-card-label">CROSS-MARKET ANALYSIS</div>
-        <div class="case-card-body">SharePoint, Azure, and Airtable permission models: which conventions are familiar enough to keep, what scales, and what sprawls.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-card-label">STAKEHOLDER INTERVIEWS</div>
-        <div class="case-card-body">Teams who regularly manage access: how decisions get made today, what compliance requires, and where existing tools break down.</div>
-      </div>
+    <p class="sec-body">
+      Cross-market analysis (SharePoint, Azure, Airtable) plus interviews with admins, content owners, and compliance, then four constraints that shaped the model:
+    </p>
+    <div class="case-grid-2 ep-insights">
+      {researchInsights.map((item) => (
+        <div class="case-card">
+          <div class="case-card-label">{item.label}</div>
+          <div class="case-card-body">{item.text}</div>
+        </div>
+      ))}
     </div>
     <div class="case-ridge">
       <div class="case-ridge-strip">THE DESIGN BAR</div>
       <div class="case-ridge-body">
-        <div class="case-ridge-heading">Follow the permission conventions admins already know. Strip the complexity that assumes a technical operator.</div>
-        <p class="sec-body">The system had to feel familiar to people coming from SharePoint and Azure, yet be safe in the hands of content authors managing access for the first time.</p>
+        <div class="case-ridge-heading">Follow the conventions admins already know. Strip the complexity that assumes a technical operator.</div>
       </div>
     </div>
   </section>
 
   <section class="sec">
     <div class="sec-label">THE GROUP MODEL</div>
-    <h2 class="sec-heading">Four group types, each with explicit ownership and expiration, so groups can't sprawl.</h2>
-    <p class="sec-body">Dynamic groups by default; exception groups for contractors and short-lived access; bulk import for migration; nested reuse for shared audiences. Governance is built into the model, not bolted on as policy.</p>
-    <div class="case-grid-2" style="margin-top:22px">
-      {groupTypes.map((g) => (
-        <div class="case-card">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px">
-            <span class="case-card-label" style="margin-bottom:0">{g.name}</span>
-            <span class="case-card-tag">{g.tag}</span>
-          </div>
-          <div class="case-card-body">{g.text}</div>
-        </div>
-      ))}
+    <h2 class="sec-heading">Four group types, each with explicit ownership and expiration, so groups can’t sprawl.</h2>
+    <p class="sec-body">Dynamic and exception groups shipped at launch; bulk dynamic and nested groups followed later, by request.</p>
+
+    <div class="ep-taxonomy" aria-label="Group taxonomy">
+      <ul class="case-factors ep-taxonomy-list">
+        {groupTaxonomy.map((g) => (
+          <li class="case-factor">
+            <div class="case-factor-body">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px">
+                <span class="case-card-label" style="margin-bottom:0">{g.name}</span>
+                <span class="case-card-tag">{g.when}</span>
+              </div>
+              <div class="case-card-body">{g.text}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="case-source">Four types · one governance contract · launch vs later</p>
     </div>
 
     <h3 class="sec-subhead">Ownership is required at creation, not discovered later in an audit.</h3>
     <p class="sec-body">Every group names its owners up front. That made accountability visible from day one and gave content teams a clear person to ask when access needed to change.</p>
-    <figure class="case-fig bare">
+    <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-set-owners.png" alt="Set Group Owners: searching and selecting named owners at group creation" />
       <figcaption>Set Group Owners: search, select, and confirm owners before the group exists</figcaption>
     </figure>
@@ -128,8 +155,8 @@ const results = [
     <p class="sec-body">Admins define reusable audiences. Authors apply them when content ships. Inheritance and expiration keep the system honest after launch.</p>
     <div class="case-grid-2" style="margin-top:22px">
       {flow.map((step) => (
-        <div class="case-card">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px">
+        <div class="ep-flow-step">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px">
             <span class="case-card-label" style="margin-bottom:0">{step.phase}</span>
             <span class="case-tag accent">{step.chip}</span>
           </div>
@@ -143,44 +170,65 @@ const results = [
   <section class="sec">
     <div class="sec-label">TWO SURFACES</div>
     <h2 class="sec-heading">The same group model, shown where each role needs it.</h2>
-    <p class="sec-body">Group Management, in the hero above, is the admin home: owners, membership, applied pages, dynamic rules, and an activity log. Authors never have to live there. They work in Apply Permissions at publish time, with full visibility before go-live.</p>
-    <figure class="case-fig">
-      <img src="/images/enterprise-permissions/ep-apply-permissions.png" alt="Apply Permissions: page list with publish status, permission status, and manage actions" />
-      <figcaption>Apply Permissions: the author hub, with publish status and permission status side by side</figcaption>
-    </figure>
-    <div class="case-grid-2" style="margin-top:16px">
-      <div class="case-card">
-        <div class="case-card-label">Admins · Group Management</div>
-        <div class="case-card-body">Define reusable audiences once. Dynamic rules keep membership current overnight; exception groups carry owners and expiration so temporary access stays temporary.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-card-label">Authors · Apply Permissions</div>
-        <div class="case-card-body">Search pages, filter by publish and permission status, and attach the right groups before content ships, without opening an IT ticket.</div>
-      </div>
+    <p class="sec-body">
+      Admins start in Group Management: find a group, open details, manage membership and rules. Authors work in Apply Permissions at publish time, with publish and permission status side by side before go-live. The hero above is Group Management in motion.
+    </p>
+
+    <div class="ep-pair-figs">
+      <figure class="case-fig">
+        <img src="/images/enterprise-permissions/ep-group-management-dynamic.png" alt="Group Management: group list with New Group menu for Exception, Dynamic, Bulk Dynamic, and Nested" />
+        <figcaption>Admins · Group Management: list, search, and create any group type</figcaption>
+      </figure>
+      <figure class="case-fig">
+        <img src="/images/enterprise-permissions/ep-apply-permissions-list.png" alt="Apply Permissions: page list with publish status, permission status, and manage actions" />
+        <figcaption>Authors · Apply Permissions: publish status and permission status together</figcaption>
+      </figure>
     </div>
   </section>
 
   <section class="sec">
     <div class="sec-label">DESIGNED FOR FIRST-TIME OWNERS</div>
     <h2 class="sec-heading">Familiar patterns, safer defaults, and errors caught at the moment of entry.</h2>
-    <p class="sec-body">The platform had no established patterns for search, tables, filtering, or inline validation. I designed them as reusable components from the start, so both surfaces share one interaction language and later features could compose from existing parts.</p>
-    <div class="case-grid-2">
-      <div class="case-card">
-        <div class="case-card-label">Foundations first</div>
-        <div class="case-card-body">Search, tables, filters, and validation shipped as shared components. Admins and authors learn one interaction language, and new platform features reuse it instead of inventing another.</div>
+    <p class="sec-body">
+      The platform had no established patterns for search, tables, filtering, or inline validation. I designed them to align with the new design system’s semantic tokens and interaction patterns. Purpose-built for Permissions, reviewed with the DS team and a11y partner, and signed off before ship.
+    </p>
+
+    <div class="case-card" style="margin-top:16px">
+      <div class="case-card-label">Foundations first</div>
+      <div class="case-card-body">
+        Search, tables, filters, and validation shipped as shared components within Permissions, not generic library widgets reused from elsewhere. Bulk imports flag bad rows inline and skip them, so good entries still proceed.
       </div>
-      <div class="case-card">
-        <div class="case-card-label">Errors at the moment of entry</div>
-        <div class="case-card-body">Bulk imports validate per row: bad entries are flagged inline and skipped, good ones proceed. First-time permission owners never face an all-or-nothing failure.</div>
+      <div class="ep-pattern-chips">
+        <span>Search</span>
+        <span>Data table</span>
+        <span>Filters</span>
+        <span>Validation</span>
       </div>
     </div>
+
+    <figure class="case-fig">
+      <img src="/images/enterprise-permissions/ep-group-management-filtered.png" alt="Group Management filtered to Dynamic: search, group type and owner filters, and results table" />
+      <figcaption>Management view: search, filters, and table: the same patterns owners use day to day</figcaption>
+    </figure>
+
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-bulk-import.png" alt="Create Exception Group: member search, bulk import, toast for invalid rows, and per-row inline validation" />
       <figcaption>Create Exception Group: bulk import keeps valid members and flags bad rows inline</figcaption>
     </figure>
 
     <h3 class="sec-subhead">A rule builder for two audiences: visual for most, syntax for the advanced.</h3>
-    <p class="sec-body">I reworked the underlying vocabulary: renaming cryptic HR attributes for non-technical users and cutting the default attribute list by more than half. Simpler inputs made rule creation safer without limiting power users, and the live syntax view validates complex logic as it is built.</p>
+    <p class="sec-body">
+      I renamed cryptic HR attributes for non-technical authors and cut the default list by more than half. The live syntax view validates complex logic as it’s built.
+    </p>
+    <div class="ep-renames" aria-label="Attribute renames">
+      {renameChips.map((r) => (
+        <div class="ep-rename">
+          <code>{r.from}</code>
+          <span aria-hidden="true">→</span>
+          <strong>{r.to}</strong>
+        </div>
+      ))}
+    </div>
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-rule-builder.png" alt="Create Dynamic Group: visual rule builder with live rule syntax view" />
       <figcaption>Create Dynamic Group: visual expressions with a live syntax preview</figcaption>
@@ -193,51 +241,46 @@ const results = [
       <div class="case-ridge-strip">INHERITANCE AT MIGRATION SCALE</div>
       <div class="case-ridge-body">
         <div class="case-ridge-heading">Inheritance is an explicit author action, never a silent cascade.</div>
-        <p class="sec-body">Automatic inheritance was not technically feasible at migration scale, and most alternatives were too complex to build or too opaque for authors. Instead, authors choose when parent access flows to child pages, with clear control over which groups apply. Visible, reversible, auditable. A later enhancement let pages inherit from already-permissioned parents, cutting effort further.</p>
+        <p class="sec-body">
+          Automatic inheritance wasn’t technically feasible at migration scale, and most alternatives were too complex to build or too opaque for authors. Instead, authors choose when parent access flows to child pages, with clear control over which groups apply. Visible, reversible, auditable. A later enhancement let pages inherit from already-permissioned parents, cutting effort further.
+        </p>
       </div>
     </div>
     <figure class="case-fig bare">
       <img src="/images/enterprise-permissions/cascade-permissions.png" alt="Apply Permissions: explicit add-parent and replace-child inheritance actions with confirmation" />
       <figcaption>Update child pages: add parent groups, or replace child groups, each with a confirmation</figcaption>
     </figure>
-    <div class="case-grid-2" style="margin-top:16px">
-      <div class="case-card">
-        <div class="case-card-label">Open unless compliance says otherwise</div>
-        <div class="case-card-body">Content is accessible by default, restricted only where compliance requires it. That kept enterprise resources broadly available and cut ongoing maintenance across a large content set.</div>
-      </div>
-      <div class="case-card">
-        <div class="case-card-label">Components, same mental model</div>
-        <div class="case-card-body">Component permissions follow the same flow as pages, in a tab within Apply Permissions. Global components like navigation and search respond to page-level access automatically: users only see entry points they can open.</div>
-      </div>
+    <div class="case-card" style="margin-top:16px">
+      <div class="case-card-label">Open unless compliance says otherwise</div>
+      <div class="case-card-body">Content is open by default and locked down only where compliance requires it, so most of the intranet stays usable without maintaining permissions on every page.</div>
     </div>
   </section>
 
-  <section class="sec">
-    <div class="sec-label">RESULTS</div>
-    <h2 class="sec-heading">Shipped on time. The model held up months after launch.</h2>
-    <p class="sec-body">Adoption was not left to chance. I wrote the how-to guides for creating and managing groups and applying permissions, plus a failsafe runbook for dynamic membership, and ran content team onboarding and training at launch.</p>
-    <div class="case-grid-2" style="gap:14px">
-      {results.map((r) => (
-        <div class="case-card case-check" style="padding:18px 22px">
-          <span class="tick">✓</span>
-          <span class="case-card-body">{r}</span>
+  <section class="sec ep-impact">
+    <div class="sec-label">IMPACT</div>
+    <div class="case-grid-3 ep-scan-stats">
+      {resultHighlights.map((h) => (
+        <div class="case-card accent">
+          <div class="case-stat-num">{h.stat}</div>
+          <div class="case-card-body">{h.label}</div>
         </div>
       ))}
     </div>
-  </section>
 
-  <section class="sec" style="padding-bottom:28px">
-    <div class="sec-label">WHAT I LEARNED</div>
-    <div class="case-grid-2" style="margin-top:14px">
-      <div class="case-check">
-        <span class="tick dash" aria-hidden="true"></span>
-        <span class="case-card-body">Governance works when it is built into the model, not written into a policy doc nobody reads.</span>
-      </div>
-      <div class="case-check">
-        <span class="tick dash" aria-hidden="true"></span>
-        <span class="case-card-body">Designing for the least-technical owner made the system safer for everyone, including admins.</span>
-      </div>
-    </div>
+    <p class="sec-body">
+      Model held months after launch. I did deep manual validation against real HR data (SQL, Postman, cron behavior) before builds were finished. That work surfaced overnight sync, mismatched attribute labels, and other gaps the spec never mentioned. I wrote the admin/author guides and a failsafe BRD, and onboarded content teams before platform go live.
+    </p>
+
+    <ol class="case-factors ep-learnings">
+      {learnings.map((item, i) => (
+        <li class="case-factor">
+          <span class="case-factor-num">{String(i + 1).padStart(2, '0')}</span>
+          <div class="case-factor-body">
+            <div class="case-card-body">{item}</div>
+          </div>
+        </li>
+      ))}
+    </ol>
   </section>
 
   <a href={`/work/${next.slug}/`} class="case-next" style={`--accent-dark:${next.accentDark}`}>
@@ -248,3 +291,73 @@ const results = [
     <span class="case-next-arrow">OPEN →</span>
   </a>
 </CaseStudy>
+
+<style>
+  .ep-taxonomy { margin-top: 22px; }
+  .ep-taxonomy-list { margin-top: 0; }
+  .ep-taxonomy-list .case-factor:first-child { border-top: none; }
+
+  .ep-flow-step {
+    padding: 4px 0 18px;
+    border-bottom: 1px solid rgba(29, 42, 51, .1);
+  }
+
+  .ep-insights { margin-top: 16px; }
+
+  .ep-impact { padding-bottom: 28px; }
+  .ep-scan-stats .case-stat-num { font-size: 32px; }
+  .ep-learnings { margin-top: 8px; }
+
+  .ep-pair-figs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 22px;
+  }
+  .ep-pair-figs .case-fig { margin-top: 0; }
+
+  .ep-pattern-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .ep-pattern-chips span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(29, 42, 51, .06);
+    color: var(--ink);
+  }
+
+  .ep-renames {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .ep-rename {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: #F5F6F7;
+    border: 1px solid rgba(29, 42, 51, .09);
+    font-size: 13px;
+  }
+  .ep-rename code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted-2);
+    text-decoration: line-through;
+  }
+  .ep-rename strong { font-weight: 700; color: var(--ink); }
+  .ep-rename span { color: var(--accent-dark); }
+
+  @media (max-width: 760px) {
+    .ep-flow-step { padding-bottom: 16px; }
+  }
+</style>
