@@ -1,0 +1,1018 @@
+---
+import CaseStudy from '../../layouts/CaseStudy.astro';
+import type { CaseStudy as CaseStudyMeta } from '../../data/cases';
+import { cases } from '../../data/cases';
+
+/** Side-quest case; not in the homepage cartridge grid. */
+const c: CaseStudyMeta = {
+  slug: 'scamranger',
+  no: 0,
+  title: 'ScamRanger',
+  cartridgeLabel: 'SIDE QUEST / MOBILE',
+  cardMeta: 'RANGERS AI, 2026',
+  description: 'Onboarding + product overhaul for a scam-protection app.',
+  accent: '#9B85FF',
+  accentDark: '#5533CC',
+  accentTint: 'rgba(123,92,248,.12)',
+  accentBorder: 'rgba(123,92,248,.45)',
+  image: '/images/scamranger/home.png',
+  imageAlt: 'ScamRanger home screen',
+  imageFit: 'contain',
+  hideCaseHero: true,
+};
+
+const next = cases.find((x) => x.slug === 'myintake')!;
+
+const gallerySlides = [
+  { src: '/images/scamranger/onb-gallery.png', alt: 'Gallery slide: scams are everywhere' },
+  { src: '/images/scamranger/onb-gallery-2.png', alt: 'Gallery slide: stay protected' },
+  { src: '/images/scamranger/onb-gallery-3.png', alt: 'Gallery slide: trusted by institutions' },
+];
+
+const typeScale = [
+  { name: 'Display', spec: '45 / 115, Regular' },
+  { name: 'H1', spec: '34 / 130, Medium' },
+  { name: 'H2', spec: '26 / 130, Medium' },
+  { name: 'Body Large', spec: '20 / 160, Regular' },
+  { name: 'Body', spec: '18 / 160, Regular' },
+  { name: 'UI Button', spec: '18 / 130, Semibold' },
+];
+
+const colors = [
+  { name: 'brand/primary', hex: '#7B5CF8', use: 'Primary action' },
+  { name: 'brand/medium', hex: '#9B85FF', use: 'Press, links' },
+  { name: 'brand/light', hex: '#C9BDFF', use: 'Text tints' },
+  { name: 'brand/dark', hex: '#5533CC', use: 'Disabled' },
+  { name: 'bg/start', hex: '#2E1B6E', use: 'Gradient 0%' },
+  { name: 'bg/end', hex: '#08052A', use: 'Gradient 100%' },
+  { name: 'text/primary', hex: '#FFFFFF', use: 'Body, labels' },
+  { name: 'status/error', hex: '#FF8080', use: 'Errors' },
+];
+
+const guidelines = [
+  { title: 'No opacity fills', text: 'Solid hex only. Opacity over gradients caused inconsistent contrast on production screens.' },
+  { title: '18px body minimum', text: 'Older target audience. Caption/label at 14px only for secondary chrome.' },
+  { title: '44px tap targets', text: 'Buttons, links, and icon hits meet WCAG touch guidance, including secondary actions.' },
+  { title: '4px spacing grid', text: 'In-screen margins and element gaps follow a 4px rhythm for handoff clarity.' },
+  { title: 'Inline T&C at commitment', text: 'Terms sit next to the action that creates the account, not a standalone interrupt screen.' },
+];
+---
+<CaseStudy
+  case={c}
+  intro="Joined mid-build with no clean handoff. Audited the live app, rebuilt onboarding for real activation paths, and overhauled home + learning on a tighter system."
+  meta={[
+    { key: 'ROLE', value: 'UX / product design' },
+    { key: 'CLIENT', value: 'RangersAI' },
+    { key: 'SCOPE', value: 'Onboarding + app overhaul' },
+  ]}
+  credentials={['Accessibility bar', 'Design system', 'B2C + B2B paths']}
+  heroAlt="ScamRanger mobile product"
+  problem="The product wasn’t ready for institutional eyes: weak accessibility, inconsistent UI, and onboarding that fought activation instead of enabling it."
+  outcome="Design approved for first-client testing with a major UK bank: a clearer path from audit to screens the customer could stand behind."
+>
+  <section class="sec">
+    <div class="sec-label">THE AUDIT</div>
+    <h2 class="sec-heading">Joined mid-build. Mapped what was actually broken.</h2>
+    <p class="sec-body">
+      Sparse handoff, inconsistent UI, and an older audience the product wasn’t serving well.
+      I audited the live app first: activation sequencing, path confusion, media quality, and accessibility.
+      That pass set priorities for onboarding and the broader mobile overhaul.
+    </p>
+
+    <figure class="sr-frame">
+      <img src="/images/scamranger/audit-annotated.png" alt="Annotated activation email and onboarding carousel with critique notes" width="3600" height="2154" loading="lazy" />
+      <figcaption>Activation email + carousel: trust, sequencing, and screen-level critiques.</figcaption>
+    </figure>
+
+    <figure class="sr-frame">
+      <img src="/images/scamranger/audit-annotated-2.png" alt="Annotated activation and permissions setup flow with critique notes" width="3600" height="1736" loading="lazy" />
+      <figcaption>Activation + setup: code entry, permissions, and settings annotated in place.</figcaption>
+    </figure>
+
+    <div class="case-grid-3 sr-findings" style="margin-top:22px">
+      <div class="case-card">
+        <div class="case-card-label">Intro experience</div>
+        <div class="case-card-body">Too many screens before value. Vague copy, tiny fast videos, images off context.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">Paths mixed</div>
+        <div class="case-card-body">No clear initial B2C option. Code, QR, and consumer shared one path.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">Accessibility</div>
+        <div class="case-card-body">Body under 18px, weak contrast on gradients, tap targets under 44pt.</div>
+      </div>
+    </div>
+
+    <div class="sr-phones sr-phones--audit" aria-label="Production screens from the audit">
+      <figure class="sr-phone">
+        <img src="/images/scamranger/audit-screen-1.png" alt="Production home before redesign" width="402" height="874" loading="lazy" />
+      </figure>
+      <figure class="sr-phone">
+        <img src="/images/scamranger/audit-screen-2.png" alt="Suspicious email used in a scan" width="402" height="874" loading="lazy" />
+      </figure>
+      <figure class="sr-phone">
+        <img src="/images/scamranger/audit-screen-3.png" alt="Production verify-message screen" width="402" height="874" loading="lazy" />
+      </figure>
+      <figure class="sr-phone">
+        <img src="/images/scamranger/audit-screen-4.png" alt="Production high-risk analysis result" width="402" height="874" loading="lazy" />
+      </figure>
+    </div>
+    <p class="sr-audit-cap">Production UI from the review: hierarchy, contrast, and tap targets.</p>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">PATHS &amp; ITERATION</div>
+    <h2 class="sec-heading">Branch the entry. Wire the steps. Borrow what works.</h2>
+    <p class="sec-body">
+      Production forced everyone through one linear path. The redesign splits B2C purchase, B2B code/QR, and seeded/auto,
+      then shares setup downstream. Lo-fi locked step order before polish, checked against patterns from Calm, Headspace,
+      and similar onboarding, and absorbed CEO direction pivots (including blue to purple).
+    </p>
+
+    <div class="sr-ia">
+      <figure class="sr-frame sr-ia-chart">
+        <img src="/images/scamranger/ia-flowchart.png" alt="Color-coded onboarding decision flowchart for B2C and B2B paths" loading="lazy" />
+        <figcaption>Proposed IA: blue B2C, purple B2B code/QR, pink seeded, gray shared.</figcaption>
+      </figure>
+      <div class="sr-ia-paths">
+        <div class="case-card accent">
+          <div class="case-card-label">B2C purchase</div>
+          <div class="case-card-body">Gallery to account (inline T&amp;C) to paywall to setup.</div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-label">B2B code / QR</div>
+          <div class="case-card-body">Code or scan to provider confirm to shared setup.</div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-label">B2B seeded</div>
+          <div class="case-card-body">Auto-confirmed provider to shared setup. No code step.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sr-phones sr-phones--lofi" aria-label="Lo-fi B2B with QR wireframes">
+      <figure class="sr-phone sr-phone--lofi">
+        <img src="/images/scamranger/lofi-02.png" alt="Lo-fi activation confirmation" width="402" height="874" loading="lazy" />
+      </figure>
+      <figure class="sr-phone sr-phone--lofi">
+        <img src="/images/scamranger/lofi-04.png" alt="Lo-fi setup overview" width="402" height="874" loading="lazy" />
+      </figure>
+      <figure class="sr-phone sr-phone--lofi">
+        <img src="/images/scamranger/lofi-05.png" alt="Lo-fi message filtering setup" width="402" height="874" loading="lazy" />
+      </figure>
+      <figure class="sr-phone sr-phone--lofi">
+        <img src="/images/scamranger/lofi-09.png" alt="Lo-fi first-run home intro" width="402" height="874" loading="lazy" />
+      </figure>
+    </div>
+    <p class="sr-audit-cap">Lo-fi B2B sample: activation, setup overview, filtering, first-run home.</p>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">FLOW 01 / Onboarding</div>
+    <h2 class="sec-heading">Consumer path: value, account, then paywall.</h2>
+    <p class="sec-body">
+      Featured here is the B2C purchase route. Commitment lands after account creation.
+      B2B branches share setup screens downstream: same system, different entry.
+    </p>
+    <div class="sr-phones" aria-label="B2C onboarding screens">
+      <figure class="sr-phone sr-phone--gallery" data-sr-gallery aria-label="Onboarding gallery, auto-advancing through three slides">
+        <div class="sr-gallery-track">
+          {gallerySlides.map((s, i) => (
+            <img
+              src={s.src}
+              alt={s.alt}
+              width="402"
+              height="874"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              class:list={[{ 'is-active': i === 0 }]}
+              data-gallery-slide
+            />
+          ))}
+        </div>
+      </figure>
+
+      <figure class="sr-phone">
+        <img src="/images/scamranger/onb-account.png" alt="Create your account with inline terms" width="402" height="874" loading="lazy" />
+      </figure>
+
+      <figure class="sr-phone sr-phone--paywall" data-sr-paywall aria-label="Paywall purchase flow">
+        <video
+          class="sr-paywall-video"
+          src="/images/scamranger/onb-paywall.mp4"
+          poster="/images/scamranger/onb-paywall.png"
+          width="402"
+          height="874"
+          muted
+          playsinline
+          loop
+          preload="metadata"
+          aria-label="Subscription paywall"
+        ></video>
+      </figure>
+
+      <figure class="sr-phone">
+        <img src="/images/scamranger/onb-setup.png" alt="Setup intro checklist" width="402" height="874" loading="lazy" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">FLOW 02 / Home, scan</div>
+    <h2 class="sec-heading">Iteration, then a customer veto.</h2>
+    <p class="sec-body">
+      First pass put scan higher in the stack, added a dismissible daily tip, and dialed back the logo.
+      A bank-trust path followed: Get started, From your bank, tip pushed lower.
+      Customer veto: no X on the tip, bring the logo back, keep the page simpler.
+      Final pass restored brand presence and a quieter tip. Scan stays the primary action at the bottom.
+    </p>
+    <div class="sr-compare sr-compare--dirs" aria-label="Home iteration paths: tip stack, bank trust, and revised">
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/home-iter1.png" alt="Iteration 1 home with dismissible daily tip and scan card" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Iteration 1, rejected: tip X, logo reduced</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/home-bank.png" alt="Iteration 2 home with Get started scan card and From your bank Capital One block" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Iteration 2, bank trust / Get started</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/home.png" alt="Revised home with logo restored, tip without dismiss, and scan CTA" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Revised: logo back, no tip dismiss</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">FLOW 03 / Learning Lab</div>
+    <h2 class="sec-heading">Long-term vision vs. what shipped on time.</h2>
+    <p class="sec-body">
+      I proposed a richer Learning surface: editorial hub, favorites, Scam Library, and insight articles.
+      For a quick client turnaround and an easier lift for engineering, we shipped a simpler Learning Lab:
+      three entry cards into Safety insights, scam types, and skill building, then those secondary screens.
+      Same job, smaller build.
+    </p>
+    <div class="sr-compare sr-compare--learn" aria-label="Learning proposed versus delivered">
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/learn-vision.png" alt="Proposed learning hub: Outsmart every Scam with categories and favorites" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Proposed: hub, editorial + favorites</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/learn-hub-2.png" alt="Proposed Scam Library with article quiz and story filters" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Proposed: Scam Library</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/learn-hub-3.png" alt="Proposed insight article: Why awareness helps" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Proposed: insight article</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/learn-hub.png" alt="Delivered Learning lab hub with three category cards" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Delivered: Learning Lab hub</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/learn-vision-2.png" alt="Delivered Safety insights educational screen" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Delivered: Safety insights</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/learn-vision-3.png" alt="Delivered Scam Types alphabetical directory" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Delivered: Scam types</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-bottom:28px">
+    <div class="sec-label">DESIGN SYSTEM / Snapshot</div>
+    <h2 class="sec-heading">A slice of the purple system, not the full library.</h2>
+    <p class="sec-body">
+      Tokens, a few core components, and the rules that mattered for handoff.
+      Locking those base patterns early made it cheap to retheme the whole product:
+      first blue, then this purple at the CEO’s request, without redrawing every screen.
+      Snapshot only; not every state or component.
+    </p>
+
+    <div class="sr-notebook" data-sr-notebook>
+      <div class="sr-notebook-chrome">
+        <div class="sr-notebook-title">
+          <span class="sr-notebook-dot" aria-hidden="true"></span>
+          ScamRanger system snapshot
+        </div>
+        <div class="sr-notebook-tabs" role="tablist" aria-label="Design system sections">
+          <button type="button" class="sr-tab is-active" role="tab" aria-selected="true" data-tab="styles">Styles</button>
+          <button type="button" class="sr-tab" role="tab" aria-selected="false" data-tab="components">Components</button>
+          <button type="button" class="sr-tab" role="tab" aria-selected="false" data-tab="guidelines">Guidelines</button>
+        </div>
+      </div>
+
+      <div class="sr-notebook-body">
+        <div class="sr-panel is-active" role="tabpanel" data-panel="styles">
+          <div class="sr-panel-head">
+            <h3 class="sr-panel-title">Color &amp; type</h3>
+            <p class="sr-panel-lede">Key tokens only. Background runs a 221° gradient across the three bg values.</p>
+          </div>
+          <div class="sr-color-grid">
+            {colors.map((t) => (
+              <div class="sr-color">
+                <span class="sr-color-swatch" style={`background:${t.hex}`}></span>
+                <div>
+                  <div class="sr-color-name">{t.name}</div>
+                  <div class="sr-color-meta">{t.hex}, {t.use}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div class="sr-type-list">
+            {typeScale.map((t) => (
+              <div class="sr-type-row">
+                <span class="sr-type-name">{t.name}</span>
+                <span class="sr-type-spec">{t.spec}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="sr-panel" role="tabpanel" data-panel="components" hidden>
+          <div class="sr-panel-head">
+            <h3 class="sr-panel-title">Core components</h3>
+            <p class="sr-panel-lede">Five building blocks used across onboarding and the app. Live CSS, no screenshots.</p>
+          </div>
+
+          <div class="sr-comp-stack">
+            <div class="sr-comp-block">
+              <h4 class="sr-comp-name">Button</h4>
+              <div class="sr-comp-live">
+                <div class="sr-demo-row">
+                  <span class="sr-demo-label">Default</span>
+                  <button type="button" class="sr-demo-btn primary">Continue</button>
+                </div>
+                <div class="sr-demo-row">
+                  <span class="sr-demo-label">Press</span>
+                  <button type="button" class="sr-demo-btn primary is-press">Continue</button>
+                </div>
+                <div class="sr-demo-row">
+                  <span class="sr-demo-label">Disabled</span>
+                  <button type="button" class="sr-demo-btn primary is-disabled" disabled>Continue</button>
+                </div>
+                <div class="sr-demo-row">
+                  <span class="sr-demo-label">Secondary</span>
+                  <button type="button" class="sr-demo-btn secondary">I need help</button>
+                </div>
+              </div>
+              <p class="sr-comp-note">44px min height, 18 Semibold, primary #7B5CF8, press #9B85FF, disabled #5533CC</p>
+            </div>
+
+            <div class="sr-comp-block">
+              <h4 class="sr-comp-name">Input</h4>
+              <div class="sr-comp-live">
+                <label class="sr-demo-field">
+                  <span>Email</span>
+                  <input type="email" value="sam@example.com" readonly tabindex="-1" />
+                </label>
+                <label class="sr-demo-field is-error">
+                  <span>Activation code</span>
+                  <input type="text" value="12" readonly tabindex="-1" />
+                  <em>Enter the 6-digit code from your email</em>
+                </label>
+              </div>
+              <p class="sr-comp-note">Fill #321A80, error #FF8080, solid hex only, no opacity washes</p>
+            </div>
+
+            <div class="sr-comp-block">
+              <h4 class="sr-comp-name">Link</h4>
+              <div class="sr-comp-live">
+                <a class="sr-demo-link" href="#" onclick="return false">Terms &amp; Conditions</a>
+                <a class="sr-demo-link light" href="#" onclick="return false">I already have a code</a>
+              </div>
+              <p class="sr-comp-note">Inline brand/medium, standalone secondary brand/light</p>
+            </div>
+
+            <div class="sr-comp-block">
+              <h4 class="sr-comp-name">Step bar</h4>
+              <div class="sr-comp-live">
+                <div class="sr-demo-steps" aria-hidden="true">
+                  <span class="is-done"></span>
+                  <span class="is-done"></span>
+                  <span class="is-current"></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <p class="sr-demo-step-label">Step 3 of 5, Enable protection</p>
+              </div>
+              <p class="sr-comp-note">Setup progress without implying permissions can be skipped</p>
+            </div>
+
+            <div class="sr-comp-block">
+              <h4 class="sr-comp-name">Icon circle</h4>
+              <div class="sr-comp-live sr-comp-live--icons">
+                <div class="sr-demo-icon">
+                  <span class="sr-demo-icon-circle">
+                    <img src="/images/scamranger/icons/scan.svg" alt="" width="22" height="22" />
+                  </span>
+                  <span>Scan</span>
+                </div>
+                <div class="sr-demo-icon">
+                  <span class="sr-demo-icon-circle">
+                    <img src="/images/scamranger/icons/shield-check.svg" alt="" width="22" height="22" />
+                  </span>
+                  <span>Shield</span>
+                </div>
+                <div class="sr-demo-icon">
+                  <span class="sr-demo-icon-circle">
+                    <img src="/images/scamranger/icons/chat-circle-text.svg" alt="" width="22" height="22" />
+                  </span>
+                  <span>Chat</span>
+                </div>
+                <div class="sr-demo-icon">
+                  <span class="sr-demo-icon-circle">
+                    <img src="/images/scamranger/icons/medal.svg" alt="" width="22" height="22" />
+                  </span>
+                  <span>Medal</span>
+                </div>
+              </div>
+              <p class="sr-comp-note">From the ScamRanger Design System icon set: circle fill #321A80, icon #C9BDFF</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sr-panel" role="tabpanel" data-panel="guidelines" hidden>
+          <div class="sr-panel-head">
+            <h3 class="sr-panel-title">Rules that kept the system honest</h3>
+            <p class="sr-panel-lede">The constraints that mattered more than shipping every token.</p>
+          </div>
+          <div class="sr-guide-grid">
+            {guidelines.map((g) => (
+              <div class="sr-guide">
+                <div class="case-card-label">{g.title}</div>
+                <p class="case-card-body">{g.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <a href={`/work/${next.slug}/`} class="case-next" style={`--accent-dark:${next.accentDark}`}>
+    <div>
+      <div class="case-next-label">NEXT CASE STUDY, NO.{next.no}</div>
+      <div class="case-next-title">{next.title}: a health profile any clinic can scan</div>
+    </div>
+    <span class="case-next-arrow">OPEN</span>
+  </a>
+</CaseStudy>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const notebook = document.querySelector('[data-sr-notebook]');
+  if (notebook) {
+    const tabs = notebook.querySelectorAll('.sr-tab');
+    const panels = notebook.querySelectorAll('.sr-panel');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const id = tab.getAttribute('data-tab');
+        tabs.forEach((t) => {
+          t.classList.toggle('is-active', t === tab);
+          t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+        });
+        panels.forEach((p) => {
+          const on = p.getAttribute('data-panel') === id;
+          p.classList.toggle('is-active', on);
+          p.toggleAttribute('hidden', !on);
+        });
+      });
+    });
+  }
+
+  const gallery = document.querySelector('[data-sr-gallery]');
+  if (gallery && !reduceMotion) {
+    const slides = [...gallery.querySelectorAll('[data-gallery-slide]')];
+    let index = 0;
+    let timer = 0;
+
+    const show = (next) => {
+      index = next % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+    };
+
+    const start = () => {
+      if (timer) return;
+      timer = window.setInterval(() => show(index + 1), 2600);
+    };
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = 0;
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => (entry.isIntersecting ? start() : stop()),
+      { threshold: 0.35 },
+    );
+    io.observe(gallery);
+  }
+
+  const paywall = document.querySelector('[data-sr-paywall]');
+  const paywallVideo = paywall?.querySelector('video');
+  if (paywall && paywallVideo && !reduceMotion) {
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          paywallVideo.play().catch(() => {});
+        } else {
+          paywallVideo.pause();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(paywall);
+  }
+</script>
+
+<style>
+  .sr-frame {
+    margin: 22px 0 0;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(29, 42, 51, .1);
+    background: #F5F6F7;
+  }
+  .sr-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .sr-frame figcaption {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+    color: var(--muted-3);
+    padding: 10px 14px 12px;
+  }
+  .sr-phones--audit {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+  .sr-findings {
+    margin-top: 14px;
+  }
+  .sr-phones--lofi {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .sr-phone--lofi {
+    background: #F5F6F7;
+    border-color: rgba(29, 42, 51, .12);
+    border-radius: 10px;
+    box-shadow: none;
+  }
+  .sr-audit-cap {
+    margin: 10px 0 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+    color: var(--muted-3);
+  }
+  .sr-ia {
+    display: grid;
+    grid-template-columns: 1.45fr .75fr;
+    gap: 18px;
+    margin-top: 22px;
+    align-items: start;
+  }
+  .sr-ia-chart { margin-top: 0; }
+  .sr-ia-paths {
+    display: grid;
+    gap: 12px;
+  }
+  .sr-phones {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .sr-phones--hero {
+    grid-template-columns: minmax(0, 260px);
+    justify-content: start;
+  }
+  .sr-compare {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 260px));
+    gap: 18px;
+    margin-top: 22px;
+    justify-content: start;
+  }
+  .sr-compare--dirs {
+    grid-template-columns: repeat(3, minmax(0, 220px));
+  }
+  .sr-compare--learn {
+    grid-template-columns: repeat(3, minmax(0, 220px));
+    gap: 18px 20px;
+    align-items: start;
+  }
+  .sr-compare-col {
+    display: grid;
+    gap: 20px;
+    min-width: 0;
+  }
+  .sr-compare-item .sr-phone { margin: 0; }
+  .sr-compare-cap {
+    margin: 10px 0 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+    color: var(--muted-3);
+  }
+  .sr-phone {
+    margin: 0;
+    position: relative;
+    background: #0B0718;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(123, 92, 248, .28);
+    box-shadow: 0 12px 28px rgba(8, 5, 42, .18);
+  }
+  .sr-phone img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Gallery auto-advance */
+  .sr-phone--gallery {
+    aspect-ratio: 402 / 874;
+  }
+  .sr-gallery-track {
+    position: absolute;
+    inset: 0;
+  }
+  .sr-gallery-track img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: translateX(12%);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .sr-gallery-track img.is-active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 1;
+  }
+
+  /* Paywall video: same frame as other phones */
+  .sr-phone--paywall {
+    aspect-ratio: 402 / 874;
+  }
+  .sr-paywall-video {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sr-gallery-track img {
+      transition: none;
+      transform: none;
+    }
+    .sr-gallery-track img:not(.is-active) { display: none; }
+  }
+
+  /* Design system notebook */
+  .sr-notebook {
+    margin-top: 22px;
+    border: 2.5px solid var(--ink);
+    border-radius: 16px;
+    box-shadow: 5px 6px 0 rgba(29, 42, 51, .1);
+    overflow: hidden;
+    background: #fff;
+  }
+  .sr-notebook-chrome {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #120a2a;
+    border-bottom: 2.5px solid var(--ink);
+  }
+  .sr-notebook-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .06em;
+    color: #C9BDFF;
+  }
+  .sr-notebook-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #7B5CF8;
+    box-shadow: 0 0 0 2px rgba(123, 92, 248, .35);
+  }
+  .sr-notebook-tabs {
+    display: flex;
+    gap: 6px;
+  }
+  .sr-tab {
+    appearance: none;
+    border: 1px solid rgba(201, 189, 255, .35);
+    background: transparent;
+    color: #C9BDFF;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+    padding: 8px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .sr-tab.is-active {
+    background: #7B5CF8;
+    border-color: #7B5CF8;
+    color: #fff;
+  }
+  .sr-notebook-body {
+    padding: 22px 22px 26px;
+    height: 660px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .sr-panel[data-panel="components"] {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .sr-panel-head { margin-bottom: 18px; }
+  .sr-panel-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  .sr-panel-lede {
+    margin-top: 6px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--body);
+  }
+  .sr-color-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .sr-color {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #F5F6F7;
+    border: 1px solid rgba(29, 42, 51, .08);
+  }
+  .sr-color-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    flex: none;
+    border: 1px solid rgba(29, 42, 51, .1);
+  }
+  .sr-color-name {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent-dark);
+  }
+  .sr-color-meta {
+    margin-top: 2px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted-3);
+  }
+  .sr-type-list {
+    margin-top: 16px;
+    border: 1px solid rgba(29, 42, 51, .1);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sr-type-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-top: 1px solid rgba(29, 42, 51, .08);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .sr-type-row:first-child { border-top: 0; }
+  .sr-type-name { color: var(--ink); font-weight: 600; }
+  .sr-type-spec { color: var(--muted-3); }
+
+  .sr-comp-stack {
+    display: grid;
+    gap: 22px;
+    max-width: 360px;
+  }
+  .sr-comp-block {
+    display: grid;
+    gap: 8px;
+  }
+  .sr-comp-name {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted-3);
+  }
+  .sr-comp-live {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 14px;
+    border-radius: 12px;
+    background: linear-gradient(221deg, #2E1B6E, #1A0F5A 50%, #08052A);
+  }
+  .sr-comp-live--icons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 14px;
+  }
+  .sr-demo-row {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+  .sr-demo-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: .05em;
+    color: #C9BDFF;
+    text-transform: uppercase;
+  }
+  .sr-demo-btn {
+    appearance: none;
+    border: 0;
+    border-radius: 999px;
+    min-height: 44px;
+    width: 100%;
+    max-width: 220px;
+    padding: 0 18px;
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: default;
+  }
+  .sr-demo-btn.primary { background: #7B5CF8; color: #fff; }
+  .sr-demo-btn.primary.is-press { background: #9B85FF; }
+  .sr-demo-btn.primary.is-disabled { background: #5533CC; color: rgba(255,255,255,.72); }
+  .sr-demo-btn.secondary {
+    background: transparent;
+    color: #C9BDFF;
+    border: 1.5px solid rgba(201, 189, 255, .55);
+  }
+  .sr-demo-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 14px;
+  }
+  .sr-demo-field input {
+    min-height: 44px;
+    border-radius: 12px;
+    border: 1.5px solid transparent;
+    background: #321A80;
+    color: #fff;
+    padding: 0 14px;
+    font-size: 18px;
+  }
+  .sr-demo-field.is-error input { border-color: #FF8080; }
+  .sr-demo-field em {
+    font-style: normal;
+    color: #FF8080;
+    font-size: 13px;
+  }
+  .sr-demo-link {
+    color: #9B85FF;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .sr-demo-link.light { color: #C9BDFF; }
+  .sr-demo-steps {
+    display: flex;
+    gap: 8px;
+  }
+  .sr-demo-steps span {
+    flex: 1;
+    height: 6px;
+    border-radius: 999px;
+    background: #321A80;
+  }
+  .sr-demo-steps span.is-done,
+  .sr-demo-steps span.is-current { background: #7B5CF8; }
+  .sr-demo-step-label {
+    color: #C9BDFF;
+    font-size: 14px;
+    margin: 0;
+  }
+  .sr-demo-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #C9BDFF;
+    font-size: 12px;
+  }
+  .sr-demo-icon-circle {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background: #321A80;
+    color: #C9BDFF;
+  }
+  .sr-demo-icon-circle img,
+  .sr-demo-icon-circle svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+  .sr-comp-note {
+    margin: 12px 0 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .03em;
+    line-height: 1.5;
+    color: var(--muted-3);
+  }
+  .sr-guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .sr-guide {
+    background: #F5F6F7;
+    border: 1px solid rgba(29, 42, 51, .09);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+
+  @media (max-width: 900px) {
+    .sr-phones { grid-template-columns: repeat(2, 1fr); }
+    .sr-phones--audit { grid-template-columns: repeat(2, 1fr); }
+    .sr-phones--lofi {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      overflow-x: visible;
+      gap: 8px;
+      padding-bottom: 0;
+    }
+    .sr-phones--lofi .sr-phone {
+      flex: unset;
+    }
+    .sr-ia { grid-template-columns: 1fr; }
+    .sr-guide-grid,
+    .sr-color-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .sr-phones,
+    .sr-phones--hero,
+    .sr-compare { grid-template-columns: 1fr 1fr; }
+    .sr-compare--dirs,
+    .sr-compare--learn { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sr-notebook-chrome { align-items: flex-start; }
+    .sr-demo-row { grid-template-columns: 1fr; gap: 6px; }
+  }
+</style>

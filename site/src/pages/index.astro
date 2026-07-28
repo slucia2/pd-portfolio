@@ -6,9 +6,9 @@ import { cases } from '../data/cases';
 const TANKS_URL = 'https://tanksvscats-psi.vercel.app/';
 
 const sideQuests = [
-  { label: 'Easy Chinese', sub: 'Language app', glyph: 'circle', hover: '#E0AC2C', href: 'https://easychineselearning-rosy.vercel.app/welcome' },
-  { label: 'ClaimRunner', sub: 'AI startup', glyph: 'triangle', hover: '#42B46E', href: 'https://www.claimrunner.ai/' },
-  { label: 'ScamRanger', sub: 'Mobile app', glyph: 'diamond', hover: '#3076C4', href: null, soon: true },
+  { label: 'Easy Chinese', sub: 'Language app', glyph: 'circle', hover: '#E0AC2C', href: 'https://easychineselearning-rosy.vercel.app/welcome', external: true },
+  { label: 'ClaimRunner', sub: 'AI startup', glyph: 'triangle', hover: '#42B46E', href: 'https://www.claimrunner.ai/', external: true },
+  { label: 'ScamRanger', sub: 'Mobile app', glyph: 'diamond', hover: '#7B5CF8', href: '/work/scamranger/' },
   { label: 'Tanks!', sub: 'Browser game', glyph: 'square', hover: '#C42B25', modal: true },
 ];
 
@@ -54,12 +54,25 @@ const albums = [
       <div class="quests">
         {sideQuests.map((q) => (
           q.href ? (
-            <a class="quest" href={q.href} target="_blank" rel="noopener" style={`--hover-border:${q.hover}`}>
-              <span class="quest-go external-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="9.5"></circle>
-                  <path d="M8.5 15.5 15.5 8.5M10 8.5h5.5V14"></path>
-                </svg>
+            <a
+              class="quest"
+              href={q.href}
+              target={q.external ? '_blank' : undefined}
+              rel={q.external ? 'noopener' : undefined}
+              style={`--hover-border:${q.hover}`}
+            >
+              <span class:list={['quest-go', q.external ? 'external-mark' : 'internal-mark']} aria-hidden="true">
+                {q.external ? (
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9.5"></circle>
+                    <path d="M8.5 15.5 15.5 8.5M10 8.5h5.5V14"></path>
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9.5"></circle>
+                    <path d="M9.5 12h5M12.5 9l3 3-3 3"></path>
+                  </svg>
+                )}
               </span>
               <span class:list={['glyph', q.glyph]}></span>
               <span class="quest-label">{q.label}</span>
@@ -432,6 +445,22 @@ const albums = [
     flex: none;
   }
   .external-mark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .internal-mark {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .internal-mark svg {
     display: block;
     width: 100%;
     height: 100%;

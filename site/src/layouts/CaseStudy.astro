@@ -6,12 +6,14 @@ interface Props {
   case: CaseStudy;
   intro: string;
   meta: { key: string; value: string }[];
+  /** Optional proof chips under the meta row (e.g. business owner, a11y). */
+  credentials?: string[];
   heroAlt: string;
   problem: string;
   outcome: string;
 }
 
-const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
+const { case: c, intro, meta, credentials = [], heroAlt, problem, outcome } = Astro.props;
 ---
 <Base title={`${c.title} · Sam Lucia`} description={intro} width="case">
   <main
@@ -26,6 +28,13 @@ const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
         <span><span class="k">{m.key}</span>&nbsp; {m.value}</span>
       ))}
     </div>
+    {credentials.length > 0 && (
+      <div class="case-creds" aria-label="Credentials">
+        {credentials.map((chip) => (
+          <span class="case-cred">{chip}</span>
+        ))}
+      </div>
+    )}
     <div class="case-rule"></div>
     {!c.hideCaseHero && (
       c.heroVideo ? (
@@ -68,3 +77,24 @@ const { case: c, intro, meta, heroAlt, problem, outcome } = Astro.props;
     <slot />
   </main>
 </Base>
+
+<style>
+  .case-creds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .case-cred {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-tint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .04em;
+    color: var(--accent-dark);
+  }
+</style>
