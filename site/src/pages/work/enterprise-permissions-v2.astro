@@ -134,49 +134,8 @@ const learnings = [
           <div class="row"><div>Leader 7 Email</div><div>Employee — Sr Manager</div></div>
           <div class="row"><div>Leader 8 Email</div><div>Employee — Manager</div></div>
         </div>
-
-        <div class="grp ren">
-          <div class="grp-l"><span>Renamed — the rest</span><span>6</span></div>
-          <div class="row"><div>User Type</div><div>Employee Type</div></div>
-          <div class="row"><div>Employee Type</div><div>Pay Type</div></div>
-          <div class="row"><div>Email</div><div>Employee Email</div></div>
-          <div class="row"><div>Department</div><div>Functional Group</div></div>
-          <div class="row"><div>Manager ID</div><div>Manager Email</div></div>
-          <div class="row"><div>Management Level</div><div>VP — not 3_VP</div></div>
-        </div>
-
-        <div class="grp cut">
-          <div class="grp-l"><span>Cut</span><span>15</span></div>
-          <div class="row"><div>Display Name</div><div>removed</div></div>
-          <div class="row"><div>First Name</div><div>removed</div></div>
-          <div class="row"><div>Last Name</div><div>removed</div></div>
-          <div class="row"><div>User Principal Name</div><div>duplicate of email</div></div>
-          <div class="row"><div>Object ID</div><div>removed</div></div>
-          <div class="row"><div>NTID</div><div>sam_account_name in system</div></div>
-          <div class="row"><div>Employee Org Data</div><div>removed</div></div>
-          <div class="row"><div>Street Address</div><div>removed</div></div>
-          <div class="row"><div>Phone Mobile</div><div>removed</div></div>
-          <div class="row"><div>Archetype</div><div>no known purpose</div></div>
-          <div class="row"><div>Account enabled</div><div>always true</div></div>
-          <div class="row"><div>Created at</div><div>removed</div></div>
-          <div class="row"><div>Created by</div><div>removed</div></div>
-          <div class="row"><div>Updated at</div><div>removed</div></div>
-          <div class="row"><div>Updated by</div><div>removed</div></div>
-        </div>
-
-        <div class="grp kept">
-          <div class="grp-l"><span>Kept as-is</span><span>9</span></div>
-          <div class="row"><div>Employee ID</div><div>unchanged</div></div>
-          <div class="row"><div>Job Title</div><div>unchanged</div></div>
-          <div class="row"><div>Office Location</div><div>unchanged</div></div>
-          <div class="row"><div>People Manager flag</div><div>unchanged</div></div>
-          <div class="row"><div>Location ID</div><div>unchanged</div></div>
-          <div class="row"><div>City</div><div>unchanged</div></div>
-          <div class="row"><div>State</div><div>unchanged</div></div>
-          <div class="row"><div>Zipcode</div><div>unchanged</div></div>
-          <div class="row"><div>Company Name</div><div>unchanged</div></div>
-        </div>
       </div>
+      <p class="inv-more">+30 more audited across cut, renamed, and kept.</p>
     </div>
   </section>
 
@@ -402,30 +361,16 @@ const learnings = [
       alt="Dynamic Rule Creator v1: expression rows with three add-buttons beneath"
       caption="v1: the interaction model assumed the operator already understood the data schema"
       pins={[
-        { n: 1, left: '10%', top: '74%' },
-        { n: 2, left: '3%', top: '48%' },
+        { n: 1, left: '26%', top: '76%' },
+        { n: 2, left: '4%', top: '48%' },
+        { n: 3, left: '12%', top: '62%' },
+        { n: 4, left: '34%', top: '22%' },
       ]}
       items={[
-        {
-          num: 1,
-          title: 'Poor interaction experience with buttons',
-          details: [
-            '(Add new expression) Creates a new top-level expression',
-            '(Add nested value) Creates a nested expression with the current row',
-            '(Add to nested grouping) Creates expression at same nested hierarchy; ONLY visible if nested expression is present',
-            'Interaction does not allow user to edit nesting, and has unclear function',
-          ],
-        },
-        {
-          num: 2,
-          title: 'Technology alignment',
-          details: [
-            'Addition of an entity select field.',
-            'Removal of responsive nested grouping button.',
-            'Aligning on operators and attribute options',
-            'Need for ability to bulk create groups from rule',
-          ],
-        },
+        { num: 1, text: 'Three add-buttons, unclear function' },
+        { num: 2, text: "Nesting can't be edited after creation" },
+        { num: 3, text: 'Rows only append at the end' },
+        { num: 4, text: 'Attribute names read as database columns' },
       ]}
     />
 
@@ -434,28 +379,14 @@ const learnings = [
       alt="Dynamic Rule Creator v2: grouped expressions with row menus and darkened nest signifiers"
       caption="Better, and still not accessible — the table model itself was the problem"
       pins={[
-        { n: 1, left: '94%', top: '40%' },
-        { n: 2, left: '5%', top: '56%' },
+        { n: 1, left: '92%', top: '42%' },
+        { n: 2, left: '4%', top: '58%' },
+        { n: 3, left: '50%', top: '72%' },
       ]}
       items={[
-        {
-          num: 1,
-          title: 'New expression features & visual enhancement',
-          details: [
-            'Added dropdown menu to separate new and nested expressions and enable table editing for any row',
-            'Aligned on function and design variation for bulk creating groups',
-            'Separated new expressions visually within boxes and darkened nested signifiers to meet AAA contrast standards.',
-          ],
-        },
-        {
-          num: 2,
-          title: 'Accessibility Challenges Identified',
-          details: [
-            'Table rows and nested block indicators are not supported by standard table development',
-            'Table inputs not traceable by screen readers.',
-            'Verbiage for “select item” and inputs would be cut off on smaller screen sizes.',
-          ],
-        },
+        { num: 1, text: 'Grouped expressions and a row menu' },
+        { num: 2, text: 'AAA contrast on nested signifiers' },
+        { num: 3, text: 'Then rejected: not screen-reader traceable · breaks standard table CSS · no room for validation errors' },
       ]}
     />
 
@@ -470,28 +401,14 @@ const learnings = [
       alt="Dynamic Rule Creator v3: collapsible nested rows with reserved error space"
       caption="Shipped: worked out with the a11y partner, not retrofitted"
       pins={[
-        { n: 1, left: '5%', top: '48%' },
-        { n: 2, left: '55%', top: '38%' },
+        { n: 1, left: '5%', top: '36%' },
+        { n: 2, left: '48%', top: '28%' },
+        { n: 3, left: '28%', top: '48%' },
       ]}
       items={[
-        {
-          num: 1,
-          title: 'Accessible solution design',
-          details: [
-            'Worked with accessibility team and developers to ideate and implement functional change to collapse expressions that contain nested values',
-            'Removed “select” verbiage and adjusted the max / min width of input fields to fit text at a minimum screen size of 1200px',
-            'Added spacing to accommodate error fields without shifting frame heights',
-          ],
-        },
-        {
-          num: 2,
-          title: 'Other',
-          details: [
-            'Aligning with business on dynamic load logic and ongoing governance',
-            'Adjusting design to fit system grid',
-            'Removing column headers to save space and reduce redundancy with input fields',
-          ],
-        },
+        { num: 1, text: 'Nested expressions collapse' },
+        { num: 2, text: 'Fixed widths hold at 1200px' },
+        { num: 3, text: 'Error space reserved, no shift' },
       ]}
     />
   </section>
@@ -539,10 +456,6 @@ const learnings = [
         </div>
       ))}
     </div>
-    <figure class="case-fig">
-      <img src="/images/enterprise-permissions/ep-rule-builder.png" alt="Create Dynamic Group: visual rule builder with live rule syntax view" />
-      <figcaption>Two audiences, one builder — non-technical authors compose visually while power users validate in syntax, after cutting the default attribute list by half</figcaption>
-    </figure>
   </section>
 
   <section class="sec">
@@ -635,6 +548,44 @@ const learnings = [
     --admin → --blue-dark | --author → --green-dark
     --keep → currentColor (not green — avoids colliding with author lane)
   */
+
+  /* ① Scannability — captions, measure, section labels (v2 only) */
+  :global(.sec-label) {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    font-size: 11px;
+  }
+  :global(.sec-label)::before {
+    display: none;
+  }
+  :global(.sec-body),
+  :global(.sec-subhead + .sec-body),
+  :global(.case-card-body),
+  :global(.case-ridge-body .sec-body),
+  :global(.anno-list),
+  :global(.anno-copy) {
+    max-width: min(70ch, 680px);
+  }
+  :global(.case-fig figcaption),
+  :global(.ep-anno-fig figcaption),
+  :global(.ep-loop figcaption),
+  :global(.ep-group-model figcaption) {
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    color: var(--body) !important;
+    line-height: 1.5;
+    max-width: min(70ch, 680px);
+  }
+
   .ep-loop,
   .ep-diagram,
   .ep-attr-inv {
@@ -673,14 +624,18 @@ const learnings = [
   }
   .ep-loop figcaption,
   .ep-group-model figcaption {
-    font-family: var(--font-body);
-    font-size: 13px;
-    color: var(--muted-2);
-    line-height: 1.5;
     margin-top: 12px;
   }
 
   .ep-attr-inv { margin-top: 22px; }
+  .inv-more {
+    margin: 12px 0 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted-2);
+    max-width: min(70ch, 680px);
+  }
   .attr-stats {
     display: flex;
     flex-wrap: wrap;
