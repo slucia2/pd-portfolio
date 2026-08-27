@@ -1,0 +1,169 @@
+---
+/**
+ * Pin-and-label screenshot annotation (§5.4 PERMISSIONS-REBUILD).
+ * Pins use percentage coordinates so they hold at every breakpoint.
+ */
+interface Pin {
+  n: string | number;
+  left: string;
+  top: string;
+}
+interface Item {
+  num?: string | number;
+  title?: string;
+  text?: string;
+  details?: string[];
+}
+interface Props {
+  src: string;
+  alt: string;
+  caption: string;
+  pins?: Pin[];
+  items?: Item[];
+}
+
+const { src, alt, caption, pins = [], items = [] } = Astro.props;
+---
+<figure class="case-fig bare ep-anno-fig">
+  <div class="anno">
+    <div class="anno-img">
+      <img src={src} alt={alt} />
+      {pins.map((p) => (
+        <div class="pin" style={`left:${p.left};top:${p.top}`}>{p.n}</div>
+      ))}
+    </div>
+    {items.length > 0 && (
+      <ol class="anno-list">
+        {items.map((item) => (
+          <li>
+            {item.num != null && <span class="num">{item.num}</span>}
+            <div class="anno-copy">
+              {item.title && <div class="anno-title">{item.title}</div>}
+              {item.text && <div class="anno-text">{item.text}</div>}
+              {item.details && item.details.length > 0 && (
+                <ul class="anno-details">
+                  {item.details.map((d) => (
+                    <li>{d}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    )}
+  </div>
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .ep-anno-fig { margin-top: 28px; }
+  .anno {
+    --mag: var(--accent-dark);
+    --on-mag: #fff;
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  /* No second frame — exports already include their own card chrome.
+     Light hold so dark page themes don't tint the product UI. */
+  .anno-img {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+  }
+  .anno-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #fff;
+  }
+  .pin {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--mag);
+    color: var(--on-mag);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+  }
+  .anno-list {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .anno-list > li {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+  }
+  .anno-list .num {
+    flex: 0 0 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--mag);
+    color: var(--on-mag);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .anno-copy {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--body);
+  }
+  .anno-title {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: 4px;
+  }
+  .anno-text { color: var(--body); }
+  .anno-details {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .anno-details li {
+    position: relative;
+    padding-left: 12px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--body);
+  }
+  .anno-details li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--muted-3);
+  }
+</style>

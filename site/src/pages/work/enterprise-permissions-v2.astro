@@ -4,6 +4,7 @@
  * Working copy; live page remains enterprise-permissions.astro.
  */
 import CaseStudy from '../../layouts/CaseStudy.astro';
+import AnnotationFigure from '../../components/AnnotationFigure.astro';
 import { cases } from '../../data/cases';
 
 const c = cases.find((x) => x.slug === 'enterprise-permissions')!;
@@ -32,9 +33,9 @@ const flow = [
 ];
 
 const renameChips = [
-  { from: 'People_manager_flag', to: 'People Manager' },
-  { from: 'Leader_2', to: 'Employee Level' },
-  { from: 'Wrk_loc_cd', to: 'Work Location' },
+  { from: 'Leader 3 Email', to: 'Employee — VP' },
+  { from: 'Employee Type', to: 'Pay Type' },
+  { from: 'Department', to: 'Functional Group' },
 ];
 
 const resultHighlights = [
@@ -54,7 +55,9 @@ const learnings = [
   intro="Redesigning how 150K+ T-Mobile employees get access to internal tools, owned end-to-end by content teams instead of IT tickets."
   meta={[
     { key: 'ROLE', value: 'Sole designer' },
+    { key: 'COMPANY', value: 'T-Mobile' },
     { key: 'YEAR', value: '2025' },
+    { key: 'DURATION', value: '6 months' },
     { key: 'SCOPE', value: '150K+ employees' },
   ]}
   heroAlt="Group Management: group detail with members, applied pages, dynamic rule, and activity log"
@@ -67,6 +70,7 @@ const learnings = [
     <p class="sec-body">
       Three platforms into one intranet for 150K+ employees. Permissions had to ship with launch, owned by content teams, not an IT queue. I was sole designer and one of two business owners across requirements, the group model, both surfaces, a11y, QA, and onboarding.
     </p>
+    <p class="sec-body">Partnered with TPM, technical architect, design systems, and accessibility.</p>
     <div class="case-grid-3">
       <div class="case-card accent">
         <div class="case-card-label">SCALE</div>
@@ -106,12 +110,142 @@ const learnings = [
         <div class="case-ridge-heading">Follow the conventions admins already know. Strip the complexity that assumes a technical operator.</div>
       </div>
     </div>
+
+    <div class="ep-attr-inv" aria-label="UXP attribute inventory">
+      <div class="attr-stats">
+        <div><span class="l">Audited</span><span class="v">39</span><span class="s">attributes in the UXP set</span></div>
+        <div><span class="l">Cut</span><span class="v">15</span><span class="s">removed outright</span></div>
+        <div><span class="l">Renamed</span><span class="v">15</span><span class="s">kept, relabeled for authors</span></div>
+        <div><span class="l">Untouched</span><span class="v">9</span><span class="s">shipped as-is</span></div>
+      </div>
+
+      <div class="inv">
+        <div class="inv-h"><div>As named in UXP</div><div>What authors see</div></div>
+
+        <div class="grp ren">
+          <div class="grp-l"><span>Renamed — the Leader block</span><span>9</span></div>
+          <div class="row"><div>Leader 0 Email</div><div>Employee — CEO</div></div>
+          <div class="row"><div>Leader 1 Email</div><div>Employee — EVP</div></div>
+          <div class="row"><div>Leader 2 Email</div><div>Employee — SVP</div></div>
+          <div class="row"><div>Leader 3 Email</div><div>Employee — VP</div></div>
+          <div class="row"><div>Leader 4 Email</div><div>Employee — Sr Director</div></div>
+          <div class="row"><div>Leader 5 Email</div><div>Employee — Director</div></div>
+          <div class="row"><div>Leader 6 Email</div><div>Employee — ?</div></div>
+          <div class="row"><div>Leader 7 Email</div><div>Employee — Sr Manager</div></div>
+          <div class="row"><div>Leader 8 Email</div><div>Employee — Manager</div></div>
+        </div>
+
+        <div class="grp ren">
+          <div class="grp-l"><span>Renamed — the rest</span><span>6</span></div>
+          <div class="row"><div>User Type</div><div>Employee Type</div></div>
+          <div class="row"><div>Employee Type</div><div>Pay Type</div></div>
+          <div class="row"><div>Email</div><div>Employee Email</div></div>
+          <div class="row"><div>Department</div><div>Functional Group</div></div>
+          <div class="row"><div>Manager ID</div><div>Manager Email</div></div>
+          <div class="row"><div>Management Level</div><div>VP — not 3_VP</div></div>
+        </div>
+
+        <div class="grp cut">
+          <div class="grp-l"><span>Cut</span><span>15</span></div>
+          <div class="row"><div>Display Name</div><div>removed</div></div>
+          <div class="row"><div>First Name</div><div>removed</div></div>
+          <div class="row"><div>Last Name</div><div>removed</div></div>
+          <div class="row"><div>User Principal Name</div><div>duplicate of email</div></div>
+          <div class="row"><div>Object ID</div><div>removed</div></div>
+          <div class="row"><div>NTID</div><div>sam_account_name in system</div></div>
+          <div class="row"><div>Employee Org Data</div><div>removed</div></div>
+          <div class="row"><div>Street Address</div><div>removed</div></div>
+          <div class="row"><div>Phone Mobile</div><div>removed</div></div>
+          <div class="row"><div>Archetype</div><div>no known purpose</div></div>
+          <div class="row"><div>Account enabled</div><div>always true</div></div>
+          <div class="row"><div>Created at</div><div>removed</div></div>
+          <div class="row"><div>Created by</div><div>removed</div></div>
+          <div class="row"><div>Updated at</div><div>removed</div></div>
+          <div class="row"><div>Updated by</div><div>removed</div></div>
+        </div>
+
+        <div class="grp kept">
+          <div class="grp-l"><span>Kept as-is</span><span>9</span></div>
+          <div class="row"><div>Employee ID</div><div>unchanged</div></div>
+          <div class="row"><div>Job Title</div><div>unchanged</div></div>
+          <div class="row"><div>Office Location</div><div>unchanged</div></div>
+          <div class="row"><div>People Manager flag</div><div>unchanged</div></div>
+          <div class="row"><div>Location ID</div><div>unchanged</div></div>
+          <div class="row"><div>City</div><div>unchanged</div></div>
+          <div class="row"><div>State</div><div>unchanged</div></div>
+          <div class="row"><div>Zipcode</div><div>unchanged</div></div>
+          <div class="row"><div>Company Name</div><div>unchanged</div></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="sec">
     <div class="sec-label">THE GROUP MODEL</div>
     <h2 class="sec-heading">Four group types, each with explicit ownership and expiration, so groups can’t sprawl.</h2>
     <p class="sec-body">Dynamic and exception groups shipped at launch; bulk dynamic and nested groups followed later, by request.</p>
+
+    <figure class="ep-diagram ep-group-model">
+      <svg viewBox="0 0 1000 520" role="img" aria-label="Group model diagram. A governance bar across the top applies owner-required-at-creation and expiration policy to all four group types. Launch types: Dynamic (attribute rules) and Exception (manual, expiring). Later types: Bulk Dynamic, which generates many dynamic groups from one rule set, and Nested, which composes dynamic and exception groups plus individuals into one audience.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <rect x="60" y="40" width="880" height="52" rx="4" fill="var(--mag-bg)" stroke="var(--mag)" stroke-width="1.5"/>
+        <text x="80" y="63" font-size="10" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--mag)" font-weight="700" letter-spacing="1.2">ONE GOVERNANCE CONTRACT · ALL FOUR TYPES</text>
+        <text x="80" y="81" font-size="12.5" fill="currentColor">Owner named at creation &#160;·&#160; expiration policy attached &#160;·&#160; membership auditable</text>
+
+        <line x1="180" y1="92" x2="180" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+        <line x1="420" y1="92" x2="420" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+        <line x1="660" y1="92" x2="660" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+        <line x1="860" y1="92" x2="860" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+
+        <text x="60" y="146" font-size="10" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--keep)" font-weight="700" letter-spacing="1.2">SHIPPED AT LAUNCH</text>
+        <text x="560" y="146" font-size="10" font-family="var(--font-mono),ui-monospace,monospace" fill="currentColor" opacity=".55" font-weight="700" letter-spacing="1.2">ADDED LATER, BY REQUEST</text>
+        <line x1="60" y1="154" x2="530" y2="154" stroke="var(--keep)" stroke-width="1.5" opacity=".5"/>
+        <line x1="560" y1="154" x2="940" y2="154" stroke="currentColor" stroke-width="1.5" opacity=".25" stroke-dasharray="4 3"/>
+
+        <rect x="60" y="176" width="240" height="118" rx="4" fill="var(--panel)" stroke="var(--keep)" stroke-width="1.8"/>
+        <text x="80" y="203" font-size="16" font-weight="650" fill="currentColor">Dynamic</text>
+        <rect x="180" y="189" width="60" height="18" rx="9" fill="var(--keep-bg)"/>
+        <text x="210" y="202" text-anchor="middle" font-size="9.5" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--keep)" font-weight="700">DEFAULT</text>
+        <text x="80" y="228" font-size="12" fill="currentColor" opacity=".75">Membership from attribute rules</text>
+        <text x="80" y="247" font-size="12" fill="currentColor" opacity=".75">e.g. all People Managers</text>
+        <text x="80" y="275" font-size="11" fill="currentColor" opacity=".5">Saves immediately · syncs overnight</text>
+
+        <rect x="60" y="316" width="240" height="118" rx="4" fill="var(--panel)" stroke="var(--keep)" stroke-width="1.8"/>
+        <text x="80" y="343" font-size="16" font-weight="650" fill="currentColor">Exception</text>
+        <rect x="187" y="329" width="66" height="18" rx="9" fill="var(--mag-bg)"/>
+        <text x="220" y="342" text-anchor="middle" font-size="9.5" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--mag)" font-weight="700">EXPIRING</text>
+        <text x="80" y="368" font-size="12" fill="currentColor" opacity=".75">Manual members — contractors,</text>
+        <text x="80" y="387" font-size="12" fill="currentColor" opacity=".75">testing, short-lived needs</text>
+        <text x="80" y="415" font-size="11" fill="var(--mag)" opacity=".9">Must renew or it stops granting access</text>
+
+        <rect x="560" y="176" width="380" height="118" rx="4" fill="var(--panel)" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 3" opacity=".85"/>
+        <text x="580" y="203" font-size="16" font-weight="650" fill="currentColor">Bulk dynamic</text>
+        <text x="580" y="228" font-size="12" fill="currentColor" opacity=".75">One rule set generates many groups —</text>
+        <text x="580" y="247" font-size="12" fill="currentColor" opacity=".75">one per value of an attribute</text>
+        <text x="580" y="275" font-size="11" fill="currentColor" opacity=".5">e.g. a group for every store, or HR in each state</text>
+
+        <rect x="560" y="316" width="380" height="118" rx="4" fill="var(--panel)" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 3" opacity=".85"/>
+        <text x="580" y="343" font-size="16" font-weight="650" fill="currentColor">Nested</text>
+        <text x="580" y="368" font-size="12" fill="currentColor" opacity=".75">Composes existing groups and individuals</text>
+        <text x="580" y="387" font-size="12" fill="currentColor" opacity=".75">into one audience</text>
+        <text x="580" y="415" font-size="11" fill="currentColor" opacity=".5">Reuse without rewriting rules</text>
+
+        <path d="M 300 224 L 430 224 L 430 214 L 554 214" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5" marker-end="url(#ar2)"/>
+        <text x="428" y="204" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".7">generates many</text>
+
+        <path d="M 300 262 L 400 262 L 400 366 L 554 366" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5" marker-end="url(#ar2)"/>
+        <path d="M 300 396 L 400 396 L 400 380 L 554 380" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5" marker-end="url(#ar2)"/>
+        <text x="452" y="344" text-anchor="middle" font-size="10.5" fill="currentColor" opacity=".7">composed into</text>
+
+        <text x="60" y="478" font-size="12" fill="currentColor" opacity=".6">The later types add no new governance rules — they compose the launch types, so ownership and expiry carry through.</text>
+      </svg>
+      <figcaption>Four types, one governance contract — ownership and expiration attach at creation, and the two later types compose the first two rather than escaping their rules.</figcaption>
+    </figure>
 
     <div class="ep-taxonomy" aria-label="Group taxonomy">
       <ul class="case-factors ep-taxonomy-list">
@@ -244,13 +378,122 @@ const learnings = [
     <div class="ep-pair-figs">
       <figure class="case-fig">
         <img src="/images/enterprise-permissions/ep-group-management-dynamic.png" alt="Group Management: group list with New Group menu for Exception, Dynamic, Bulk Dynamic, and Nested" />
-        <figcaption>Admins · Group Management: list, search, and create any group type</figcaption>
+        <figcaption>Admins start here — every group type, every owner, searchable in one view</figcaption>
       </figure>
       <figure class="case-fig">
         <img src="/images/enterprise-permissions/ep-apply-permissions-list.png" alt="Apply Permissions: page list with publish status, permission status, and manage actions" />
         <figcaption>Authors · Apply Permissions: publish status and permission status together</figcaption>
       </figure>
     </div>
+  </section>
+
+  <section class="sec ep-iteration">
+    <div class="sec-label">ITERATION</div>
+    <h2 class="sec-heading">The first two rule builders failed accessibility review. The third borrowed from Salesforce.</h2>
+    <p class="sec-body">
+      The first rule builder exposed three add-buttons whose behavior wasn't obvious even to me, and a table that only allowed rows at the end. I grouped the expressions, moved nesting into a row menu, and darkened the nested signifiers to hit AAA contrast.
+    </p>
+    <p class="sec-body">
+      The accessibility team rejected it anyway — nested blocks weren't traceable by screen readers, the format broke under standard table CSS, and there was no room for validation errors. The fix came from Salesforce's tree grid: collapsible rows for nested values, sized to hold text and errors at a 1200px floor.
+    </p>
+
+    <AnnotationFigure
+      src="/images/enterprise-permissions/ep-rulebuilder-v1.png"
+      alt="Dynamic Rule Creator v1: expression rows with three add-buttons beneath"
+      caption="v1: the interaction model assumed the operator already understood the data schema"
+      pins={[
+        { n: 1, left: '10%', top: '74%' },
+        { n: 2, left: '3%', top: '48%' },
+      ]}
+      items={[
+        {
+          num: 1,
+          title: 'Poor interaction experience with buttons',
+          details: [
+            '(Add new expression) Creates a new top-level expression',
+            '(Add nested value) Creates a nested expression with the current row',
+            '(Add to nested grouping) Creates expression at same nested hierarchy; ONLY visible if nested expression is present',
+            'Interaction does not allow user to edit nesting, and has unclear function',
+          ],
+        },
+        {
+          num: 2,
+          title: 'Technology alignment',
+          details: [
+            'Addition of an entity select field.',
+            'Removal of responsive nested grouping button.',
+            'Aligning on operators and attribute options',
+            'Need for ability to bulk create groups from rule',
+          ],
+        },
+      ]}
+    />
+
+    <AnnotationFigure
+      src="/images/enterprise-permissions/ep-rulebuilder-v2.png"
+      alt="Dynamic Rule Creator v2: grouped expressions with row menus and darkened nest signifiers"
+      caption="Better, and still not accessible — the table model itself was the problem"
+      pins={[
+        { n: 1, left: '94%', top: '40%' },
+        { n: 2, left: '5%', top: '56%' },
+      ]}
+      items={[
+        {
+          num: 1,
+          title: 'New expression features & visual enhancement',
+          details: [
+            'Added dropdown menu to separate new and nested expressions and enable table editing for any row',
+            'Aligned on function and design variation for bulk creating groups',
+            'Separated new expressions visually within boxes and darkened nested signifiers to meet AAA contrast standards.',
+          ],
+        },
+        {
+          num: 2,
+          title: 'Accessibility Challenges Identified',
+          details: [
+            'Table rows and nested block indicators are not supported by standard table development',
+            'Table inputs not traceable by screen readers.',
+            'Verbiage for “select item” and inputs would be cut off on smaller screen sizes.',
+          ],
+        },
+      ]}
+    />
+
+    <AnnotationFigure
+      src="/images/enterprise-permissions/ep-reference-treegrid.png"
+      alt="Salesforce Base Tree Grid reference: collapsible hierarchical rows"
+      caption="The pattern that unblocked it — collapsible rows keep nested hierarchy traceable to a screen reader"
+    />
+
+    <AnnotationFigure
+      src="/images/enterprise-permissions/ep-rulebuilder-v3.png"
+      alt="Dynamic Rule Creator v3: collapsible nested rows with reserved error space"
+      caption="Shipped: worked out with the a11y partner, not retrofitted"
+      pins={[
+        { n: 1, left: '5%', top: '48%' },
+        { n: 2, left: '55%', top: '38%' },
+      ]}
+      items={[
+        {
+          num: 1,
+          title: 'Accessible solution design',
+          details: [
+            'Worked with accessibility team and developers to ideate and implement functional change to collapse expressions that contain nested values',
+            'Removed “select” verbiage and adjusted the max / min width of input fields to fit text at a minimum screen size of 1200px',
+            'Added spacing to accommodate error fields without shifting frame heights',
+          ],
+        },
+        {
+          num: 2,
+          title: 'Other',
+          details: [
+            'Aligning with business on dynamic load logic and ongoing governance',
+            'Adjusting design to fit system grid',
+            'Removing column headers to save space and reduce redundancy with input fields',
+          ],
+        },
+      ]}
+    />
   </section>
 
   <section class="sec">
@@ -275,7 +518,7 @@ const learnings = [
 
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-group-management-filtered.png" alt="Group Management filtered to Dynamic: search, group type and owner filters, and results table" />
-      <figcaption>Management view: search, filters, and table: the same patterns owners use day to day</figcaption>
+      <figcaption>The patterns owners use daily — built for Permissions, not borrowed from a generic library</figcaption>
     </figure>
 
     <figure class="case-fig">
@@ -285,7 +528,7 @@ const learnings = [
 
     <h3 class="sec-subhead">A rule builder for two audiences: visual for most, syntax for the advanced.</h3>
     <p class="sec-body">
-      I renamed cryptic HR attributes for non-technical authors and cut the default list by more than half. The live syntax view validates complex logic as it’s built.
+      I renamed cryptic HR attributes for non-technical authors and only 9 of 39 attributes shipped unchanged. The live syntax view validates complex logic as it’s built.
     </p>
     <div class="ep-renames" aria-label="Attribute renames">
       {renameChips.map((r) => (
@@ -298,7 +541,7 @@ const learnings = [
     </div>
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-rule-builder.png" alt="Create Dynamic Group: visual rule builder with live rule syntax view" />
-      <figcaption>Create Dynamic Group: visual expressions with a live syntax preview</figcaption>
+      <figcaption>Two audiences, one builder — non-technical authors compose visually while power users validate in syntax, after cutting the default attribute list by half</figcaption>
     </figure>
   </section>
 
@@ -315,12 +558,38 @@ const learnings = [
     </div>
     <figure class="case-fig bare">
       <img src="/images/enterprise-permissions/cascade-permissions.png" alt="Apply Permissions: explicit add-parent and replace-child inheritance actions with confirmation" />
-      <figcaption>Update child pages: add parent groups, or replace child groups, each with a confirmation</figcaption>
+      <figcaption>Inheritance is a decision, not a default — every cascade is confirmed, visible, and reversible</figcaption>
+    </figure>
+    <figure class="case-fig bare">
+      <img src="/images/enterprise-permissions/ep-cascade-flow.png" alt="Cascade task flow from Apply Permissions through child pages dashboard and back to Apply Permissions Details" />
+      <figcaption>The cascade path end to end — every step an author takes to push parent access down, none of it automatic</figcaption>
     </figure>
     <div class="case-card" style="margin-top:16px">
       <div class="case-card-label">Open unless compliance says otherwise</div>
       <div class="case-card-body">Content is open by default and locked down only where compliance requires it, so most of the intranet stays usable without maintaining permissions on every page.</div>
     </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">SYSTEM + SCALE</div>
+    <h2 class="sec-heading">50+ screens, ~5 flows, one component system.</h2>
+    <p class="sec-body">
+      Scope shifted constantly across the cycle. Variant architecture let new compositions absorb that change without redesigning the underlying system each time.
+    </p>
+    <figure class="case-fig bare ep-system-wide">
+      <img src="/images/enterprise-permissions/ep-system-iterations.png" alt="Iterations board with dozens of permission screens organized in color-coded swim lanes" />
+      <figcaption>50+ screens across ~5 core flows, built on one component system — so shifting scope meant new compositions, not new design work</figcaption>
+    </figure>
+    <figure class="case-fig bare">
+      <img src="/images/enterprise-permissions/ep-system-handoff.png" alt="Sprint 1 UX handoff showing two numbered Group Management workstreams with annotated screens" />
+      <figcaption>Sprint handoff: annotated screens, requirements, and dev notes — scoped in two-week windows</figcaption>
+    </figure>
+    <p class="sec-body">
+      Permissions apply at page level and component level, with globals responding inherently so authors don’t re-permission every surface by hand.
+    </p>
+    <p class="sec-body">
+      Adoption safeguards include threshold warnings on large dynamic group updates before they sync overnight.
+    </p>
   </section>
 
   <section class="sec ep-impact">
@@ -361,13 +630,16 @@ const learnings = [
 
 <style>
   /*
-    §5 placeholder → site token aliases (scoped to diagram / future Phase 1 artifacts).
+    §5 placeholder → site token aliases
     --panel → #fff | --bg → #fff | --mag → --accent-dark | --mag-bg → --accent-tint
-    --admin → --blue-dark | --author → --green-dark | lane tints match case accentTint pattern
+    --admin → --blue-dark | --author → --green-dark
+    --keep → currentColor (not green — avoids colliding with author lane)
   */
   .ep-loop,
-  .ep-diagram {
+  .ep-diagram,
+  .ep-attr-inv {
     --panel: #fff;
+    --panel-2: #F5F6F7;
     --bg: #FFFFFF;
     --mag: var(--accent-dark);
     --mag-bg: var(--accent-tint);
@@ -375,16 +647,23 @@ const learnings = [
     --admin-bg: rgba(95, 168, 232, 0.12);
     --author: var(--green-dark);
     --author-bg: rgba(124, 227, 139, 0.12);
-    --keep: var(--green-dark);
-    --keep-bg: rgba(124, 227, 139, 0.12);
+    --keep: currentColor;
+    --keep-bg: rgba(29, 42, 51, 0.08);
+    --cut: var(--red);
+    --rule: rgba(29, 42, 51, 0.12);
+    --rule-2: rgba(29, 42, 51, 0.08);
+    --ink-3: var(--muted-2);
+    --mono: var(--font-mono);
   }
 
-  .ep-loop {
+  .ep-loop,
+  .ep-group-model {
     margin: 22px 0 0;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .ep-loop svg {
+  .ep-loop svg,
+  .ep-group-model svg {
     display: block;
     max-width: 100%;
     height: auto;
@@ -392,12 +671,125 @@ const learnings = [
     color: var(--ink);
     font-family: var(--font-heading);
   }
-  .ep-loop figcaption {
+  .ep-loop figcaption,
+  .ep-group-model figcaption {
     font-family: var(--font-body);
     font-size: 13px;
     color: var(--muted-2);
     line-height: 1.5;
     margin-top: 12px;
+  }
+
+  .ep-attr-inv { margin-top: 22px; }
+  .attr-stats {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--panel);
+    margin: 0 0 22px;
+  }
+  .attr-stats > div {
+    flex: 1 1 130px;
+    padding: 15px 17px;
+    border-right: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+  }
+  .attr-stats > div:last-child { border-right: 0; }
+  .attr-stats .l {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 6px;
+  }
+  .attr-stats .v {
+    font-size: 22px;
+    font-weight: 650;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .attr-stats .s {
+    font-size: 12.5px;
+    color: var(--ink-3);
+    margin-top: 3px;
+    line-height: 1.35;
+  }
+
+  .inv {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--panel);
+    margin: 0;
+  }
+  .inv-h {
+    display: flex;
+    background: var(--panel-2);
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .inv-h div {
+    flex: 1;
+    padding: 11px 16px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .inv-h div:first-child { border-right: 1px solid var(--rule); }
+  .grp { border-bottom: 1px solid var(--rule); }
+  .grp:last-child { border-bottom: 0; }
+  .grp-l {
+    padding: 9px 16px;
+    background: var(--panel-2);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .grp.cut .grp-l { color: var(--cut); }
+  .grp.ren .grp-l { color: var(--author); }
+  .grp.kept .grp-l { color: var(--ink); }
+  .row {
+    display: flex;
+    border-top: 1px solid var(--rule-2);
+    font-size: 13.5px;
+  }
+  .row div {
+    flex: 1;
+    padding: 8px 16px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .row div:first-child {
+    border-right: 1px solid var(--rule-2);
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+  .cut .row div:first-child {
+    text-decoration: line-through;
+    text-decoration-color: var(--cut);
+    text-decoration-thickness: 1.5px;
+    color: var(--ink-3);
+  }
+  .cut .row div:last-child { color: var(--ink-3); font-style: italic; }
+  .ren .row div:last-child { font-weight: 600; }
+  .kept .row div:last-child { color: var(--ink-3); }
+
+  .ep-system-wide img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    object-position: left center;
   }
 
   .ep-taxonomy { margin-top: 22px; }
