@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sam Lucia · Product Designer (Homepage v3 exploration)</title>
+  <meta name="description" content="Homepage v3 pastel exploration from Figma portfolio-v10." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --ink: #1c1b1f;
+      --muted: #6e6c75;
+      --border: #e2dcd5;
+      --green: #3fa37e;
+      --green-soft: #e9efe6;
+      --green-badge: #e1f2ee;
+      --green-log: #eaf4ee;
+      --green-log-border: #c5e2dc;
+      --purple: #7d68b3;
+      --purple-soft: #efeaf5;
+      --pink: #e39aa4;
+      --white: #fff;
+      --shadow-card: 0 16px 32px rgba(47, 42, 36, 0.07);
+      --shadow-shot: 0 24px 48px rgba(47, 42, 36, 0.07);
+      --shadow-soft: 0 8px 16px rgba(47, 42, 36, 0.07);
+      --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --pad-x: clamp(24px, 5vw, 80px);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Nav */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px var(--pad-x);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .nav-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+    }
+    .nav-links a { color: var(--muted); font-weight: 500; }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--ink); font-weight: 600; }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 460px);
+      gap: clamp(32px, 5vw, 64px);
+      align-items: center;
+      padding: clamp(48px, 8vw, 96px) var(--pad-x);
+    }
+    .hero-copy h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4.2vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .hero-lead {
+      margin: 24px 0 0;
+      font-size: clamp(1rem, 1.4vw, 1.125rem);
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 42ch;
+    }
+
+    .stats-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .stats-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .stats-id {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 3px rgba(63, 163, 126, 0.2);
+    }
+    .exp-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      background: var(--green-badge);
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+    .stats-divider {
+      height: 1px;
+      background: var(--border);
+      width: 100%;
+    }
+    .stat-row { display: flex; flex-direction: column; gap: 4px; }
+    .stat-row + .stat-row { margin-top: 14px; }
+    .stat-k {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stat-v {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .system-log {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-log);
+      border: 1px solid var(--green-log-border);
+      border-radius: 10px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--green);
+    }
+    .system-log img {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Shared section bits */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .section-title {
+      margin: 12px 0 0;
+      font-size: clamp(1.75rem, 3vw, 2.375rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .section-sub {
+      margin: 12px 0 0;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 48ch;
+    }
+
+    /* Full-bleed section band: bg edge-to-edge, content stays page-width */
+    .cases,
+    .expertise {
+      width: 100vw;
+      max-width: 100vw;
+      margin-left: calc(50% - 50vw);
+      box-sizing: border-box;
+      padding-left: max(var(--pad-x), calc((100vw - 1440px) / 2 + var(--pad-x)));
+      padding-right: max(var(--pad-x), calc((100vw - 1440px) / 2 + var(--pad-x)));
+    }
+
+    /* Cases */
+    .cases {
+      background: var(--green-soft);
+      padding-top: clamp(64px, 10vw, 120px);
+      padding-bottom: clamp(64px, 10vw, 120px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(64px, 10vw, 120px);
+    }
+    .cases-list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(56px, 8vw, 100px);
+    }
+    .case-row {
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 680px);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: center;
+      color: inherit;
+    }
+    .case-row:hover .case-name { text-decoration: underline; text-underline-offset: 4px; }
+    .case-row:hover .case-shot { transform: translateY(-2px); }
+    .case-row.reverse {
+      grid-template-columns: minmax(280px, 680px) 1fr;
+    }
+    .case-row.reverse .case-copy { order: 2; }
+    .case-row.reverse .case-shot { order: 1; }
+    .case-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .case-meta .org { font-weight: 700; }
+    .case-meta .year { color: var(--muted); font-weight: 400; }
+    .case-meta .sep {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #c8c4bc;
+    }
+    .case-metric {
+      margin-top: 24px;
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .case-metric-label {
+      margin-top: 4px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .case-name {
+      margin: 24px 0 0;
+      font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .case-body {
+      margin: 12px 0 0;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .case-shot {
+      position: relative;
+      height: clamp(300px, 42vw, 460px);
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-shot);
+      overflow: hidden;
+      background: #f3f0ea;
+      transition: transform .2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .case-shot > img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 10px;
+    }
+    .case-shot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Real EP screens in layered browser frames */
+    .case-shot.ep-stack {
+      position: relative;
+      display: block;
+      padding: 28px 24px 24px;
+      background:
+        radial-gradient(ellipse at 30% 0%, rgba(63,163,126,.14), transparent 55%),
+        linear-gradient(160deg, #e8efe9 0%, #f4f1ec 100%);
+      overflow: hidden;
+    }
+    .browser {
+      background: #fff;
+      border: 1px solid rgba(47,42,36,.12);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(47,42,36,.14);
+    }
+    .browser-chrome {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      height: 22px;
+      padding: 0 10px;
+      background: #f3f0ea;
+      border-bottom: 1px solid rgba(47,42,36,.08);
+    }
+    .browser-chrome span {
+      width: 7px; height: 7px; border-radius: 50%; background: #d5cfc6;
+    }
+    .browser-chrome span:first-child { background: #e39aa4; }
+    .browser-chrome span:nth-child(2) { background: #e0ac2c; }
+    .browser-chrome span:nth-child(3) { background: #3fa37e; }
+    .browser img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: cover;
+      object-position: top left;
+      border-radius: 0;
+    }
+    .browser.back {
+      position: absolute;
+      width: 56%;
+      top: 14%;
+      left: 3%;
+      transform: rotate(-3.5deg);
+      opacity: .9;
+      z-index: 1;
+    }
+    .browser.detail {
+      position: absolute;
+      width: 46%;
+      top: 10%;
+      right: 2%;
+      transform: rotate(4deg);
+      opacity: .93;
+      z-index: 2;
+    }
+    .browser.front {
+      position: relative;
+      width: 76%;
+      margin: 12% auto 0;
+      z-index: 3;
+      box-shadow: 0 24px 48px rgba(47,42,36,.22);
+    }
+    .browser.front img { max-height: 320px; }
+
+    /* Site Architecture — diagram/product shot, no fake browser chrome */
+    .case-shot.sa-stack {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background:
+        radial-gradient(ellipse at 70% 0%, rgba(227,154,164,.18), transparent 55%),
+        linear-gradient(160deg, #f3e9eb 0%, #f7f2ee 100%);
+      overflow: hidden;
+    }
+    .case-shot.sa-stack::after { display: none; }
+    .case-shot.sa-stack > img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 10px;
+      box-shadow: 0 18px 40px rgba(47,42,36,.16);
+    }
+
+    /* Workspot-style phone fan */
+    .case-shot.phones {
+      gap: 0;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(125,104,179,.22), transparent 55%),
+        linear-gradient(180deg, #f0eaf8 0%, #e4dcf0 100%);
+      padding: 36px 20px 28px;
+      overflow: visible;
+    }
+    .phone {
+      position: relative;
+      width: clamp(100px, 15vw, 138px);
+      aspect-ratio: 9 / 19.4;
+      border-radius: 28px;
+      background: #0c0a14;
+      border: 3px solid #1a1628;
+      box-shadow:
+        0 24px 48px rgba(47,42,36,.22),
+        inset 0 0 0 1px rgba(255,255,255,.12);
+      overflow: hidden;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .phone .island {
+      position: absolute;
+      top: 9px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 38%;
+      height: 11px;
+      border-radius: 999px;
+      background: #05040a;
+      z-index: 3;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .phone img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 0;
+    }
+    .phone.tilt-left {
+      transform: translate(22px, 10px) rotate(-11deg) scale(.9);
+      z-index: 1;
+    }
+    .phone.tilt-right {
+      transform: translate(-22px, 10px) rotate(11deg) scale(.9);
+      z-index: 1;
+    }
+    .phone.center {
+      width: clamp(118px, 17.5vw, 158px);
+      z-index: 3;
+      border-color: #2a2440;
+      box-shadow:
+        0 28px 56px rgba(47,42,36,.28),
+        inset 0 0 0 1px rgba(255,255,255,.14);
+    }
+
+    .case-row[data-accent="green"] .case-meta .org,
+    .case-row[data-accent="green"] .case-metric { color: var(--green); }
+    .case-row[data-accent="green"] .case-shot::after { background: rgba(63, 163, 126, 0.04); }
+    .case-row[data-accent="purple"] .case-meta .org,
+    .case-row[data-accent="purple"] .case-metric { color: var(--purple); }
+    .case-row[data-accent="purple"] .case-shot::after { background: rgba(125, 104, 179, 0.04); }
+    .case-row[data-accent="pink"] .case-meta .org,
+    .case-row[data-accent="pink"] .case-metric { color: var(--pink); }
+    .case-row[data-accent="pink"] .case-shot::after { background: rgba(227, 154, 164, 0.04); }
+
+    /* Expertise */
+    .expertise {
+      background: var(--purple-soft);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding-top: clamp(56px, 8vw, 96px);
+      padding-bottom: clamp(56px, 8vw, 96px);
+    }
+    .expertise .eyebrow { color: var(--purple); }
+    .cap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(20px, 3vw, 48px);
+      margin-top: 48px;
+    }
+    .cap-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+    }
+    .cap-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 24px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .cap-title img {
+      width: 18px;
+      height: 18px;
+    }
+    .cap-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .cap-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+    .cap-list .chev {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--purple);
+      flex-shrink: 0;
+      line-height: 1.5;
+    }
+
+    /* Playground */
+    .playground {
+      padding: clamp(64px, 10vw, 120px) var(--pad-x);
+    }
+    .playground .eyebrow { color: var(--pink); }
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .project-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      min-height: 280px;
+      transition: transform .18s ease;
+    }
+    .project-card:hover { transform: translateY(-3px); }
+    .project-thumb {
+      height: 160px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      background: #f3f0ea;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center top;
+    }
+    .project-thumb.phone img {
+      width: auto;
+      max-width: 46%;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(47, 42, 36, 0.14);
+    }
+    .project-thumb.cover img {
+      object-fit: cover;
+      border-radius: 0;
+      max-width: none;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
+    .project-thumb.element {
+      padding: 0;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.55), transparent 55%),
+        var(--element-bg, #e9efe6);
+    }
+    .project-element {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      height: 100%;
+    }
+    .project-element .glyph {
+      width: 28px;
+      height: 28px;
+      background: var(--element-ink, #3fa37e);
+    }
+    .project-element .glyph.triangle {
+      width: 0;
+      height: 0;
+      background: transparent;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-bottom: 28px solid var(--element-ink, #7d68b3);
+    }
+    .project-element .glyph.square {
+      border-radius: 4px;
+      background: var(--element-ink, #c42b25);
+    }
+    .project-element .mark {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: var(--element-ink, #3fa37e);
+    }
+    .project-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .project-card[data-tint="green"] .project-thumb::after { background: rgba(63, 163, 126, 0.05); }
+    .project-card[data-tint="purple"] .project-thumb::after { background: rgba(125, 104, 179, 0.05); }
+    .project-card[data-tint="pink"] .project-thumb::after { background: rgba(227, 154, 164, 0.05); }
+    .project-info { padding: 20px; }
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .project-name {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .project-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .project-card[data-tint="green"] .project-tag { color: var(--green); }
+    .project-card[data-tint="purple"] .project-tag { color: var(--purple); }
+    .project-card[data-tint="pink"] .project-tag { color: var(--pink); }
+    .project-desc {
+      margin: 8px 0 0;
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    /* CTA */
+    .cta-wrap {
+      padding: 0 var(--pad-x) clamp(48px, 6vw, 80px);
+    }
+    .cta {
+      background: var(--purple-soft);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      box-shadow: var(--shadow-card);
+      padding: clamp(48px, 8vw, 96px) clamp(24px, 4vw, 48px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+    .cta-kicker {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--purple);
+    }
+    .cta h2 {
+      margin: 16px 0 0;
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      max-width: 18ch;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      background: var(--purple);
+      color: #111;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 16px 36px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(125, 104, 179, 0.25);
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+    /* Footer */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 48px var(--pad-x);
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 24px;
+      font-size: 13px;
+    }
+    .footer-socials a:hover { color: var(--ink); }
+
+    @media (max-width: 1100px) {
+      .project-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 48px;
+        padding-bottom: 64px;
+      }
+      .case-row,
+      .case-row.reverse {
+        grid-template-columns: 1fr;
+      }
+      .case-row.reverse .case-copy,
+      .case-row.reverse .case-shot { order: unset; }
+      .cap-grid { grid-template-columns: 1fr; }
+       .browser.back, .browser.detail { display: none; }
+      .browser.front { width: 92%; left: 4%; bottom: 8%; position: relative; }
+      .phone.tilt-left, .phone.tilt-right { display: none; }
+      .phone.center { width: min(168px, 46vw); }
+    }
+    @media (max-width: 640px) {
+      .project-grid { grid-template-columns: 1fr; }
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .stats-head { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        Sam Lucia
+        <span class="nav-dot" aria-hidden="true"></span>
+      </a>
+      <div class="nav-links">
+        <a href="#work" class="active">Work</a>
+        <a href="#expertise">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>I design products and experiences for complex, information-heavy environments.</h1>
+        <p class="hero-lead">My background spans UX/UI design, product management, and business systems, giving me a view across how products are planned, built, shipped, and operated.</p>
+      </div>
+
+      <aside class="stats-card" aria-label="Player stats">
+        <div class="stats-head">
+          <div class="stats-id">
+            <span class="status-dot" aria-hidden="true"></span>
+            PLAYER_STATS.INI
+          </div>
+          <span class="exp-badge">EXP: 5 YRS</span>
+        </div>
+        <div class="stats-divider"></div>
+        <div>
+          <div class="stat-row">
+            <span class="stat-k">Experience</span>
+            <span class="stat-v">T-Mobile (Product Designer, 2024-2025) &amp; UW-IT (UX Designer, 2021-2024)</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-k">Base_Coord</span>
+            <span class="stat-v">Seattle, WA // Pacific Northwest</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-k">Class_Type</span>
+            <span class="stat-v">Complex Systems &amp; Enterprise Tools</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-k">Loadout</span>
+            <span class="stat-v">Figma, prototyping, system-architecture, front-end</span>
+          </div>
+        </div>
+        <div class="system-log">
+          <img src="/images/explorations/v3/icon-terminal.svg" alt="" width="14" height="14" />
+          <span>STATUS: ready_for_the_next_quest</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="cases" id="work">
+      <header>
+        <p class="eyebrow" style="color: var(--green)">
+          <span class="dot" style="background: var(--green)"></span>
+          Selected Cases
+        </p>
+        <h2 class="section-title">High-impact system design</h2>
+        <p class="section-sub">Real-world results delivered across highly challenging data domains.</p>
+      </header>
+
+      <div class="cases-list">
+        <a class="case-row" data-accent="green" href="/work/enterprise-permissions/">
+          <div class="case-copy">
+            <div class="case-meta">
+              <span class="org">T-MOBILE</span>
+              <span class="sep" aria-hidden="true"></span>
+              <span class="year">2025</span>
+            </div>
+            <div class="case-metric">150K+</div>
+            <div class="case-metric-label">active enterprise employees</div>
+            <h3 class="case-name">Enterprise Permissions</h3>
+            <p class="case-body">Redesigned enterprise permissions for 150K+ employees. Re-architected multi-tier administrator panels so access controls can be securely governed directly by operational content teams, bypassing heavy IT backlogs.</p>
+          </div>
+                    <div class="case-shot ep-stack">
+            <div class="browser back">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <img src="/images/enterprise-permissions/ep-apply-permissions-list.png" alt="" />
+            </div>
+            <div class="browser front">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <img src="/images/enterprise-permissions/ep-group-management-list.png" alt="Enterprise Permissions group management" />
+            </div>
+            <div class="browser detail">
+              <div class="browser-chrome"><span></span><span></span><span></span></div>
+              <img src="/images/enterprise-permissions/ep-hero.png" alt="Group detail and activity log" />
+            </div>
+          </div>
+        </a>
+
+        <a class="case-row reverse" data-accent="pink" href="/work/site-architecture/">
+          <div class="case-copy">
+            <div class="case-meta">
+              <span class="org">T-MOBILE</span>
+              <span class="sep" aria-hidden="true"></span>
+              <span class="year">2024</span>
+            </div>
+            <div class="case-metric">68%</div>
+            <div class="case-metric-label">reduction in architecture sprawl</div>
+            <h3 class="case-name">Platform Site Architecture</h3>
+            <p class="case-body">Consolidated three legacy product platforms with disjointed structures into one unified architectural system, successfully pruning over 9,000 highly repetitive redundant pages down to 3,000 clean nodes.</p>
+          </div>
+          <div class="case-shot sa-stack">
+            <img src="/images/site-architecture/sa-nav-mvp.png" alt="Unified platform navigation MVP reflecting the IA" />
+          </div>
+        </a>
+
+        <a class="case-row" data-accent="purple" href="/work/scamranger/">
+          <div class="case-copy">
+            <div class="case-meta">
+              <span class="org">RANGERSAI</span>
+              <span class="sep" aria-hidden="true"></span>
+              <span class="year">2026</span>
+            </div>
+            <div class="case-metric">Bank-ready</div>
+            <div class="case-metric-label">approved for first-client testing</div>
+            <h3 class="case-name">ScamRanger</h3>
+            <p class="case-body">Fraud protection rebuilt for the people fraud actually targets. Audited the live app, raised the accessibility bar, and shipped a tighter system across onboarding, home, and learning.</p>
+          </div>
+                    <div class="case-shot phones">
+            <div class="phone tilt-left">
+              <div class="island"></div>
+              <img src="/images/scamranger/learn-hub.png" alt="" />
+            </div>
+            <div class="phone center">
+              <div class="island"></div>
+              <img src="/images/scamranger/home.png" alt="ScamRanger home" />
+            </div>
+            <div class="phone tilt-right">
+              <div class="island"></div>
+              <img src="/images/scamranger/onb-paywall.png" alt="" />
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="expertise" id="expertise">
+      <header>
+        <p class="eyebrow">
+          <span class="dot" style="background: var(--purple)"></span>
+          Expertise
+        </p>
+        <h2 class="section-title">Strategic Execution</h2>
+      </header>
+
+      <div class="cap-grid">
+        <div class="cap-card">
+          <h3 class="cap-title">
+            <img src="/images/explorations/v3/icon-layout.svg" alt="" width="18" height="18" />
+            Where I Create Impact
+          </h3>
+          <ul class="cap-list">
+            <li><span class="chev">&gt;&gt;</span><span>Complex enterprise B2B SaaS &amp; tools</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Information architecture &amp; wayfinding systems</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Cross-platform software consolidation</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Enterprise content management workflows</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Telemetry dashboards &amp; data-heavy domain UI</span></li>
+          </ul>
+        </div>
+        <div class="cap-card">
+          <h3 class="cap-title">
+            <img src="/images/explorations/v3/icon-microchip.svg" alt="" width="18" height="18" />
+            How I Deliver Impact
+          </h3>
+          <ul class="cap-list">
+            <li><span class="chev">&gt;&gt;</span><span>End-to-end user experience &amp; visual design</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Systems thinking &amp; structural wayfinding</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Cross-functional strategic alignment</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Production-grade front-end development support</span></li>
+            <li><span class="chev">&gt;&gt;</span><span>Translating complex logic into elegant systems</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="playground" id="playground">
+      <header>
+        <p class="eyebrow">
+          <span class="dot" style="background: var(--pink)"></span>
+          Playground
+        </p>
+        <h2 class="section-title">Side Projects &amp; Experiments</h2>
+      </header>
+
+      <div class="project-grid">
+        <a class="project-card" data-tint="green" href="https://easychineselearning-rosy.vercel.app/welcome" target="_blank" rel="noopener">
+          <div class="project-thumb cover">
+            <img src="/images/explorations/v3/thumb-easychinese.png" alt="Easy Chinese vocabulary app" />
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <h3 class="project-name">Easy Chinese</h3>
+              <span class="project-tag">LANGUAGE APP</span>
+            </div>
+            <p class="project-desc">Gamified character learning via high-fidelity custom visual flashcards.</p>
+          </div>
+        </a>
+
+        <a class="project-card" data-tint="purple" href="https://www.claimrunner.ai/" target="_blank" rel="noopener">
+          <div class="project-thumb element" style="--element-bg:#efeaf5;--element-ink:#7d68b3">
+            <div class="project-element">
+              <span class="glyph triangle" aria-hidden="true"></span>
+              <span class="mark">CLAIMRUNNER</span>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <h3 class="project-name">ClaimRunner</h3>
+              <span class="project-tag">AI STARTUP</span>
+            </div>
+            <p class="project-desc">Automatic medical insurance billing claim visual assistant for small practices.</p>
+          </div>
+        </a>
+
+        <a class="project-card" data-tint="green" href="/work/myintake/">
+          <div class="project-thumb">
+            <img src="/images/landing-hero.png" alt="MyIntake landing" />
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <h3 class="project-name">MyIntake</h3>
+              <span class="project-tag">HEALTH PROFILE</span>
+            </div>
+            <p class="project-desc">A clinic-scannable health profile designed and built solo in 14 days.</p>
+          </div>
+        </a>
+
+        <a class="project-card" data-tint="pink" href="https://tanksvscats-psi.vercel.app/" target="_blank" rel="noopener">
+          <div class="project-thumb element" style="--element-bg:#f8e9e8;--element-ink:#c42b25">
+            <div class="project-element">
+              <span class="glyph square" aria-hidden="true"></span>
+              <span class="mark">TANKS!</span>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <h3 class="project-name">Tanks!</h3>
+              <span class="project-tag">BROWSER GAME</span>
+            </div>
+            <p class="project-desc">A nostalgic retro 2D tank battle shooter built using custom HTML Canvas.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <div class="cta-wrap" id="contact">
+      <section class="cta">
+        <div>
+          <p class="cta-kicker">Let's work together</p>
+          <h2>Let's build something people love to use.</h2>
+        </div>
+        <a class="cta-btn" href="mailto:samuel.d.lucia@gmail.com">GET_IN_TOUCH@SAM.DESIGN</a>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <span class="footer-copy">© 2026 SAM LUCIA. ALL RIGHTS SECURED.</span>
+      <div class="footer-socials">
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.figma.com/" target="_blank" rel="noopener">Figma</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
