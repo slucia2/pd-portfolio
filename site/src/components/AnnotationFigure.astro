@@ -24,7 +24,7 @@ interface Props {
 
 const { src, alt, caption, pins = [], items = [] } = Astro.props;
 ---
-<figure class="case-fig bare ep-anno-fig">
+<figure class="case-fig ep-anno-fig">
   <div class="anno">
     <div class="anno-img">
       <img src={src} alt={alt} />
@@ -65,19 +65,17 @@ const { src, alt, caption, pins = [], items = [] } = Astro.props;
     max-width: 100%;
     margin: 0 auto;
   }
-  /* No second frame — exports already include their own card chrome.
-     Light hold so dark page themes don't tint the product UI. */
+  /* Match global .case-fig img outline (border on the image, not a clipped wrapper) */
   .anno-img {
     position: relative;
-    overflow: hidden;
     background: #fff;
   }
   .anno-img img {
     display: block;
     width: 100%;
     height: auto;
-    border: none !important;
-    border-radius: 0 !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
     background: #fff;
   }
   .pin {
