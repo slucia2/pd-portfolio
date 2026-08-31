@@ -1,19 +1,12 @@
 ---
 /**
- * Enterprise Permissions case study.
+ * Enterprise Permissions case study (docs/PERMISSIONS-REBUILD.md).
  */
 import CaseStudy from '../../layouts/CaseStudy.astro';
 import { cases } from '../../data/cases';
 
 const c = cases.find((x) => x.slug === 'enterprise-permissions')!;
 const next = cases.find((x) => x.slug === 'myintake')!;
-
-const groupTaxonomy = [
-  { name: 'Dynamic', when: 'Launch · default', text: 'Membership from attribute rules, e.g. all People Managers. Updates save immediately, membership syncs overnight.' },
-  { name: 'Exception', when: 'Launch · expiring', text: 'Manual members for contractors and short-lived needs. Must renew to meet cyber policy. Owners get notified as the date nears.' },
-  { name: 'Bulk dynamic', when: 'Later · at scale', text: 'One rule set, many groups: a group for every value of an attribute (e.g. each store, or HR in each state), instead of building them one by one.' },
-  { name: 'Nested', when: 'Later · reuse', text: 'Compose groups and individuals into one audience. Reuse dynamics without rewriting rules.' },
-];
 
 const researchInsights = [
   { label: 'FAMILIAR CONVENTIONS', text: 'Admins expect groups, roles, and inheritance language from SharePoint and Azure, but not admin-console complexity.' },
@@ -22,29 +15,88 @@ const researchInsights = [
   { label: 'OPAQUE DATA', text: 'HR attributes read like database columns. I inventoried the UXP attribute set and cut/renamed the defaults so authors could build rules without decoding fields.' },
 ];
 
-const flow = [
-  { phase: '01 · DEFINE', title: 'Admins create reusable groups', text: 'Dynamic rules for steady audiences, exception groups for temporary access. Ownership and expiration are required, not optional.', chip: 'GROUP MANAGEMENT' },
-  { phase: '02 · APPLY', title: 'Authors permission pages at publish', text: 'Search pages, see publish and permission status, then apply the right groups before go-live, without an IT ticket.', chip: 'APPLY PERMISSIONS' },
-  { phase: '03 · CASCADE', title: 'Inheritance stays a deliberate choice', text: 'Parent access can flow to child pages only when an author confirms it. Visible, reversible, auditable.', chip: 'EXPLICIT ACTION' },
-  { phase: '04 · GOVERN', title: 'Exceptions renew or expire', text: 'Temporary access escalates as the deadline nears, then locks past renewal, so sprawl cannot quietly accumulate.', chip: 'BUILT-IN EXPIRY' },
+const researchFindings = [
+  { text: "There's no way to see all permissions applied across all sites in one place." },
+  { text: "If you break inheritance at one level, it's impossible to tell, and it breaks all nested pages as well." },
+  { text: "I have to wait for days to get access changed. Sometimes that impacts publishing workflows, or the visibility needed for testing and leadership." },
+  { text: "It's hard to be sure whether site and page access is content compliant." },
+];
+const researchTools = [
+  {
+    name: 'Airtable',
+    src: '/images/enterprise-permissions/research-airtable.png',
+    alt: 'Airtable nested AND/OR condition groups for filtering records',
+    notes: [
+      'Visual AND/OR condition nesting. Good model for our dynamic rule creator.',
+      'Progressive add-condition pattern keeps it approachable. Users build complexity as needed.',
+    ],
+  },
+  {
+    name: 'Azure AD',
+    src: '/images/enterprise-permissions/research-azure.png',
+    alt: 'Azure AD dynamic membership rules with simple and advanced rule tabs',
+    notes: [
+      'Simple vs. advanced rule toggle. Guided builder for most users, raw expressions as an escape hatch.',
+      'Dynamic group membership based on attribute rules. Informed our auto-assignment approach.',
+    ],
+  },
+  {
+    name: 'SharePoint',
+    src: '/images/enterprise-permissions/research-sharepoint.png',
+    alt: 'SharePoint permissions list with groups, users, and named permission levels',
+    notes: [
+      'Groups and individuals in one list with named permission levels. Clean reference for apply permissions.',
+      'Named roles (Full Control, View Only) over checkbox grids. Less cognitive load.',
+    ],
+  },
+  {
+    name: 'Azure Groups',
+    src: '/images/enterprise-permissions/research-azure-groups.png',
+    alt: 'Azure All groups overview with type and membership type columns',
+    notes: [
+      'All groups overview with type labels (Microsoft 365, Security) and membership type (Assigned, Dynamic).',
+      'Filtering and search built into the list. Reference for our manage groups view.',
+    ],
+  },
 ];
 
-const renameChips = [
-  { from: 'People_manager_flag', to: 'People Manager' },
-  { from: 'Leader_2', to: 'Employee Level' },
-  { from: 'Wrk_loc_cd', to: 'Work Location' },
+/* Surface names live in the loop diagram lane labels (§5.1); step chips removed per §4.6 */
+const flow = [
+  { phase: '01 · DEFINE', title: 'Admins create reusable groups', text: 'Dynamic rules for steady audiences, exception groups for temporary access. Ownership and expiration are required, not optional.' },
+  { phase: '02 · APPLY', title: 'Authors permission pages at publish', text: 'Search pages, see publish and permission status, then apply the right groups before go-live, without an IT ticket.' },
+  { phase: '03 · CASCADE', title: 'Inheritance stays a deliberate choice', text: 'Parent access can flow to child pages only when an author confirms it. Visible, reversible, auditable.' },
+  { phase: '04 · GOVERN', title: 'Exceptions renew or expire', text: 'Temporary access escalates as the deadline nears, then locks past renewal, so sprawl cannot quietly accumulate.' },
+];
+
+const renameRows = [
+  { from: 'Leader 0 Email', to: 'Employee - CEO' },
+  { from: 'Leader 3 Email', to: 'Employee - VP' },
+  { from: 'Leader 8 Email', to: 'Employee - Manager' },
+  { from: 'Employee Type', to: 'Pay Type' },
+  { from: 'Department', to: 'Functional Group' },
 ];
 
 const resultHighlights = [
-  { stat: '3,000+', label: 'pages permissioned in month one · zero admin intervention' },
-  { stat: '~30', label: 'governed groups at steady state' },
-  { stat: '0', label: 'IT tickets for routine access changes' },
+  { stat: '3,000+', label: 'pages permissioned in month one with zero admin overhead' },
+  { stat: '~30', label: 'governed groups active at steady state' },
+  { stat: '0', label: 'IT tickets needed for routine access adjustments' },
 ];
 
 const learnings = [
-  'Governance works when it’s built into the model, not a policy doc.',
-  'Design for the least-technical owner. Safer for everyone, including admins.',
-  'The constraints that mattered most (overnight sync, opaque HR attributes, UI terms that didn’t match the system) I found by testing, not by spec.',
+  'Governance works when it’s built directly into the model, not documented in static policy files.',
+  'Design for the least-technical owner. Gating complexity makes the system safer for everyone, including admins.',
+  'Surfacing the primary constraints (overnight sync, opaque HR attributes, mismatched labels) required testing against live data, not reading them off the spec.',
+];
+const opener = {
+  constraint: 'Access workflows were split across three platforms, and AEM, our new CMS host, had no out-of-the-box permissions management.',
+  problem: 'Every permission change was an IT ticket. Content teams waited days for access they should have been able to grant themselves.',
+  outcome: 'A permission system content teams run themselves: designed, tested, and shipped end to end.',
+};
+
+const topMetrics = [
+  { label: 'SCALE', stat: '150K+', body: 'employees on platform.' },
+  { label: 'MONTH ONE', stat: '3,000+', body: 'pages permissioned by content teams.' },
+  { label: 'ADMIN LOAD', stat: '0', body: 'admin interventions needed.' },
 ];
 ---
 <CaseStudy
@@ -52,44 +104,93 @@ const learnings = [
   intro="Redesigning how 150K+ T-Mobile employees get access to internal tools, owned end-to-end by content teams instead of IT tickets."
   meta={[
     { key: 'ROLE', value: 'Sole designer' },
-    { key: 'YEAR', value: '2025' },
+    { key: 'COMPANY', value: 'T-Mobile' },
+    { key: 'TIMELINE', value: '2025 · 6 months' },
     { key: 'SCOPE', value: '150K+ employees' },
   ]}
   heroAlt="Group Management: group detail with members, applied pages, dynamic rule, and activity log"
-  problem="Every permission change was an IT ticket. Content teams waited days for access they should have been able to grant themselves."
-  outcome="A self-serve permission system content teams run on their own: designed, tested, and shipped as the sole designer."
+  problem={opener.problem}
+  outcome={opener.outcome}
+  hideOpener
 >
-  <section class="sec">
-    <div class="sec-label">THE CONTEXT</div>
-    <h2 class="sec-heading">One intranet for 150,000+ employees, permissions owned by content teams.</h2>
-    <p class="sec-body">
-      Three platforms into one intranet for 150K+ employees. Permissions had to ship with launch, owned by content teams, not an IT queue. I was sole designer and one of two business owners across requirements, the group model, both surfaces, a11y, QA, and onboarding.
-    </p>
-    <div class="case-grid-3">
-      <div class="case-card accent">
-        <div class="case-card-label">SCALE</div>
-        <div class="case-stat-num">150K+</div>
-        <div class="case-card-body">employees on platform.</div>
+  <section class="ep-top">
+    <div class="ep-metric-row">
+      {topMetrics.map((m) => (
+        <div class="ep-metric">
+          <div class="ep-metric-label">{m.label}</div>
+          <div class="ep-metric-stat">{m.stat}</div>
+          <div class="ep-metric-body">{m.body}</div>
+        </div>
+      ))}
+    </div>
+
+    <div class="ep-context-split">
+      <div class="ep-context-main">
+        <div class="sec-label">THE CONTEXT</div>
+        <h2 class="sec-heading">One intranet for 150,000+ employees, permissions owned by content teams.</h2>
+        <p class="sec-body">
+          We were consolidating three platforms into one intranet for 150K+ employees. The support systems around it had to evolve with the platform, not lag behind launch.
+        </p>
+        <p class="sec-body">
+          I owned design and shared product ownership with product and business teams across requirements, testing, and onboarding.
+        </p>
+        <p class="ep-context-partner">Partnered with TPM, technical architect, design systems, and accessibility.</p>
       </div>
-      <div class="case-card accent">
-        <div class="case-card-label">MONTH ONE</div>
-        <div class="case-stat-num">3,000+</div>
-        <div class="case-card-body">pages permissioned by content teams.</div>
-      </div>
-      <div class="case-card accent">
-        <div class="case-card-label">ADMIN LOAD</div>
-        <div class="case-stat-num">0</div>
-        <div class="case-card-body">admin interventions needed.</div>
+      <div class="ep-context-side">
+        <div class="ep-po-card">
+          <div class="ep-po-label">THE CONSTRAINT</div>
+          <p>{opener.constraint}</p>
+        </div>
+        <div class="ep-po-card">
+          <div class="ep-po-label">THE PROBLEM</div>
+          <p>{opener.problem}</p>
+        </div>
+        <div class="ep-po-card">
+          <div class="ep-po-label">THE OUTCOME</div>
+          <p>{opener.outcome}</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec ep-band">
     <div class="sec-label">RESEARCH</div>
     <h2 class="sec-heading">Grounding the model in how permissions already work, and who would run this one.</h2>
     <p class="sec-body">
-      Cross-market analysis (SharePoint, Azure, Airtable) plus interviews with admins, content owners, and compliance, then four constraints that shaped the model:
+      Cross-market analysis (SharePoint, Azure, Airtable) plus interviews with admins, content owners, and compliance.
     </p>
+
+    <h3 class="sec-subhead">What authors were already living with</h3>
+    <p class="ep-quotes-lede">From interviews with content authors, admins, and compliance.</p>
+    <ul class="ep-research-quotes">
+      {researchFindings.map((f) => (
+        <li>
+          <p>{f.text}</p>
+        </li>
+      ))}
+    </ul>
+
+    <h3 class="sec-subhead">Current tools</h3>
+    <p class="sec-body">
+      Each platform had pieces worth borrowing - and each assumed a technical operator.
+    </p>
+    <div class="ep-research-tools">
+      {researchTools.map((t) => (
+        <div class="ep-tool">
+          <div class="ep-tool-shot">
+            <img src={t.src} alt={t.alt} />
+          </div>
+          <div class="ep-tool-name">{t.name}</div>
+          <div class="ep-tool-notes">
+            {t.notes.map((n) => (
+              <p>{n}</p>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <h3 class="sec-subhead">Four constraints that shaped the model</h3>
     <div class="case-grid-2 ep-insights">
       {researchInsights.map((item) => (
         <div class="case-card">
@@ -98,12 +199,6 @@ const learnings = [
         </div>
       ))}
     </div>
-    <div class="case-ridge">
-      <div class="case-ridge-strip">THE DESIGN BAR</div>
-      <div class="case-ridge-body">
-        <div class="case-ridge-heading">Follow the conventions admins already know. Strip the complexity that assumes a technical operator.</div>
-      </div>
-    </div>
   </section>
 
   <section class="sec">
@@ -111,22 +206,67 @@ const learnings = [
     <h2 class="sec-heading">Four group types, each with explicit ownership and expiration, so groups can’t sprawl.</h2>
     <p class="sec-body">Dynamic and exception groups shipped at launch; bulk dynamic and nested groups followed later, by request.</p>
 
-    <div class="ep-taxonomy" aria-label="Group taxonomy">
-      <ul class="case-factors ep-taxonomy-list">
-        {groupTaxonomy.map((g) => (
-          <li class="case-factor">
-            <div class="case-factor-body">
-              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px">
-                <span class="case-card-label" style="margin-bottom:0">{g.name}</span>
-                <span class="case-card-tag">{g.when}</span>
-              </div>
-              <div class="case-card-body">{g.text}</div>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <p class="case-source">Four types · one governance contract · launch vs later</p>
-    </div>
+    <figure class="ep-diagram ep-group-model">
+      <svg viewBox="0 0 1000 520" role="img" aria-label="Group model diagram. A governance bar across the top applies owner-required-at-creation and expiration policy to all four group types. Launch types: Dynamic (attribute rules) and Exception (manual, expiring). Later types: Bulk Dynamic, which generates many dynamic groups from one rule set, and Nested, which composes dynamic and exception groups plus individuals into one audience.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <rect x="60" y="40" width="880" height="52" rx="4" fill="var(--mag-bg)" stroke="var(--mag)" stroke-width="1.5"/>
+        <text x="80" y="63" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--mag)" font-weight="700" letter-spacing="1.2">ONE GOVERNANCE CONTRACT · ALL FOUR TYPES</text>
+        <text x="80" y="81" font-size="12.5" fill="#1D2A33">Owner named at creation · expiration policy attached · membership auditable</text>
+
+        <line x1="180" y1="92" x2="180" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+        <line x1="420" y1="92" x2="420" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+        <line x1="660" y1="92" x2="660" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+        <line x1="860" y1="92" x2="860" y2="128" stroke="var(--mag)" stroke-width="1.2" opacity=".45"/>
+
+        <text x="60" y="146" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--keep)" font-weight="700" letter-spacing="1.2">SHIPPED AT LAUNCH</text>
+        <text x="560" y="146" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="#6B7780" font-weight="700" letter-spacing="1.2">ADDED LATER, BY REQUEST</text>
+        <line x1="60" y1="154" x2="530" y2="154" stroke="var(--keep)" stroke-width="1.5" opacity=".5"/>
+        <line x1="560" y1="154" x2="940" y2="154" stroke="currentColor" stroke-width="1.5" opacity=".25" stroke-dasharray="4 3"/>
+
+        <rect x="60" y="176" width="240" height="118" rx="4" fill="var(--panel)" stroke="var(--keep)" stroke-width="1.8"/>
+        <text x="80" y="203" font-size="16" font-weight="650" fill="#1D2A33">Dynamic</text>
+        <rect x="180" y="189" width="60" height="18" rx="9" fill="var(--keep-bg)"/>
+        <text x="210" y="202" text-anchor="middle" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--keep)" font-weight="700">DEFAULT</text>
+        <text x="80" y="228" font-size="12" fill="#6B7780">Membership from attribute rules</text>
+        <text x="80" y="247" font-size="12" fill="#6B7780">e.g. all People Managers</text>
+        <text x="80" y="275" font-size="11" fill="#6B7780">Saves immediately · syncs overnight</text>
+
+        <rect x="60" y="316" width="240" height="118" rx="4" fill="var(--panel)" stroke="var(--keep)" stroke-width="1.8"/>
+        <text x="80" y="343" font-size="16" font-weight="650" fill="#1D2A33">Exception</text>
+        <rect x="187" y="329" width="66" height="18" rx="9" fill="var(--mag-bg)"/>
+        <text x="220" y="342" text-anchor="middle" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--mag)" font-weight="700">EXPIRING</text>
+        <text x="80" y="368" font-size="12" fill="#6B7780">Manual members - contractors,</text>
+        <text x="80" y="387" font-size="12" fill="#6B7780">testing, short-lived needs</text>
+        <text x="80" y="415" font-size="11" fill="var(--mag)">Must renew or it stops granting access</text>
+
+        <rect x="560" y="176" width="380" height="118" rx="4" fill="var(--panel)" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 3" opacity=".85"/>
+        <text x="580" y="203" font-size="16" font-weight="650" fill="#1D2A33">Bulk dynamic</text>
+        <text x="580" y="228" font-size="12" fill="#6B7780">One rule set generates many groups -</text>
+        <text x="580" y="247" font-size="12" fill="#6B7780">one per value of an attribute</text>
+        <text x="580" y="275" font-size="11" fill="#6B7780">e.g. a group for every store, or HR in each state</text>
+
+        <rect x="560" y="316" width="380" height="118" rx="4" fill="var(--panel)" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 3" opacity=".85"/>
+        <text x="580" y="343" font-size="16" font-weight="650" fill="#1D2A33">Nested</text>
+        <text x="580" y="368" font-size="12" fill="#6B7780">Composes existing groups and individuals</text>
+        <text x="580" y="387" font-size="12" fill="#6B7780">into one audience</text>
+        <text x="580" y="415" font-size="11" fill="#6B7780">Reuse without rewriting rules</text>
+
+        <path d="M 300 224 L 430 224 L 430 214 L 554 214" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5" marker-end="url(#ar2)"/>
+        <text x="428" y="204" text-anchor="middle" font-size="10.5" fill="#6B7780">generates many</text>
+
+        <path d="M 300 262 L 400 262 L 400 366 L 554 366" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5" marker-end="url(#ar2)"/>
+        <path d="M 300 396 L 400 396 L 400 380 L 554 380" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5" marker-end="url(#ar2)"/>
+        <text x="452" y="344" text-anchor="middle" font-size="10.5" fill="#6B7780">composed into</text>
+
+        <text x="60" y="478" font-size="12" fill="#6B7780">The later types add no new governance rules - they compose the launch types, so ownership and expiry carry through.</text>
+      </svg>
+      <figcaption>Four types, one governance contract - ownership and expiration attach at creation, and the two later types compose the first two rather than escaping their rules.</figcaption>
+    </figure>
 
     <h3 class="sec-subhead">Ownership is required at creation, not discovered later in an audit.</h3>
     <p class="sec-body">Every group names its owners up front. That made accountability visible from day one and gave content teams a clear person to ask when access needed to change.</p>
@@ -149,16 +289,81 @@ const learnings = [
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec ep-band">
     <div class="sec-label">HOW IT WORKS</div>
     <h2 class="sec-heading">One loop from group definition to page access, with governance at every step.</h2>
     <p class="sec-body">Admins define reusable audiences. Authors apply them when content ships. Inheritance and expiration keep the system honest after launch.</p>
+
+    <figure class="ep-loop">
+      <svg viewBox="0 0 1000 440" role="img" aria-label="Two-lane process diagram. Admin lane: Define groups. Author lane: Apply permissions, then Cascade to child pages. Govern spans both lanes and returns to Define, closing the loop. Governance gates: ownership required at creation, renew or expire.">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+          </marker>
+          <marker id="arM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--mag)"/>
+          </marker>
+        </defs>
+
+        <rect x="120" y="66" width="800" height="104" rx="3" fill="var(--admin-bg)"/>
+        <rect x="120" y="186" width="800" height="104" rx="3" fill="var(--author-bg)"/>
+
+        <text x="112" y="112" text-anchor="end" font-size="12" font-weight="700" fill="var(--admin)">ADMIN</text>
+        <text x="112" y="129" text-anchor="end" font-size="10.5" fill="#6B7780">Group Management</text>
+        <text x="112" y="232" text-anchor="end" font-size="12" font-weight="700" fill="var(--author)">AUTHOR</text>
+        <text x="112" y="249" text-anchor="end" font-size="10.5" fill="#6B7780">Apply Permissions</text>
+
+        <rect x="150" y="88" width="152" height="60" rx="4" fill="var(--panel)" stroke="var(--admin)" stroke-width="1.5"/>
+        <text x="164" y="108" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--admin)" font-weight="700">01</text>
+        <text x="164" y="127" font-size="15" font-weight="650" fill="#1D2A33">Define</text>
+        <text x="226" y="127" font-size="11" fill="#6B7780">groups</text>
+
+        <rect x="392" y="208" width="152" height="60" rx="4" fill="var(--panel)" stroke="var(--author)" stroke-width="1.5"/>
+        <text x="406" y="228" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--author)" font-weight="700">02</text>
+        <text x="406" y="247" font-size="15" font-weight="650" fill="#1D2A33">Apply</text>
+        <text x="459" y="247" font-size="11" fill="#6B7780">at publish</text>
+
+        <rect x="592" y="208" width="152" height="60" rx="4" fill="var(--panel)" stroke="var(--author)" stroke-width="1.5"/>
+        <text x="606" y="228" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--author)" font-weight="700">03</text>
+        <text x="606" y="247" font-size="15" font-weight="650" fill="#1D2A33">Cascade</text>
+
+        <rect x="800" y="88" width="104" height="180" rx="4" fill="var(--mag-bg)" stroke="var(--mag)" stroke-width="1.5"/>
+        <text x="816" y="112" font-size="11" font-family="var(--font-mono),ui-monospace,monospace" fill="var(--mag)" font-weight="700">04</text>
+        <text x="816" y="132" font-size="15" font-weight="650" fill="#1D2A33">Govern</text>
+        <text x="816" y="152" font-size="10.5" fill="#6B7780">spans both</text>
+        <text x="816" y="167" font-size="10.5" fill="#6B7780">roles</text>
+
+        <path d="M 302 122 L 350 122 L 350 238 L 386 238" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55" marker-end="url(#ar)"/>
+        <text x="356" y="184" font-size="10.5" fill="#6B7780">reusable</text>
+        <text x="356" y="197" font-size="10.5" fill="#6B7780">audiences</text>
+
+        <line x1="544" y1="238" x2="586" y2="238" stroke="currentColor" stroke-width="1.5" opacity=".55" marker-end="url(#ar)"/>
+        <text x="568" y="204" text-anchor="middle" font-size="10.5" fill="#6B7780">parent → child</text>
+
+        <path d="M 744 238 L 772 238 L 772 178 L 794 178" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55" marker-end="url(#ar)"/>
+
+        <path d="M 852 268 L 852 356 L 226 356 L 226 154" fill="none" stroke="var(--mag)" stroke-width="2" marker-end="url(#arM)"/>
+        <rect x="452" y="342" width="176" height="26" rx="3" fill="var(--bg)"/>
+        <text x="540" y="360" text-anchor="middle" font-size="11.5" font-weight="650" fill="var(--mag)">expiry closes the loop</text>
+
+        <line x1="226" y1="88" x2="226" y2="64" stroke="var(--admin)" stroke-width="1.2" opacity=".6"/>
+        <circle cx="226" cy="58" r="4" fill="var(--admin)"/>
+        <text x="226" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="var(--admin)">owner required at creation</text>
+
+        <line x1="852" y1="88" x2="852" y2="64" stroke="var(--mag)" stroke-width="1.2" opacity=".6"/>
+        <circle cx="852" cy="58" r="4" fill="var(--mag)"/>
+        <text x="852" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="var(--mag)">renew or expire</text>
+
+        <text x="150" y="404" font-size="11" fill="#6B7780">No IT ticket at any step.</text>
+      </svg>
+      <figcaption>One loop, two roles: admins define reusable audiences, authors apply them at publish, and expiry closes it back to definition.</figcaption>
+    </figure>
+
     <div class="case-grid-2" style="margin-top:22px">
       {flow.map((step) => (
         <div class="ep-flow-step">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px">
+          <div style="margin-bottom:8px">
             <span class="case-card-label" style="margin-bottom:0">{step.phase}</span>
-            <span class="case-tag accent">{step.chip}</span>
           </div>
           <div class="sec-subhead" style="margin-top:0">{step.title}</div>
           <div class="case-card-body" style="margin-top:8px">{step.text}</div>
@@ -171,19 +376,71 @@ const learnings = [
     <div class="sec-label">TWO SURFACES</div>
     <h2 class="sec-heading">The same group model, shown where each role needs it.</h2>
     <p class="sec-body">
-      Admins start in Group Management: find a group, open details, manage membership and rules. Authors work in Apply Permissions at publish time, with publish and permission status side by side before go-live. The hero above is Group Management in motion.
+      Admins start in Group Management: find a group, open details, manage membership and rules. Authors work in Apply Permissions at publish time, with publish and permission status side by side before go-live.
     </p>
 
     <div class="ep-pair-figs">
       <figure class="case-fig">
         <img src="/images/enterprise-permissions/ep-group-management-dynamic.png" alt="Group Management: group list with New Group menu for Exception, Dynamic, Bulk Dynamic, and Nested" />
-        <figcaption>Admins · Group Management: list, search, and create any group type</figcaption>
+        <figcaption>Admins start here - every group type, every owner, searchable in one view</figcaption>
+      </figure>
+      <figure class="case-fig">
+        <img src="/images/enterprise-permissions/ep-group-management-detail.png" alt="Group Management detail: nested exception group with members, applied pages, activity log, and nested groups table" />
+        <figcaption>Group detail - ownership, expiry, nested groups, and activity in one place</figcaption>
       </figure>
       <figure class="case-fig">
         <img src="/images/enterprise-permissions/ep-apply-permissions-list.png" alt="Apply Permissions: page list with publish status, permission status, and manage actions" />
         <figcaption>Authors · Apply Permissions: publish status and permission status together</figcaption>
       </figure>
+      <figure class="case-fig">
+        <img src="/images/enterprise-permissions/ep-apply-permissions-detail.png" alt="Apply Permissions detail: page metadata, activity log, modify page permissions with groups and update child pages" />
+        <figcaption>Page permissions - which groups apply, who applied them, and controls to update child pages</figcaption>
+      </figure>
     </div>
+  </section>
+
+  <section class="sec ep-band ep-iteration">
+    <div class="sec-label">ITERATION</div>
+    <h2 class="sec-heading">The first two rule builders failed accessibility review. The third borrowed from Salesforce.</h2>
+    <p class="sec-body">
+      The first rule builder exposed three add-buttons whose behavior wasn't obvious even to me, and a table that only allowed rows at the end. I grouped the expressions, moved nesting into a row menu, and darkened the nested signifiers to hit AAA contrast.
+    </p>
+    <p class="sec-body">
+      The accessibility team rejected it anyway - nested blocks weren't traceable by screen readers, the format broke under standard table CSS, and there was no room for validation errors. The fix came from Salesforce's tree grid: collapsible rows for nested values, sized to hold text and errors at a 1200px floor.
+    </p>
+
+    <h3 class="sec-subhead">Built for someone who already knew the schema</h3>
+    <figure class="case-fig ep-shot">
+      <img src="/images/enterprise-permissions/ep-rulebuilder-v1.png" width="998" height="629" alt="Dynamic Rule Creator v1: expression rows with three add-buttons beneath" />
+      <figcaption>v1: the interaction model assumed the operator already understood the data schema</figcaption>
+    </figure>
+
+    <h3 class="sec-subhead">Better interaction, still not accessible</h3>
+    <figure class="case-fig ep-shot">
+      <img src="/images/enterprise-permissions/ep-rulebuilder-v2.png" width="1000" height="709" alt="Bulk Dynamic Rule Creator: For Each row, nested expressions, and open row menu with Nest Expression" />
+      <figcaption>Better, and still not accessible - the table model itself was the problem</figcaption>
+    </figure>
+
+    <h3 class="sec-subhead">What shipped</h3>
+    <figure class="case-fig ep-shot">
+      <img src="/images/enterprise-permissions/ep-rulebuilder-v3.png" width="1000" height="683" alt="Dynamic Rule Creator v3: collapsible nested rows with reserved error space" />
+      <figcaption>Shipped: worked out with the a11y partner, not retrofitted</figcaption>
+    </figure>
+
+    <h3 class="sec-subhead">Labels authors can read, not database columns.</h3>
+    <p class="sec-body">
+      The builder still had to speak HR data. UXP exposed fields like Leader 0-8 with nothing telling an author which one meant VP. I inventoried 39 attributes: cut 15, renamed 15, left 9 unchanged, so rule rows read in plain language. A live syntax view stays available for advanced operators.
+    </p>
+    <div class="ep-rename-table" aria-label="Sample attribute renames">
+      <div class="ep-rename-head"><span>As named in UXP</span><span>What authors see</span></div>
+      {renameRows.map((r) => (
+        <div class="ep-rename-row">
+          <code>{r.from}</code>
+          <strong>{r.to}</strong>
+        </div>
+      ))}
+    </div>
+    <p class="ep-rename-note">+30 more audited across cut, renamed, and kept.</p>
   </section>
 
   <section class="sec">
@@ -208,69 +465,67 @@ const learnings = [
 
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-group-management-filtered.png" alt="Group Management filtered to Dynamic: search, group type and owner filters, and results table" />
-      <figcaption>Management view: search, filters, and table: the same patterns owners use day to day</figcaption>
+      <figcaption>The patterns owners use daily - built for Permissions, not borrowed from a generic library</figcaption>
     </figure>
 
     <figure class="case-fig">
       <img src="/images/enterprise-permissions/ep-bulk-import.png" alt="Create Exception Group: member search, bulk import, toast for invalid rows, and per-row inline validation" />
       <figcaption>Create Exception Group: bulk import keeps valid members and flags bad rows inline</figcaption>
     </figure>
+  </section>
 
-    <h3 class="sec-subhead">A rule builder for two audiences: visual for most, syntax for the advanced.</h3>
+  <section class="sec ep-band">
+    <div class="sec-label">KEY DECISION</div>
+    <h2 class="sec-heading">Inheritance is an explicit author action, never a silent cascade.</h2>
     <p class="sec-body">
-      I renamed cryptic HR attributes for non-technical authors and cut the default list by more than half. The live syntax view validates complex logic as it’s built.
+      Automatic inheritance wasn’t technically feasible at migration scale, and most alternatives were too complex to build or too opaque for authors. Instead, authors choose when parent access flows to child pages, with clear control over which groups apply. Visible, reversible, auditable. A later enhancement let pages inherit from already-permissioned parents, cutting effort further.
     </p>
-    <div class="ep-renames" aria-label="Attribute renames">
-      {renameChips.map((r) => (
-        <div class="ep-rename">
-          <code>{r.from}</code>
-          <span aria-hidden="true">→</span>
-          <strong>{r.to}</strong>
-        </div>
-      ))}
-    </div>
-    <figure class="case-fig">
-      <img src="/images/enterprise-permissions/ep-rule-builder.png" alt="Create Dynamic Group: visual rule builder with live rule syntax view" />
-      <figcaption>Create Dynamic Group: visual expressions with a live syntax preview</figcaption>
+    <figure class="case-fig bare">
+      <img src="/images/enterprise-permissions/cascade-permissions.png" alt="Apply Permissions: explicit add-parent and replace-child inheritance actions with confirmation" />
+      <figcaption>Inheritance is a decision, not a default - every cascade is confirmed, visible, and reversible</figcaption>
     </figure>
+    <p class="sec-body" style="margin-top:22px">
+      Content is open by default and locked down only where compliance requires it, so most of the intranet stays usable without maintaining permissions on every page.
+    </p>
   </section>
 
   <section class="sec">
-    <div class="sec-label">KEY DECISION</div>
-    <div class="case-ridge" style="margin-top:14px">
-      <div class="case-ridge-strip">INHERITANCE AT MIGRATION SCALE</div>
-      <div class="case-ridge-body">
-        <div class="case-ridge-heading">Inheritance is an explicit author action, never a silent cascade.</div>
-        <p class="sec-body">
-          Automatic inheritance wasn’t technically feasible at migration scale, and most alternatives were too complex to build or too opaque for authors. Instead, authors choose when parent access flows to child pages, with clear control over which groups apply. Visible, reversible, auditable. A later enhancement let pages inherit from already-permissioned parents, cutting effort further.
-        </p>
-      </div>
-    </div>
+    <div class="sec-label">SYSTEM + SCALE</div>
+    <h2 class="sec-heading">50+ screens, ~5 flows, one component system.</h2>
+    <p class="sec-body">
+      I built 50+ screens, working through iterations quickly while developing components to keep consistency as we moved toward finalized patterns. That reduced tech debt and made new enhancements faster to ship.
+    </p>
     <figure class="case-fig bare">
-      <img src="/images/enterprise-permissions/cascade-permissions.png" alt="Apply Permissions: explicit add-parent and replace-child inheritance actions with confirmation" />
-      <figcaption>Update child pages: add parent groups, or replace child groups, each with a confirmation</figcaption>
+      <img src="/images/enterprise-permissions/ep-system-iterations.png" alt="Iterations board with dozens of permission screens organized in color-coded swim lanes" />
+      <figcaption>Iterations board - screens organized by flow as the system took shape</figcaption>
     </figure>
-    <div class="case-card" style="margin-top:16px">
-      <div class="case-card-label">Open unless compliance says otherwise</div>
-      <div class="case-card-body">Content is open by default and locked down only where compliance requires it, so most of the intranet stays usable without maintaining permissions on every page.</div>
-    </div>
+    <figure class="case-fig bare">
+      <img src="/images/enterprise-permissions/ep-system-components.png" alt="Annotated component primitives: New group menu, member actions, dynamic rule rows, expression groups, rule syntax, and pagination" />
+      <figcaption>Menus, rule rows, search, and tables - the same primitives composed across every flow</figcaption>
+    </figure>
+    <figure class="case-fig bare">
+      <img src="/images/enterprise-permissions/ep-system-handoff.png" alt="Sprint 1 UX handoff showing two numbered Group Management workstreams with annotated screens" />
+      <figcaption>Sprint handoff: annotated screens, requirements, and dev notes - scoped in two-week windows</figcaption>
+    </figure>
   </section>
 
-  <section class="sec ep-impact">
+  <section class="sec ep-band ep-impact">
     <div class="sec-label">IMPACT</div>
-    <div class="case-grid-3 ep-scan-stats">
+    <h2 class="sec-heading">Model held months after launch. Built to scale safely.</h2>
+    <p class="sec-body">
+      I validated against live HR data before the build finished: SQL, Postman, and cron behavior against real records. That surfaced overnight sync, mismatched attribute labels, and other gaps the spec never mentioned. I wrote the admin/author guides and a failsafe BRD, and onboarded content teams before platform go-live.
+    </p>
+
+    <div class="ep-impact-stats" role="list">
       {resultHighlights.map((h) => (
-        <div class="case-card accent">
-          <div class="case-stat-num">{h.stat}</div>
-          <div class="case-card-body">{h.label}</div>
+        <div class="ep-impact-stat" role="listitem">
+          <div class="ep-impact-stat-num">{h.stat}</div>
+          <div class="ep-impact-stat-label">{h.label}</div>
         </div>
       ))}
     </div>
 
-    <p class="sec-body">
-      Model held months after launch. I did deep manual validation against real HR data (SQL, Postman, cron behavior) before builds were finished. That work surfaced overnight sync, mismatched attribute labels, and other gaps the spec never mentioned. I wrote the admin/author guides and a failsafe BRD, and onboarded content teams before platform go live.
-    </p>
-
+    <h3 class="ep-takeaways-label">Key takeaways</h3>
     <ol class="case-factors ep-learnings">
       {learnings.map((item, i) => (
         <li class="case-factor">
@@ -293,9 +548,540 @@ const learnings = [
 </CaseStudy>
 
 <style>
+  /*
+    §5 placeholder → site token aliases
+    --panel → #fff | --bg → #fff | --mag → --accent-dark | --mag-bg → --accent-tint
+    --admin → --blue-dark | --author → --green-dark
+    --keep → currentColor (not green - avoids colliding with author lane)
+  */
+
+  /*
+    Typography from Figma 128:15001 (size/leading).
+    Column matches nav (--frame-max: 860 / 1100 / 1280). Prose fills the column.
+  */
+  :global(.case-main) {
+    max-width: var(--frame-max);
+  }
+  :global(.case-title) {
+    font-size: 48px;
+    letter-spacing: -1.2px;
+    line-height: 1.08;
+  }
+  :global(.case-intro) {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #5c6066;
+    max-width: none;
+  }
+  :global(.case-meta) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 22px;
+    padding: 16px 20px;
+    background: #f8f8f9;
+    border: 1px solid rgba(29, 42, 51, 0.1);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  :global(.case-meta-item) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 7.5rem;
+    flex: 1 1 0;
+  }
+  :global(.case-meta .k) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--accent-dark);
+  }
+  :global(.case-meta .v) {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  :global(.case-meta .v)::before {
+    content: none;
+  }
+  :global(.case-rule) {
+    display: none; /* meta strip replaces the gold rule */
+  }
+
+  :global(.sec-label) {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    margin-bottom: 14px;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    color: var(--ink);
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+  :global(.sec-label)::before {
+    display: none;
+  }
+  :global(.sec-heading) {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  :global(.sec-subhead) {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-top: 28px;
+  }
+  :global(.sec-body),
+  :global(.sec-subhead + .sec-body),
+  :global(.case-ridge-body .sec-body),
+  :global(.anno-list),
+  :global(.anno-copy),
+  :global(.ep-learnings .case-card-body),
+  :global(.ep-learnings .case-factor-body),
+  :global(.ep-quotes-lede) {
+    max-width: none;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5c6066;
+  }
+  :global(.case-card-body) {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #5c6066;
+  }
+  :global(.case-fig figcaption),
+  :global(.ep-anno-fig figcaption),
+  :global(.ep-loop figcaption),
+  :global(.ep-group-model figcaption) {
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    color: #5c6066 !important;
+    line-height: 1.5 !important;
+    max-width: none;
+  }
+  :global(.case-ridge-heading) {
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  /* —— Alternating section bands: edge-to-edge grey —— */
+  :global(html) {
+    overflow-x: clip;
+  }
+  /* Even vertical rhythm so color switches never land on the last line of copy */
+  :global(.sec) {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+  :global(.sec.ep-band) {
+    background: #f8f8f9;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-left: calc(50vw - 50%);
+    padding-right: calc(50vw - 50%);
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+  /* Last band: grey closes; white breathing room before next-case card */
+  :global(.sec.ep-band.ep-impact) {
+    padding-bottom: 28px;
+  }
+  :global(.case-main > .case-next) {
+    margin-top: 40px;
+  }
+
+  /* —— Top area: metrics + context split —— */
+  .ep-top {
+    margin-top: 36px;
+    padding-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .ep-metric-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) {
+    .ep-metric-row {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+  .ep-metric {
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.1);
+    border-radius: 12px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .ep-metric-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+  }
+  .ep-metric-stat {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .ep-metric-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    color: #5c6066;
+  }
+  .ep-context-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .ep-context-split {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: stretch;
+    }
+  }
+  .ep-context-main .sec-heading {
+    margin-top: 14px;
+  }
+  .ep-context-main .sec-body {
+    margin-top: 16px;
+    max-width: none;
+  }
+  .ep-context-partner {
+    margin: 18px 0 0;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .ep-context-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ep-po-card {
+    background: #f8f8f9;
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .ep-po-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+  }
+  .ep-po-card p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    color: #5c6066;
+  }
+
+  /* Cards: restore gold accent frames — flat grey felt lifeless */
+  :global(.case-card) {
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.12);
+  }
+  :global(.case-card-label) {
+    font-family: var(--font-pixel);
+    color: var(--accent-dark);
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+  :global(.case-card-label)::before {
+    background: var(--accent);
+    border-color: var(--accent-dark);
+  }
+  :global(.case-card.accent) {
+    background: #fff;
+    border: 2px solid var(--accent);
+  }
+  .ep-metric-cards :global(.case-card-label) {
+    color: var(--accent-dark);
+  }
+  .ep-metric-cards :global(.case-stat-num) {
+    font-size: 36px;
+  }
+  :global(.ep-iteration .sec-subhead) {
+    font-size: 16px;
+    margin-top: 32px;
+  }
+  :global(.case-card-tag) {
+    font-size: 11px;
+  }
+  /* IMPACT: heading → proof → quiet stats strip → takeaways */
+  .ep-impact .sec-heading {
+    margin-top: 14px;
+  }
+  .ep-impact .sec-body {
+    margin-top: 14px;
+  }
+  .ep-impact-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 32px;
+    padding: 22px 0;
+    border-top: 1px solid rgba(29, 42, 51, 0.12);
+    border-bottom: 1px solid rgba(29, 42, 51, 0.12);
+  }
+  @media (min-width: 720px) {
+    .ep-impact-stats {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      padding: 26px 0;
+    }
+  }
+  .ep-impact-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  @media (min-width: 720px) {
+    .ep-impact-stat:not(:last-child) {
+      border-right: 1px solid rgba(29, 42, 51, 0.1);
+      padding-right: 28px;
+    }
+  }
+  .ep-impact-stat-num {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .ep-impact-stat-label {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.45;
+    color: #5c6066;
+  }
+  .ep-takeaways-label {
+    margin: 36px 0 0;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 650;
+    color: var(--ink);
+  }
+  :global(.ep-learnings .case-factor-num) {
+    color: var(--accent-dark);
+  }
+  :global(.ep-learnings .case-card-body) {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5c6066;
+  }
+  .ep-learnings { margin-top: 8px; }
+
+  @media (max-width: 760px) {
+    :global(.case-title) { font-size: 34px; letter-spacing: -0.8px; }
+    :global(.sec-heading) { font-size: 26px; }
+    :global(.case-intro),
+    :global(.sec-body) { font-size: 16px; }
+  }
+
+  .ep-loop,
+  .ep-diagram {
+    --panel: #fff;
+    --panel-2: #F5F6F7;
+    --bg: #FFFFFF;
+    --mag: var(--accent-dark);
+    --mag-bg: var(--accent-tint);
+    --admin: var(--blue-dark);
+    --admin-bg: rgba(95, 168, 232, 0.12);
+    --author: var(--green-dark);
+    --author-bg: rgba(124, 227, 139, 0.12);
+    --keep: currentColor;
+    --keep-bg: rgba(29, 42, 51, 0.08);
+    --cut: var(--red);
+    --rule: rgba(29, 42, 51, 0.12);
+    --rule-2: rgba(29, 42, 51, 0.08);
+    --ink-3: var(--muted-2);
+    --mono: var(--font-mono);
+  }
+
+  .ep-loop,
+  .ep-group-model {
+    margin: 22px 0 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ep-loop svg,
+  .ep-group-model svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    color: var(--ink);
+    font-family: var(--font-heading);
+  }
+  .ep-loop figcaption,
+  .ep-group-model figcaption {
+    margin-top: 12px;
+  }
+
+  .ep-system-wide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   .ep-taxonomy { margin-top: 22px; }
   .ep-taxonomy-list { margin-top: 0; }
   .ep-taxonomy-list .case-factor:first-child { border-top: none; }
+
+  .ep-quotes-lede {
+    margin: 14px 0 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5c6066;
+    max-width: none;
+  }
+  /* Editorial quotes — no cards. Left rule + type do the work. */
+  .ep-research-quotes {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px 48px;
+  }
+  @media (min-width: 720px) {
+    .ep-research-quotes {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .ep-research-quotes li {
+    margin: 0;
+    padding: 2px 0 2px 18px;
+    border-left: 2px solid var(--accent);
+  }
+  .ep-research-quotes p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .ep-research-quotes p::before {
+    content: '“';
+  }
+  .ep-research-quotes p::after {
+    content: '”';
+  }
+  .ep-research-tools {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px 32px;
+    margin-top: 18px;
+    background: #f5f5f5;
+    padding: 28px;
+  }
+  @media (min-width: 720px) {
+    .ep-research-tools {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  /* Figma-export matte — wraps the image only; captions stay outside */
+  .ep-figma-matte {
+    background: #f5f5f5;
+    padding: 22px;
+  }
+  .ep-figma-matte img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+  :global(.case-fig.ep-figma-matte) {
+    background: #f5f5f5;
+    padding: 22px;
+  }
+  :global(.case-fig.ep-figma-matte img) {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .ep-tool-shot {
+    background: transparent;
+    padding: 0;
+    display: block;
+    min-height: 0;
+  }
+  .ep-tool-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #fff;
+  }
+  .ep-tool-name {
+    margin-top: 12px;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .ep-tool-notes {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ep-tool-notes p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #5c6066;
+  }
 
   .ep-flow-step {
     padding: 4px 0 18px;
@@ -304,9 +1090,7 @@ const learnings = [
 
   .ep-insights { margin-top: 16px; }
 
-  .ep-impact { padding-bottom: 28px; }
   .ep-scan-stats .case-stat-num { font-size: 32px; }
-  .ep-learnings { margin-top: 8px; }
 
   .ep-pair-figs {
     display: grid;
@@ -324,7 +1108,7 @@ const learnings = [
   }
   .ep-pattern-chips span {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: .04em;
     padding: 5px 10px;
     border-radius: 999px;
@@ -332,30 +1116,56 @@ const learnings = [
     color: var(--ink);
   }
 
-  .ep-renames {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  .ep-rename-table {
     margin-top: 18px;
+    max-width: none;
+    border: 1px solid rgba(29, 42, 51, 0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
   }
-  .ep-rename {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 10px;
-    background: #F5F6F7;
-    border: 1px solid rgba(29, 42, 51, .09);
-    font-size: 13px;
+  .ep-rename-head,
+  .ep-rename-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 10px 14px;
   }
-  .ep-rename code {
+  .ep-rename-head {
+    background: #f5f5f5;
     font-family: var(--font-mono);
     font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    border-bottom: 1px solid rgba(29, 42, 51, 0.12);
+  }
+  .ep-rename-row {
+    border-top: 1px solid rgba(29, 42, 51, 0.08);
+    font-size: 14px;
+    line-height: 1.4;
+    align-items: center;
+  }
+  .ep-rename-row:first-of-type { border-top: none; }
+  .ep-rename-row code {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
     color: var(--muted-2);
     text-decoration: line-through;
+    text-decoration-color: rgba(29, 42, 51, 0.35);
   }
-  .ep-rename strong { font-weight: 700; color: var(--ink); }
-  .ep-rename span { color: var(--accent-dark); }
+  .ep-rename-row strong {
+    font-weight: 650;
+    color: var(--ink);
+  }
+  .ep-rename-note {
+    margin: 10px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--muted-2);
+    max-width: none;
+  }
 
   @media (max-width: 760px) {
     .ep-flow-step { padding-bottom: 16px; }

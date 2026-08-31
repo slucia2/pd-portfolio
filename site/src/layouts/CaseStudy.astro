@@ -11,21 +11,26 @@ interface Props {
   heroAlt: string;
   problem: string;
   outcome: string;
+  /** When true, skip the default problem/outcome opener (page owns that layout). */
+  hideOpener?: boolean;
 }
 
-const { case: c, intro, meta, credentials = [], heroAlt, problem, outcome } = Astro.props;
+const { case: c, intro, meta, credentials = [], heroAlt, problem, outcome, hideOpener = false } = Astro.props;
 ---
 <Base title={`${c.title} · Sam Lucia`} description={intro} width="case">
   <main
     class="case-main"
     style={`--accent:${c.accent};--accent-dark:${c.accentDark};--accent-tint:${c.accentTint};--accent-border:${c.accentBorder}`}
   >
-    <a href="/" class="case-breadcrumb">◂ BACK TO CASE STUDIES</a>
+    <a href="/" class="case-breadcrumb">◂ BACK TO HOME</a>
     <h1 class="case-title">{c.title}</h1>
     <p class="case-intro">{intro}</p>
     <div class="case-meta">
       {meta.map((m) => (
-        <span><span class="k">{m.key}</span>&nbsp; {m.value}</span>
+        <span class="case-meta-item">
+          <span class="k">{m.key}</span>
+          <span class="v">{m.value}</span>
+        </span>
       ))}
     </div>
     {credentials.length > 0 && (
@@ -63,16 +68,18 @@ const { case: c, intro, meta, credentials = [], heroAlt, problem, outcome } = As
         />
       )
     )}
-    <div class="case-opener">
-      <div>
-        <div class="sec-label">THE PROBLEM</div>
-        <div class="sec-body" style="margin-top:0">{problem}</div>
+    {!hideOpener && (
+      <div class="case-opener">
+        <div>
+          <div class="sec-label">THE PROBLEM</div>
+          <div class="sec-body" style="margin-top:0">{problem}</div>
+        </div>
+        <div>
+          <div class="sec-label">THE OUTCOME</div>
+          <div class="sec-body" style="margin-top:0">{outcome}</div>
+        </div>
       </div>
-      <div>
-        <div class="sec-label">THE OUTCOME</div>
-        <div class="sec-body" style="margin-top:0">{outcome}</div>
-      </div>
-    </div>
+    )}
 
     <slot />
   </main>
