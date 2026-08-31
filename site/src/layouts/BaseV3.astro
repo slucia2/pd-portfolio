@@ -1,0 +1,61 @@
+---
+import '../styles/homepage-v3.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: 'work' | 'about' | 'contact';
+}
+
+const {
+  title,
+  active,
+  description = 'Sam Lucia, product designer for complex systems and enterprise tools · Seattle.',
+} = Astro.props;
+
+const { pathname } = Astro.url;
+const onAbout = active === 'about' || pathname === '/about';
+const onWork = active === 'work' || pathname === '/' || pathname.startsWith('/work');
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  </head>
+  <body class="v3">
+    <div class="v3-page">
+      <nav class="v3-nav">
+        <a href="/" class="v3-nav-brand">
+          <span class="v3-nav-dot" aria-hidden="true"></span>
+          <span class="v3-nav-name">Sam Lucia</span>
+        </a>
+        <div class="v3-nav-links">
+          <a href="/" class={onWork ? 'active' : undefined}>Work</a>
+          <a href="/about" class={onAbout ? 'active' : undefined}>About</a>
+          <a href={onAbout ? '/about#contact' : '/#contact'}>Contact</a>
+        </div>
+      </nav>
+
+      <slot />
+
+      <footer class="v3-footer">
+        <span class="v3-footer-copy">© 2026 SAM LUCIA. ALL RIGHTS SECURED.</span>
+        <div class="v3-footer-socials">
+          <a href="https://www.linkedin.com/in/samlucia" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/slucia2" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

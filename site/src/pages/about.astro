@@ -1,0 +1,50 @@
+---
+import BaseV3 from '../layouts/BaseV3.astro';
+import AboutSection from '../components/AboutSection.astro';
+import ContactSection from '../components/ContactSection.astro';
+---
+
+<BaseV3
+  title="About · Sam Lucia"
+  description="Product designer in Seattle. Complex systems, enterprise tools, and the messy middle between people and platforms."
+  active="about"
+>
+  <main class="about-page about-page--blend">
+    <AboutSection variant="blend" />
+    <ContactSection />
+  </main>
+</BaseV3>
+
+<style>
+  .about-page--blend {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 var(--v3-pad-x);
+  }
+
+  .about-page--blend :global(.contact) {
+    padding: 32px 0 72px;
+    scroll-margin-top: 80px;
+  }
+
+  .about-page--blend :global(.contact-card) {
+    border-color: var(--v3-border);
+    border-radius: 20px;
+    box-shadow: var(--v3-shadow-soft);
+  }
+
+  .about-page--blend :global(.contact-copy h2) {
+    font-family: var(--v3-font);
+    letter-spacing: -0.02em;
+  }
+
+  .about-page--blend :global(.contact-copy p) {
+    font-family: var(--v3-font);
+    color: var(--v3-muted);
+  }
+
+  /* Keep the gold email button — personality bridge from the original about */
+  .about-page--blend :global(.btn-email) {
+    font-family: var(--v3-mono);
+  }
+</style>

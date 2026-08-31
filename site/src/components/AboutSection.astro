@@ -1,0 +1,604 @@
+---
+import { profile, interests, shelf, albums, defaultBook } from '../data/about';
+
+interface Props {
+  /** Extra top padding when embedded on the home page below the grid */
+  variant?: 'home' | 'page' | 'blend';
+}
+
+const { variant = 'page' } = Astro.props;
+---
+
+<section id="about" class:list={['about', { 'about-alt': variant === 'home', 'about--blend': variant === 'blend' }]}>
+  {variant === 'blend' ? (
+    <p class="about-eyebrow about-eyebrow--v3">
+      <span class="dot" aria-hidden="true"></span>
+      About
+    </p>
+  ) : (
+    <div class="about-eyebrow">■ ABOUT</div>
+  )}
+  <div class="about-grid">
+    <div class="about-bio">
+      <h2>I love when a product makes a complicated process feel easy. More often, there's a messy middle where products, systems, and people just don't seem to click.</h2>
+      <p>
+        Long before I knew what UX was, games were building my mental models.
+        From my first handheld Game Boy to early Flash games, I learned how
+        thoughtful navigation, feedback, and storytelling could guide people
+        through a system and toward a goal.
+      </p>
+      <p>
+        Looking back, those experiences shaped how I think and what I love to
+        do today. Whether I'm designing an enterprise workflow, building an
+        AI-powered learning app, or trying to convince my cats to use their new
+        catio, I'm always thinking about how to make interactions feel
+        intuitive, approachable, and rewarding.
+      </p>
+      <p>
+        I started my career designing platform resources, then moved into
+        platforms and systems while gaining experience across operations and
+        project management. These experiences taught me to see products from
+        multiple perspectives: the experience people have, the systems
+        underneath it, and the teams that bring them to life.
+      </p>
+      <p>
+        Outside of work, you'll find me running around Washington, studying
+        Chinese, and staying connected with design communities through Discord
+        and the Fresh Perspective book club.
+      </p>
+      <div class="about-chips">
+        {interests.map((it) => (
+          <span class="about-chip">
+            <i class:list={['ph', `ph-${it.icon}`, 'chip-ico', `chip-ico--${it.tone}`]} aria-hidden="true"></i>
+            {it.label}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <div class="about-cards">
+      <aside class="panel panel-profile" aria-label="Profile">
+        <div class="panel-head"><span class="head-dot"></span> PROFILE</div>
+        {profile.map((p) => (
+          <div class="prow">
+            <span class:list={['prow-sq', p.tone]}></span>
+            <div class="prow-text">
+              <span class="prow-k">{p.k}</span>
+              <span class="prow-v">{p.v}</span>
+            </div>
+          </div>
+        ))}
+      </aside>
+
+      <aside class="panel panel-offclock" aria-label="Off the clock">
+        <div class="panel-head blue"><span class="head-dot"></span> OFF THE CLOCK</div>
+
+        <div class="spin-row">
+          <button id="vinyl" class="vinyl" type="button" aria-label="Change record">
+            <span class="vinyl-disc">
+              <span class="vinyl-label" style={`background:${albums[0].color}`}></span>
+            </span>
+            <span class="vinyl-arm" aria-hidden="true"></span>
+          </button>
+          <div class="spin-meta">
+            <span class="spin-k">NOW SPINNING · TAP THE RECORD</span>
+            <div class="spin-title" id="albTitle">{albums[0].title}</div>
+            <div class="spin-sub" id="albSide">{albums[0].side}</div>
+            <button id="playBtn" class="play" type="button" aria-pressed="false">
+              <span class="play-ico play-mark" aria-hidden="true">
+                <svg class="play-state-icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9.5"></circle>
+                  <path class="play-mark__triangle" d="m10 8 6 4-6 4Z"></path>
+                </svg>
+                <svg class="pause-state-icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9.5"></circle>
+                  <path d="M9.5 8.5v7M14.5 8.5v7"></path>
+                </svg>
+              </span>
+              <span class="play-txt">PLAY</span>
+            </button>
+          </div>
+        </div>
+        <audio id="recordAudio" preload="metadata" src={albums[0].audioSrc}></audio>
+
+        <div class="shelf-label">ON THE SHELF · TAP A SPINE</div>
+        <div class="shelf-row">
+          <div class="shelf">
+            <div class="shelf-books" role="listbox" aria-label="Book shelf">
+              {shelf.map((b, i) => (
+                <button
+                  class:list={['spine', b.tone, { active: i === defaultBook }]}
+                  type="button"
+                  style={`height:${b.h}px`}
+                  data-title={b.title}
+                  data-author={b.author}
+                  data-note={b.note}
+                  aria-label={`${b.title} by ${b.author}`}
+                ></button>
+              ))}
+            </div>
+            <div class="shelf-plank" aria-hidden="true"></div>
+          </div>
+          <div class="shelf-info">
+            <div class="book-title" id="bookTitle">{shelf[defaultBook].title}</div>
+            <div class="book-author" id="bookAuthor">{shelf[defaultBook].author}</div>
+            <div class="book-note" id="bookNote">{shelf[defaultBook].note}</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  const albums = [
+    { title: 'Lady', side: 'SIX FOOT BLONDE · SONG', color: '#F5C84B', audioSrc: '/audio/lady-six-foot-blonde.mp3' },
+    { title: 'Pelican Town', side: 'CONCERNEDAPE · GAME OST', color: '#5FA8E8', audioSrc: '/audio/pelican-town.mp3' },
+    { title: 'Come and Get Your Love', side: 'REDBONE · SONG', color: '#42B46E', audioSrc: '/audio/come-and-get-your-love.mp3' },
+  ];
+
+  const rec = document.getElementById('vinyl');
+  const playBtn = document.getElementById('playBtn');
+  const albTitle = document.getElementById('albTitle');
+  const albSide = document.getElementById('albSide');
+  const recLabel = rec ? rec.querySelector('.vinyl-label') : null;
+  const recordAudio = document.getElementById('recordAudio') as HTMLAudioElement | null;
+  let current = 0;
+  if (recordAudio) recordAudio.volume = 0.4;
+
+  const setPlaybackState = (playing: boolean) => {
+    rec?.classList.toggle('spinning', playing);
+    playBtn?.classList.toggle('is-playing', playing);
+    playBtn?.setAttribute('aria-pressed', String(playing));
+    const text = playBtn?.querySelector('.play-txt');
+    if (text) text.textContent = playing ? 'PAUSE' : 'PLAY';
+  };
+
+  const renderAlbum = () => {
+    if (albTitle) {
+      albTitle.textContent = albums[current].title;
+      albTitle.classList.toggle('is-long', albums[current].title.length > 16);
+    }
+    if (albSide) albSide.textContent = albums[current].side;
+    if (recLabel) recLabel.style.background = albums[current].color;
+    recordAudio?.pause();
+    if (recordAudio && albums[current].audioSrc) {
+      recordAudio.src = albums[current].audioSrc;
+      recordAudio.load();
+      playBtn?.removeAttribute('disabled');
+    } else if (recordAudio) {
+      recordAudio.removeAttribute('src');
+      recordAudio.load();
+      playBtn?.setAttribute('disabled', '');
+    }
+    setPlaybackState(false);
+  };
+
+  rec?.addEventListener('click', () => {
+    current = (current + 1) % albums.length;
+    renderAlbum();
+  });
+
+  playBtn?.addEventListener('click', () => {
+    if (!recordAudio?.src) return;
+    if (recordAudio.paused) recordAudio.play().catch(() => setPlaybackState(false));
+    else recordAudio.pause();
+  });
+  recordAudio?.addEventListener('play', () => setPlaybackState(true));
+  recordAudio?.addEventListener('pause', () => setPlaybackState(false));
+  recordAudio?.addEventListener('ended', () => setPlaybackState(false));
+
+  const bookTitle = document.getElementById('bookTitle');
+  const bookAuthor = document.getElementById('bookAuthor');
+  const bookNote = document.getElementById('bookNote');
+  document.querySelectorAll('.shelf .spine').forEach((book) => {
+    book.addEventListener('click', () => {
+      document.querySelectorAll('.shelf .spine').forEach((b) => b.classList.remove('active'));
+      book.classList.add('active');
+      if (bookTitle) bookTitle.textContent = book.getAttribute('data-title');
+      if (bookAuthor) bookAuthor.textContent = book.getAttribute('data-author');
+      if (bookNote) bookNote.textContent = book.getAttribute('data-note');
+    });
+  });
+</script>
+
+<style>
+  .about {
+    padding: 96px 72px 8px;
+    scroll-margin-top: 80px;
+  }
+  .about-eyebrow {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--green-dark);
+    margin-bottom: 26px;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about-bio h2 {
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.35;
+    margin: 0 0 20px;
+  }
+  .about-bio p {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--body);
+    margin: 0 0 16px;
+  }
+  .about-bio p:last-of-type { margin-bottom: 0; }
+  .about-alt { padding-top: 40px; }
+  .about-alt .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .about-alt .about-bio h2 { margin-bottom: 18px; }
+
+  @media (min-width: 1025px) {
+    .about-alt .about-grid {
+      grid-template-columns: 1.45fr 1fr;
+      gap: 48px;
+    }
+  }
+
+  .green { background: var(--green, #7ce38b); color: var(--green, #7ce38b); }
+  .blue { background: var(--blue-dark, #245a94); color: var(--blue-dark, #245a94); }
+  .gold { background: var(--gold, #f5c84b); color: var(--gold-dark, #b8952a); }
+  .red { background: var(--red, #c42b25); color: var(--red, #c42b25); }
+
+  .about-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .about-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 16px;
+    border: 1.5px solid rgba(29, 42, 51, .18);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    background: #fff;
+    transition: transform .15s, border-color .15s;
+  }
+  .about-chip:hover { transform: translateY(-2px); border-color: var(--ink); }
+  .chip-ico {
+    font-size: 15px;
+    line-height: 1;
+    flex: none;
+    background: none;
+  }
+  .chip-ico--green { color: var(--green-dark, #3fa37e); }
+  .chip-ico--blue { color: var(--blue-dark, #4f7fd8); }
+  .chip-ico--gold { color: var(--gold-dark, #b8952a); }
+  .chip-ico--red { color: var(--red, #c42b25); }
+
+  .about-cards { display: flex; flex-direction: column; gap: 18px; }
+
+  .panel { border-radius: 16px; padding: 22px 22px 24px; }
+  .panel-profile {
+    background: rgba(124, 227, 139, .10);
+    border: 1.5px solid rgba(44, 122, 77, .30);
+  }
+  .panel-offclock {
+    background: rgba(95, 168, 232, .10);
+    border: 1.5px solid rgba(48, 118, 196, .30);
+    padding: 24px 28px 26px;
+  }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .04em;
+    color: var(--green-dark, #3fa37e);
+    background: none;
+    margin-bottom: 18px;
+  }
+  .panel-head.blue { color: var(--blue-dark, #245a94); }
+  .head-dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .6);
+  }
+
+  .prow {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 0;
+  }
+  .prow + .prow { border-top: 1px solid rgba(29, 42, 51, .07); }
+  .prow-sq { width: 12px; height: 12px; border-radius: 3px; margin-top: 3px; flex: none; }
+  .prow-text { display: flex; flex-direction: column; gap: 3px; }
+  .prow-k {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .05em;
+    color: var(--muted-3, var(--v3-muted, #6e6c75));
+  }
+  .prow-v { font-size: 14.5px; font-weight: 600; color: var(--ink, var(--v3-ink, #1c1b1f)); line-height: 1.35; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .spin-row { display: flex; gap: 28px; align-items: center; }
+  .vinyl {
+    position: relative;
+    width: 118px; height: 118px;
+    flex: none;
+    border: 0;
+    padding: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 1px rgba(29, 42, 51, .12);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .vinyl-disc {
+    position: relative;
+    width: 92px; height: 92px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, #2a2d33 0 30%, #16181c 30% 32%, #2a2d33 32% 44%, #16181c 44% 46%, #2a2d33 46% 60%, #16181c 60% 62%, #2a2d33 62% 100%);
+  }
+  .vinyl.spinning .vinyl-disc { animation: spin 2.4s linear infinite; }
+  .vinyl-label {
+    position: absolute;
+    inset: 36%;
+    border-radius: 50%;
+    background: var(--gold, #f5c84b);
+    box-shadow: 0 0 0 2px #16181c;
+  }
+  .vinyl-label::after {
+    content: "";
+    position: absolute;
+    inset: 42%;
+    border-radius: 50%;
+    background: #16181c;
+  }
+  .vinyl-arm {
+    position: absolute;
+    top: 12px; right: 10px;
+    width: 50px; height: 8px;
+    background: #B9BDC4;
+    border-radius: 6px;
+    transform-origin: right center;
+    transform: rotate(-90deg);
+    transition: transform .55s ease;
+  }
+  .vinyl-arm::after {
+    content: "";
+    position: absolute;
+    left: -3px; top: -2px;
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    background: #8A8F98;
+  }
+  .vinyl.spinning .vinyl-arm { transform: rotate(-42deg); }
+
+  .spin-meta { display: flex; flex-direction: column; }
+  .spin-k {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .05em;
+    color: var(--blue-dark, #245a94);
+    margin-bottom: 6px;
+  }
+  .spin-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+  .spin-title.is-long { font-size: 14px; }
+  .spin-sub {
+    font-family: var(--font-mono, 'IBM Plex Mono', ui-monospace, monospace);
+    font-size: 10px;
+    color: var(--muted-2, #84868c);
+    margin-top: 2px;
+    margin-bottom: 12px;
+  }
+  .play {
+    align-self: flex-start;
+    min-width: 96px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 2px solid var(--ink, #1d2a33);
+    border-radius: 999px;
+    background: #fff;
+    font-family: var(--font-pixel, 'Silkscreen', monospace);
+    font-size: 8px;
+    letter-spacing: .06em;
+    color: var(--ink, #1d2a33);
+    cursor: pointer;
+    transition: transform .15s, background .15s, border-color .15s, color .15s;
+  }
+  .play:hover { transform: translateY(-2px); }
+  .play:disabled { cursor: not-allowed; opacity: .45; transform: none; }
+  .play.is-playing {
+    background: var(--blue, #5fa8e8);
+    border-color: var(--blue-dark, #245a94);
+    color: #fff;
+  }
+  .play-ico {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+  .play-ico svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .play-mark__triangle {
+    fill: currentColor;
+    stroke: none;
+  }
+  .pause-state-icon { display: none !important; }
+  .play.is-playing .play-state-icon { display: none; }
+  .play.is-playing .pause-state-icon { display: block !important; }
+
+  .shelf-label {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    letter-spacing: .05em;
+    color: var(--muted-3);
+    margin: 22px 0 12px;
+  }
+  .shelf-row { display: flex; align-items: center; gap: 32px; }
+  .shelf { flex: none; }
+  .shelf-books {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 0;
+    height: 100px;
+    padding: 0 10px;
+  }
+  .spine {
+    flex: none;
+    width: 24px;
+    border: 0;
+    border-radius: 3px 3px 0 0;
+    cursor: pointer;
+    position: relative;
+    box-shadow:
+      inset -4px 0 0 rgba(0, 0, 0, .16),
+      inset 3px 0 0 rgba(255, 255, 255, .18);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .spine::before {
+    content: "";
+    position: absolute;
+    left: 3px; right: 4px; top: 14px;
+    height: 5px;
+    background: rgba(255, 255, 255, .55);
+  }
+  .spine::after {
+    content: "";
+    position: absolute;
+    left: 3px; right: 4px; bottom: 20px;
+    height: 5px;
+    background: rgba(255, 255, 255, .3);
+  }
+  .spine:hover { transform: translateY(-4px); }
+  .spine.active {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor, 0 6px 12px rgba(0, 0, 0, .16);
+    filter: saturate(1.1);
+    z-index: 1;
+  }
+  .shelf-plank {
+    height: 12px;
+    margin: 0 -6px;
+    border-radius: 7px;
+    background: linear-gradient(#F6D6A6, #EEBB7C);
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, .55), 0 3px 5px rgba(0, 0, 0, .12);
+  }
+  .shelf-info { flex: 1; min-width: 0; }
+  .book-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .book-author { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .book-note { font-size: 11.5px; line-height: 1.4; color: var(--muted-3); margin-top: 7px; }
+
+  @media (max-width: 1024px) {
+    .about { padding: 72px 40px 8px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-alt .about-grid { gap: 36px; }
+    .about-cards { width: 100%; max-width: 520px; }
+  }
+  @media (max-width: 760px) {
+    .about { padding: 64px 24px 8px; }
+    .about-grid { grid-template-columns: 1fr; gap: 28px; }
+    .about-alt .about-grid { gap: 28px; }
+    .about-cards { max-width: none; }
+    .panel-offclock { padding: 20px 18px 22px; }
+    .spin-row { gap: 16px; }
+    .spin-title { white-space: normal; }
+    .shelf-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .shelf-info { width: 100%; }
+  }
+
+  /* v3 homepage blend — v3 type/spacing, keep panels + widgets */
+  .about--blend {
+    --font-pixel: 'Silkscreen', monospace;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --ink: #1d2a33;
+    --muted-2: #84868c;
+    --muted-3: #9da0a8;
+    --blue: #5fa8e8;
+    --blue-dark: #245a94;
+    --green-dark: #2c7a4d;
+    padding: clamp(48px, 8vw, 88px) 0 clamp(32px, 5vw, 48px);
+    scroll-margin-top: 80px;
+  }
+  .about-eyebrow--v3 {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--v3-mono, 'JetBrains Mono', ui-monospace, monospace);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: normal;
+    color: var(--v3-green, #3fa37e);
+    margin-bottom: 24px;
+  }
+  .about-eyebrow--v3 .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .about--blend .about-bio h2 {
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    letter-spacing: -0.02em;
+    color: var(--v3-ink, #1c1b1f);
+  }
+  .about--blend .about-bio p {
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--v3-muted, #6e6c75);
+  }
+  .about--blend .about-chip {
+    border-color: var(--v3-border, #e2dcd5);
+    box-shadow: 0 4px 12px rgba(47, 42, 36, 0.04);
+  }
+  .about--blend .panel-profile {
+    background: rgba(63, 163, 126, 0.08);
+    border-color: rgba(63, 163, 126, 0.28);
+  }
+  .about--blend .panel-offclock {
+    background: rgba(125, 104, 179, 0.08);
+    border-color: rgba(125, 104, 179, 0.22);
+  }
+  .about--blend .panel-head { color: var(--green-dark); }
+  .about--blend .panel-head.blue { color: var(--blue-dark); }
+  .about--blend .spin-k { color: var(--blue-dark); }
+</style>

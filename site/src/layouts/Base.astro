@@ -12,6 +12,7 @@ const { title, width = 'home', description = 'Sam Lucia, product designer for th
 
 const { pathname } = Astro.url;
 const isWork = pathname === '/' || pathname.startsWith('/work');
+const isAbout = pathname === '/about';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +27,7 @@ const isWork = pathname === '/' || pathname.startsWith('/work');
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   </head>
   <body class={`w-${width}`}>
     <nav class="nav">
@@ -35,8 +37,8 @@ const isWork = pathname === '/' || pathname.startsWith('/work');
       </a>
       <div class="nav-links">
         <a href="/" class={isWork ? 'active' : undefined}>Work</a>
-        <a href="/#about">About</a>
-        <a href="/#contact">Contact</a>
+        <a href="/about" class={isAbout ? 'active' : undefined}>About</a>
+        <a href={isAbout ? '/about#contact' : '/#contact'}>Contact</a>
       </div>
     </nav>
 

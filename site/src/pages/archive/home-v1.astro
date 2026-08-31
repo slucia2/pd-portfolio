@@ -1,0 +1,356 @@
+---
+import Base from '../../layouts/Base.astro';
+import CartridgeCard from '../../components/CartridgeCard.astro';
+import AboutSection from '../../components/AboutSection.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import { cases } from '../../data/cases';
+
+const TANKS_URL = 'https://tanksvscats-psi.vercel.app/';
+
+const sideQuests = [
+  { label: 'Easy Chinese', sub: 'Language app', glyph: 'circle', hover: '#E0AC2C', href: 'https://easychineselearning-rosy.vercel.app/welcome', external: true },
+  { label: 'ClaimRunner', sub: 'AI startup', glyph: 'triangle', hover: '#42B46E', href: 'https://www.claimrunner.ai/', external: true },
+  { label: 'ScamRanger', sub: 'Mobile app', glyph: 'diamond', hover: '#7B5CF8', href: '/work/scamranger/' },
+  { label: 'Tanks!', sub: 'Browser game', glyph: 'square', hover: '#C42B25', modal: true },
+];
+---
+<Base title="Sam Lucia · Product Designer (archived home v1)">
+  <main class="home">
+    <section class="hero">
+      <div class="eyebrow">■ SELECT A CASE STUDY</div>
+      <h1>I'm Sam, a product designer<br />for the messy middle.</h1>
+      <div class="subline">Complex systems, tools &amp; journeys · T-Mobile, UW-IT</div>
+    </section>
+
+    <section class="grid">
+      {cases.map((c) => <CartridgeCard case={c} />)}
+
+      <div class="quests">
+        {sideQuests.map((q) => (
+          q.href ? (
+            <a
+              class="quest"
+              href={q.href}
+              target={q.external ? '_blank' : undefined}
+              rel={q.external ? 'noopener' : undefined}
+              style={`--hover-border:${q.hover}`}
+            >
+              <span class:list={['quest-go', q.external ? 'external-mark' : 'internal-mark']} aria-hidden="true">
+                {q.external ? (
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9.5"></circle>
+                    <path d="M8.5 15.5 15.5 8.5M10 8.5h5.5V14"></path>
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9.5"></circle>
+                    <path d="M9.5 12h5M12.5 9l3 3-3 3"></path>
+                  </svg>
+                )}
+              </span>
+              <span class:list={['glyph', q.glyph]}></span>
+              <span class="quest-label">{q.label}</span>
+              <span class="quest-sub">{q.sub}</span>
+            </a>
+          ) : q.modal ? (
+            <button class="quest" type="button" data-open-tanks aria-haspopup="dialog" style={`--hover-border:${q.hover}`}>
+              <span class="quest-go play-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9.5"></circle>
+                  <path class="play-mark__triangle" d="m10 8 6 4-6 4Z"></path>
+                </svg>
+              </span>
+              <span class:list={['glyph', q.glyph]}></span>
+              <span class="quest-label">{q.label}</span>
+              <span class="quest-sub">{q.sub}</span>
+            </button>
+          ) : (
+            <div class="quest is-soon" style={`--hover-border:${q.hover}`}>
+              <span class="quest-soon">Soon</span>
+              <span class:list={['glyph', q.glyph]}></span>
+              <span class="quest-label">{q.label}</span>
+              <span class="quest-sub">{q.sub}</span>
+            </div>
+          )
+        ))}
+      </div>
+    </section>
+
+    <AboutSection variant="home" />
+
+    <ContactSection />
+
+    <dialog class="tanks-modal" data-tanks-modal aria-label="Tanks vs. Cats">
+      <div class="tanks-modal__bar">
+        <strong>TANKS vs. CATS</strong>
+        <div class="tanks-modal__actions">
+          <a class="open-external" href={TANKS_URL} target="_blank" rel="noopener">
+            Open
+            <span class="external-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9.5"></circle>
+                <path d="M8.5 15.5 15.5 8.5M10 8.5h5.5V14"></path>
+              </svg>
+            </span>
+          </a>
+          <button type="button" data-close-tanks aria-label="Close">✕</button>
+        </div>
+      </div>
+      <iframe
+        data-tanks-frame
+        title="Tanks vs. Cats"
+        loading="lazy"
+        allow="autoplay; fullscreen"
+        src="about:blank"
+      ></iframe>
+    </dialog>
+  </main>
+</Base>
+
+<script define:vars={{ TANKS_URL }}>
+  const tanksModal = document.querySelector('[data-tanks-modal]');
+  const tanksFrame = document.querySelector('[data-tanks-frame]');
+  const openTanks = document.querySelector('[data-open-tanks]');
+  const closeTanks = document.querySelector('[data-close-tanks]');
+
+  if (tanksModal && tanksFrame && openTanks) {
+    const open = () => {
+      if (tanksFrame.src === 'about:blank' || !tanksFrame.src) tanksFrame.src = TANKS_URL;
+      tanksModal.showModal();
+      requestAnimationFrame(() => tanksFrame.focus());
+    };
+    const close = () => {
+      tanksModal.close();
+      tanksFrame.src = 'about:blank';
+    };
+    openTanks.addEventListener('click', open);
+    closeTanks?.addEventListener('click', close);
+    tanksModal.addEventListener('click', (e) => { if (e.target === tanksModal) close(); });
+    tanksModal.addEventListener('cancel', () => { tanksFrame.src = 'about:blank'; });
+  }
+</script>
+
+<style>
+  .home {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+  .hero {
+    padding: 46px 56px 8px;
+    text-align: center;
+  }
+  .eyebrow {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--red);
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .subline {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 44px 72px 0;
+  }
+  .quests {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+  }
+  .quest {
+    position: relative;
+    background: #fff;
+    border: 2px dashed #C6C9CE;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    font: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    transition: transform .18s, border-color .18s;
+    min-height: 44px;
+  }
+  .quest .glyph { margin-bottom: 6px; }
+  .quest:hover {
+    transform: translateY(-3px);
+    border: 2px solid var(--hover-border);
+  }
+  .quest-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #5A5C62;
+  }
+  .quest-sub {
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted-3);
+  }
+  .quest-go {
+    position: absolute;
+    top: 9px; right: 11px;
+    color: var(--hover-border);
+    opacity: 0;
+    transform: translate(-2px, 2px);
+    transition: opacity .18s, transform .18s;
+  }
+  .external-mark {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .external-mark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .internal-mark {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .internal-mark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .play-mark {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .play-mark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .play-mark .play-mark__triangle {
+    fill: currentColor;
+    stroke: none;
+  }
+  .quest:hover .quest-go { opacity: 1; transform: translate(0, 0); }
+  .quest.is-soon { cursor: default; }
+  .quest.is-soon:hover { transform: none; border: 2px dashed #C6C9CE; }
+
+  .tanks-modal {
+    /* proportioned to the game page so it fills with no scroll and no dead space */
+    width: min(1180px, 94vw, calc(94vh * 30 / 21));
+    max-width: 94vw;
+    aspect-ratio: 30 / 21;
+    max-height: 94vh;
+    padding: 0;
+    border: 3px solid #242a31;
+    border-radius: 16px;
+    background: #fbfaf7;
+    overflow: hidden;
+  }
+  .tanks-modal[open] { display: flex; flex-direction: column; }
+  .tanks-modal__bar { flex: none; }
+  .tanks-modal::backdrop { background: rgba(20, 24, 20, .55); }
+  .tanks-modal__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 14px;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .06em;
+    color: var(--ink);
+    border-bottom: 2px solid #242a31;
+  }
+  .tanks-modal__actions { display: flex; align-items: center; gap: 14px; }
+  .tanks-modal__actions a,
+  .tanks-modal__actions button {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    letter-spacing: .06em;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .tanks-modal__actions a:hover,
+  .tanks-modal__actions button:hover { color: var(--red); }
+  .open-external { display: inline-flex; align-items: center; gap: 5px; }
+  .open-external .external-mark { width: 16px; height: 16px; }
+  [data-tanks-frame] {
+    display: block;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #faf9f6;
+  }
+  .quest-soon {
+    position: absolute;
+    top: 9px; right: 10px;
+    font-family: var(--font-pixel);
+    font-size: 6.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted-3);
+    background: #F1F2F4;
+    padding: 3px 5px;
+    border-radius: 4px;
+  }
+  .glyph.square { width: 12px; height: 12px; background: #C42B25; border-radius: 2px; }
+  .glyph.circle { width: 12px; height: 12px; background: #F5C84B; border-radius: 50%; }
+  .glyph.triangle { width: 14px; height: 12px; background: #7CE38B; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .glyph.diamond { width: 12px; height: 12px; background: #5FA8E8; transform: rotate(45deg); }
+
+  @media (min-width: 1440px) {
+    h1 { font-size: 40px; }
+    .subline { font-size: 16px; }
+  }
+  @media (min-width: 1920px) {
+    h1 { font-size: 44px; }
+  }
+  @media (max-width: 760px) {
+    .hero { padding: 36px 24px 8px; }
+    h1 { font-size: 30px; }
+    .grid {
+      grid-template-columns: 1fr;
+      padding: 36px 24px 0;
+    }
+    .quest { min-height: 96px; }
+  }
+</style>
