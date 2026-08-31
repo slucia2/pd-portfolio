@@ -129,7 +129,9 @@ a { text-decoration: none; color: inherit; }
   color: var(--muted-2);
   flex-wrap: wrap;
 }
+.case-meta-item { display: inline; }
 .case-meta .k { color: var(--accent-dark); }
+.case-meta .v::before { content: '\00a0'; }
 .case-rule {
   height: 3px;
   background: var(--accent);
@@ -330,6 +332,19 @@ video.case-hero {
   width: 100%;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, .1);
+}
+/* Product shots at intrinsic size — not stretched to column width */
+.case-fig.ep-shot {
+  width: fit-content;
+  max-width: 100%;
+}
+.case-fig.ep-shot img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 /* Diagrams and screenshots that carry their own white margin read better
    with no frame — the border just boxes empty space. */

@@ -1,27 +1,10 @@
 ---
 import CaseStudy from '../../layouts/CaseStudy.astro';
-import type { CaseStudy as CaseStudyMeta } from '../../data/cases';
 import { cases } from '../../data/cases';
 
-/** Side-quest case; not in the homepage cartridge grid. */
-const c: CaseStudyMeta = {
-  slug: 'scamranger',
-  no: 0,
-  title: 'ScamRanger',
-  cartridgeLabel: 'SIDE QUEST / MOBILE',
-  cardMeta: 'RANGERS AI, 2026',
-  description: 'Onboarding + product overhaul for a scam-protection app.',
-  accent: '#9B85FF',
-  accentDark: '#5533CC',
-  accentTint: 'rgba(123,92,248,.12)',
-  accentBorder: 'rgba(123,92,248,.45)',
-  image: '/images/scamranger/home.png',
-  imageAlt: 'ScamRanger home screen',
-  imageFit: 'contain',
-  hideCaseHero: true,
-};
-
+const c = cases.find((x) => x.slug === 'scamranger')!;
 const next = cases.find((x) => x.slug === 'myintake')!;
+const nextHref = `/work/${next.slug}/`;
 
 const gallerySlides = [
   { src: '/images/scamranger/onb-gallery.png', alt: 'Gallery slide: scams are everywhere' },
@@ -468,12 +451,12 @@ const guidelines = [
     </div>
   </section>
 
-  <a href={`/work/${next.slug}/`} class="case-next" style={`--accent-dark:${next.accentDark}`}>
+  <a href={nextHref} class="case-next" style={`--accent-dark:${next.accentDark}`}>
     <div>
-      <div class="case-next-label">NEXT CASE STUDY, NO.{next.no}</div>
-      <div class="case-next-title">{next.title}: a health profile any clinic can scan</div>
+      <div class="case-next-label">NEXT CASE STUDY · NO.{next.no}</div>
+      <div class="case-next-title">{next.title}: {next.description.charAt(0).toLowerCase() + next.description.slice(1)}</div>
     </div>
-    <span class="case-next-arrow">OPEN</span>
+    <span class="case-next-arrow">OPEN →</span>
   </a>
 </CaseStudy>
 

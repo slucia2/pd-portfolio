@@ -28,6 +28,9 @@ export interface CaseStudy {
   /** Hide the case-page cover when the same product view appears immediately
       below as richer media. The homepage cartridge still uses the image. */
   hideCaseHero?: boolean;
+  /** Override link for side projects without a /work/ page */
+  href?: string;
+  external?: boolean;
 }
 
 export const cases: CaseStudy[] = [
@@ -50,27 +53,10 @@ export const cases: CaseStudy[] = [
     cardPosition: 'top',
   },
   {
-    slug: 'myintake',
-    no: 2,
-    title: 'MyIntake',
-    cartridgeLabel: 'NO.2 · 1ST PLACE',
-    cardMeta: 'SPRINT · 2026',
-    description: 'A health profile any clinic can scan. Built solo in 14 days.',
-    accent: '#7CE38B',
-    accentDark: '#2c7a4d',
-    accentTint: 'rgba(124,227,139,.12)',
-    accentBorder: 'rgba(66,180,110,.55)',
-    image: '/images/landing-hero.png',
-    imageAlt: 'MyIntake',
-    imageFit: 'cover',
-    imagePosition: 'top',
-    hideCaseHero: true,
-  },
-  {
     slug: 'site-architecture',
-    no: 3,
+    no: 2,
     title: 'Site Architecture',
-    cartridgeLabel: 'NO.3 · 68% CUT',
+    cartridgeLabel: 'NO.2 · 68% CUT',
     cardMeta: 'T-MOBILE · 2024',
     description: 'Three platforms into one structure. 9K pages to 3K.',
     accent: '#5FA8E8',
@@ -82,5 +68,38 @@ export const cases: CaseStudy[] = [
     imageFit: 'contain',
     cardFit: 'cover',
     cardPosition: 'top',
+  },
+  {
+    slug: 'scamranger',
+    no: 3,
+    title: 'ScamRanger',
+    cartridgeLabel: 'NO.3 · MOBILE',
+    cardMeta: 'RANGERS AI · 2026',
+    description: 'Fraud protection rebuilt for the people fraud actually targets.',
+    accent: '#9B85FF',
+    accentDark: '#5533CC',
+    accentTint: 'rgba(123, 92, 248, .12)',
+    accentBorder: 'rgba(123, 92, 248, .45)',
+    image: '/images/scamranger/home.png',
+    imageAlt: 'ScamRanger home screen',
+    imageFit: 'contain',
+    hideCaseHero: true,
+  },
+  {
+    slug: 'myintake',
+    no: 4,
+    title: 'MyIntake',
+    cartridgeLabel: 'NO.4 · 1ST PLACE',
+    cardMeta: 'SPRINT · 2026',
+    description: 'A health profile any clinic can scan. Built solo in 14 days.',
+    accent: '#7CE38B',
+    accentDark: '#2c7a4d',
+    accentTint: 'rgba(124,227,139,.12)',
+    accentBorder: 'rgba(66,180,110,.55)',
+    image: '/images/landing-hero.png',
+    imageAlt: 'MyIntake',
+    imageFit: 'cover',
+    imagePosition: 'top',
+    hideCaseHero: true,
   },
 ];

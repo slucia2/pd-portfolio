@@ -421,6 +421,25 @@
       box-shadow: none;
     }
 
+    .case-shot.project-shot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 24px 24px;
+      overflow: hidden;
+    }
+    .case-shot.project-shot > img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 14px;
+      box-shadow: 0 14px 36px rgba(47, 42, 36, 0.14);
+    }
+
     /* Workspot-style phone fan */
     .case-shot.phones {
       gap: 0;
@@ -1024,19 +1043,6 @@
       </header>
 
       <div class="project-grid">
-        <a class="project-card" data-tint="purple" href="https://easychineselearning-rosy.vercel.app/welcome" target="_blank" rel="noopener">
-          <div class="project-thumb cover contain-fit">
-            <img src="/images/explorations/v3/thumb-easychinese.png" alt="Easy Chinese vocabulary library with study assistant" />
-          </div>
-          <div class="project-info">
-            <div class="project-meta">
-              <h3 class="project-name">Easy Chinese</h3>
-              <span class="project-tag">LANGUAGE APP</span>
-            </div>
-            <p class="project-desc">Character learning through custom visual flashcards, with an embedded AI tutor.</p>
-          </div>
-        </a>
-
         <a class="project-card" data-tint="blue" href="https://www.claimrunner.ai/" target="_blank" rel="noopener">
           <div class="project-thumb cover focus-left">
             <img src="/images/explorations/v3/thumb-claimrunner.png" alt="ClaimRunner homepage" />
@@ -1047,6 +1053,19 @@
               <span class="project-tag">AI STARTUP</span>
             </div>
             <p class="project-desc">Automatic medical insurance billing claim visual assistant for small practices.</p>
+          </div>
+        </a>
+
+        <a class="project-card" data-tint="purple" href="https://easychineselearning-rosy.vercel.app/welcome" target="_blank" rel="noopener">
+          <div class="project-thumb cover contain-fit">
+            <img src="/images/explorations/v3/thumb-easychinese.png" alt="Easy Chinese vocabulary library with study assistant" />
+          </div>
+          <div class="project-info">
+            <div class="project-meta">
+              <h3 class="project-name">Easy Chinese</h3>
+              <span class="project-tag">LANGUAGE APP</span>
+            </div>
+            <p class="project-desc">Character learning through custom visual flashcards, with an embedded AI tutor.</p>
           </div>
         </a>
 

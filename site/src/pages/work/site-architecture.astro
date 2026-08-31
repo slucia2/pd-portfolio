@@ -3,7 +3,7 @@ import CaseStudy from '../../layouts/CaseStudy.astro';
 import { cases } from '../../data/cases';
 
 const c = cases.find((x) => x.slug === 'site-architecture')!;
-const next = cases.find((x) => x.slug === 'enterprise-permissions')!;
+const next = cases.find((x) => x.slug === 'scamranger')!;
 
 const inventory = [
   { label: 'SITE COMPLEXITY', text: 'High. Diverse content structures across 58 SharePoint sites, with complex sub-navigation throughout.' },
@@ -239,7 +239,7 @@ const results = [
   <a href={`/work/${next.slug}/`} class="case-next" style={`--accent-dark:${next.accentDark}`}>
     <div>
       <div class="case-next-label">NEXT CASE STUDY · NO.{next.no}</div>
-      <div class="case-next-title">{next.title}: access for 150K+ employees</div>
+      <div class="case-next-title">{next.title}: {next.description.toLowerCase()}</div>
     </div>
     <span class="case-next-arrow">OPEN →</span>
   </a>
