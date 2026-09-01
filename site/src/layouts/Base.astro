@@ -6,9 +6,18 @@ interface Props {
   description?: string;
   /** Page column width preset: nav, footer, and content all follow it */
   width?: 'home' | 'case';
+  /** Footer right-side text; use footerCopyright for RPG-style single copyright line */
+  footerRight?: string;
+  footerCopyright?: boolean;
 }
 
-const { title, width = 'home', description = 'Sam Lucia, product designer for the messy middle. Complex systems, enterprise tools · T-Mobile, Seattle.' } = Astro.props;
+const {
+  title,
+  width = 'home',
+  description = 'Sam Lucia, product designer for the messy middle. Complex systems, enterprise tools · T-Mobile, Seattle.',
+  footerRight = 'PRESS START',
+  footerCopyright = false,
+} = Astro.props;
 
 const { pathname } = Astro.url;
 const isWork = pathname === '/' || pathname.startsWith('/work');
@@ -28,6 +37,7 @@ const isAbout = pathname === '/about';
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
   </head>
   <body class={`w-${width}`}>
     <nav class="nav">
@@ -45,9 +55,24 @@ const isAbout = pathname === '/about';
     <slot />
 
     <footer class="footer">
-      <span class="footer-pixel">© 2026 SAM LUCIA</span>
-      <span class="footer-mid">Seattle, WA</span>
-      <span class="footer-pixel">PRESS START</span>
+      {footerCopyright ? (
+        <>
+          <span class="footer-copy">© 2026 Sam Lucia · All rights reserved</span>
+          <span class="footer-mid">Seattle, WA</span>
+          <div class="footer-socials">
+            <a href="https://www.linkedin.com/in/samlucia" target="_blank" rel="noopener noreferrer"
+              >LinkedIn</a
+            >
+            <a href="https://github.com/slucia2" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </div>
+        </>
+      ) : (
+        <>
+          <span class="footer-pixel">© 2026 SAM LUCIA</span>
+          <span class="footer-mid">Seattle, WA</span>
+          <span class="footer-pixel">{footerRight}</span>
+        </>
+      )}
     </footer>
   </body>
 </html>

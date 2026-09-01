@@ -3,21 +3,21 @@ import { profile, interests, shelf, albums, defaultBook } from '../data/about';
 
 interface Props {
   /** Extra top padding when embedded on the home page below the grid */
-  variant?: 'home' | 'page' | 'blend';
+  variant?: 'home' | 'page' | 'blend' | 'rpg';
 }
 
 const { variant = 'page' } = Astro.props;
 ---
 
-<section id="about" class:list={['about', { 'about-alt': variant === 'home', 'about--blend': variant === 'blend' }]}>
+<section id="about" class:list={['about', { 'about-alt': variant === 'home', 'about--blend': variant === 'blend', 'about--rpg': variant === 'rpg' }]}>
   {variant === 'blend' ? (
     <p class="about-eyebrow about-eyebrow--v3">
       <span class="dot" aria-hidden="true"></span>
       About
     </p>
-  ) : (
+  ) : variant !== 'rpg' ? (
     <div class="about-eyebrow">■ ABOUT</div>
-  )}
+  ) : null}
   <div class="about-grid">
     <div class="about-bio">
       <h2>I love when a product makes a complicated process feel easy. More often, there's a messy middle where products, systems, and people just don't seem to click.</h2>
@@ -601,4 +601,50 @@ const { variant = 'page' } = Astro.props;
   .about--blend .panel-head { color: var(--green-dark); }
   .about--blend .panel-head.blue { color: var(--blue-dark); }
   .about--blend .spin-k { color: var(--blue-dark); }
+
+  /* RPG homepage shell — matches homepage-rpg section rhythm */
+  .about--rpg {
+    padding: clamp(20px, 3vw, 36px) 0 var(--section-pad, clamp(48px, 6vw, 64px));
+    scroll-margin-top: 80px;
+  }
+  .about--rpg .about-grid {
+    gap: clamp(48px, 7vw, 72px);
+  }
+  .about--rpg .about-bio h2 {
+    margin: 0 0 24px;
+    font-family: var(--font-heading);
+    font-size: clamp(1.625rem, 2.35vw, 2.125rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+    color: var(--ink);
+  }
+  .about--rpg .about-bio p {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
+    color: #5c6066;
+    margin: 0 0 16px;
+  }
+  .about--rpg .about-chip {
+    border-color: rgba(29, 42, 51, 0.12);
+    box-shadow: 0 4px 12px rgba(29, 42, 51, 0.04);
+  }
+  .about--rpg .panel-profile {
+    background: rgba(124, 227, 139, 0.1);
+    border-color: rgba(44, 122, 77, 0.3);
+  }
+  .about--rpg .panel-offclock {
+    background: rgba(95, 168, 232, 0.1);
+    border-color: rgba(48, 118, 196, 0.3);
+  }
+
+  @media (max-width: 900px) {
+    .about--rpg {
+      padding: clamp(20px, 3vw, 36px) 0 48px;
+    }
+    .about--rpg .about-grid {
+      gap: 36px;
+    }
+  }
 </style>

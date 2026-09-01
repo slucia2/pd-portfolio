@@ -1,0 +1,1182 @@
+---
+/**
+ * Live homepage — RPG / cartridge visual system with recruiter-first layout.
+ * Previous v3 static home archived at /archive/home-v3.html (2026-09-01).
+ */
+import Base from '../layouts/Base.astro';
+import { cases } from '../data/cases';
+
+const metaDescription =
+  'Product designer. Internal tools, content platforms, and AI-driven products. Enterprise scale and 0→1.';
+
+/** Homepage selected work — first three in cases.ts */
+const selected = cases.filter((c) =>
+  ['enterprise-permissions', 'site-architecture', 'scamranger'].includes(c.slug),
+);
+
+const caseExtras: Record<
+  string,
+  {
+    metric: string;
+    metricLabel: string;
+    org: string;
+    year: string;
+    title: string;
+    body: string;
+    shot: 'ep' | 'sa' | 'sr';
+  }
+> = {
+  'enterprise-permissions': {
+    metric: '150K+',
+    metricLabel: 'active enterprise employees',
+    org: 'T-MOBILE',
+    year: '2025',
+    title: 'Enterprise Permissions',
+    body: 'Access changes took days and a ticket to IT. I built a self-serve portal that put permissions with the content teams who actually needed them. 100+ authors onboarded, near-zero support tickets.',
+    shot: 'ep',
+  },
+  'site-architecture': {
+    metric: '68%',
+    metricLabel: 'fewer pages (9K → 3K)',
+    org: 'T-MOBILE',
+    year: '2024',
+    title: 'Platform Site Architecture',
+    body: 'Cut a 9,000-page intranet to 3,000 and the category tree by 37%. The new structure came from 7M pageviews of analytics, a heuristic evaluation, and a 39-person card sort, not from an org chart.',
+    shot: 'sa',
+  },
+  scamranger: {
+    metric: '20+',
+    metricLabel: 'screens audited & redesigned',
+    org: 'RANGERSAI',
+    year: '2026',
+    title: 'ScamRanger',
+    body: 'Fraud protection rebuilt for the people fraud actually targets. Audited the live app, ran a WCAG pass across 20+ screens, and shipped a tighter system across onboarding, home, and learning.',
+    shot: 'sr',
+  },
+};
+
+const fitItems = [
+  'Guided processes: health intake, benefits, legal filing',
+  'Information architecture & wayfinding systems',
+  'Authoring, CMS, and permissions platforms',
+  'Cross-platform software consolidation',
+  'Enterprise B2B tools & admin surfaces',
+];
+
+const capItems = [
+  'End-to-end user experience & visual design',
+  'Wireframes through high-fidelity, prototyped and tested',
+  'Requirements, handoff, and design QA through ship',
+  'Production-grade front-end development support',
+  'Design systems from tokens to handoff, 0→1 and at scale',
+];
+
+const projects = [
+  {
+    name: 'ClaimRunner',
+    tag: 'AI STARTUP',
+    href: 'https://www.claimrunner.ai/',
+    external: true,
+    desc: 'LLM-guided small claims filing. End-to-end workflow and design system, 0→1, on a 6-person founding team.',
+    image: '/images/explorations/v3/thumb-claimrunner.png',
+    alt: 'ClaimRunner homepage',
+    tint: 'blue',
+    thumbClass: 'cover focus-left',
+  },
+  {
+    name: 'Easy Chinese',
+    tag: 'LANGUAGE APP',
+    href: 'https://easychineselearning-rosy.vercel.app/welcome',
+    external: true,
+    desc: 'Character learning through custom visual flashcards, with an embedded AI tutor.',
+    image: '/images/explorations/v3/thumb-easychinese.png',
+    alt: 'Easy Chinese vocabulary library with study assistant and sidebar',
+    tint: 'purple',
+    thumbClass: 'cover contain-fit',
+    thumbPosition: 'center top',
+  },
+  {
+    name: 'MyIntake',
+    tag: 'HEALTH PROFILE',
+    href: '/work/myintake/',
+    external: false,
+    desc: 'Managed health profiles for you and loved ones. Share anywhere via QR. Shipped MVP solo; first place, UW iStartup Sprint.',
+    image: '/images/explorations/v3/thumb-myintake.png',
+    alt: 'MyIntake app home — profiles, caregiver access, and health alerts',
+    tint: 'green',
+    thumbClass: 'cover contain-fit',
+    thumbPosition: 'center top',
+  },
+  {
+    name: 'Tanks!',
+    tag: 'BROWSER GAME',
+    href: 'https://tanksvscats-psi.vercel.app/',
+    external: true,
+    desc: 'A nostalgic retro 2D tank battle shooter built using custom HTML Canvas.',
+    image: '/images/explorations/v3/thumb-tanks.png',
+    alt: 'Tanks vs. Cats browser game',
+    tint: 'pink',
+    thumbClass: 'cover tanks-fit',
+    thumbPosition: 'center 10%',
+  },
+];
+
+const availabilityLine =
+  'Open to product design roles, full-time or contract. Seattle or remote.';
+
+const roles = [
+  {
+    org: 'Rangers AI',
+    title: 'Product designer',
+    years: '2026',
+    siteHref: 'https://www.rangersai.com/',
+    logo: '/images/logos/rangers-ai.svg',
+    logoClass: 'role-logo--wordmark',
+    logoWidth: 118,
+    logoHeight: 25,
+  },
+  {
+    org: 'T-Mobile',
+    title: 'Product designer',
+    years: '2023 – 2026',
+    siteHref: 'https://www.t-mobile.com/',
+    logo: '/images/logos/tmobile.svg',
+    logoClass: 'role-logo--mark',
+    logoWidth: 32,
+    logoHeight: 32,
+  },
+  {
+    org: 'UW-IT',
+    title: 'Web designer',
+    years: '2021 – 2023',
+    siteHref: 'https://it.uw.edu/',
+    logo: '/images/logos/uw.svg',
+    logoClass: 'role-logo--mark',
+    logoWidth: 42,
+    logoHeight: 28,
+  },
+];
+---
+<Base
+  title="Sam Lucia · Product Designer"
+  description={metaDescription}
+  width="home"
+  footerCopyright
+>
+  <main class="rpg-home">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>
+          Product designer for internal tools, content platforms, and AI-driven products. I design
+          for technically and procedurally complex environments.
+        </h1>
+        <p class="hero-lead">
+          Five years designing end to end: user research and journey mapping, requirements and specs,
+          wireframes through prototyped high-fidelity, accessible dev-ready handoff, and the QA,
+          training, and support after launch.
+        </p>
+      </div>
+
+      <aside class="profile-card" aria-label="Designer profile">
+        <div class="profile-head">
+          <div class="profile-status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="profile-label">Open to roles</span>
+          </div>
+          <span class="exp-badge">5 years experience</span>
+        </div>
+
+        <div class="profile-roles" aria-label="Recent roles">
+          {
+            roles.map((role) => (
+              <a
+                class="profile-role"
+                href={role.siteHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${role.org} — visit site`}
+              >
+                <span class="role-years">{role.years}</span>
+                <div class="role-body">
+                  <span class="role-slide">
+                    <span class="role-org">{role.org}</span>
+                    <span class="role-title">{role.title}</span>
+                  </span>
+                  <span class="role-reveal" aria-hidden="true">
+                    <img
+                      class:list={['role-logo', role.logoClass]}
+                      src={role.logo}
+                      alt=""
+                      width={role.logoWidth}
+                      height={role.logoHeight}
+                    />
+                    <span class="role-link">Visit site ↗</span>
+                  </span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+
+        <dl class="profile-details">
+          <div class="detail-row">
+            <dt>Based</dt>
+            <dd>Seattle, WA</dd>
+          </div>
+          <div class="detail-row">
+            <dt>Stack</dt>
+            <dd>Figma, React, design systems, Supabase</dd>
+          </div>
+        </dl>
+
+        <p class="profile-avail">{availabilityLine}</p>
+      </aside>
+    </section>
+
+    <section class="section" id="work">
+      <header class="sec-head">
+        <h2 class="sec-heading">Selected work</h2>
+      </header>
+
+      <div class="cases-list">
+        {
+          selected.map((c) => {
+            const x = caseExtras[c.slug]!;
+            return (
+              <a
+                class="case-row"
+                href={`/work/${c.slug}/`}
+                style={`--accent:${c.accent};--accent-dark:${c.accentDark}`}
+              >
+                {x.shot === 'ep' && (
+                  <div class="case-shot ep-stack">
+                    <div class="ep-stack-stage">
+                      <div class="browser back">
+                        <div class="browser-chrome"><span></span><span></span><span></span></div>
+                        <img src="/images/enterprise-permissions/ep-home-stack-back.png" alt="" />
+                      </div>
+                      <div class="browser detail">
+                        <div class="browser-chrome"><span></span><span></span><span></span></div>
+                        <img
+                          src="/images/enterprise-permissions/ep-home-stack-detail.png"
+                          alt=""
+                        />
+                      </div>
+                      <div class="browser front">
+                        <div class="browser-chrome"><span></span><span></span><span></span></div>
+                        <div class="browser-shot">
+                          <img
+                            src="/images/enterprise-permissions/ep-home-stack-front.png"
+                            alt="Enterprise Permissions group management"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {x.shot === 'sa' && (
+                  <div class="case-shot">
+                    <img
+                      class="shot-img contain"
+                      src="/images/explorations/v3/sa/hero2-frame.png"
+                      alt="Magenta Pulse platform — unified navigation, journey mapping, and content analytics"
+                    />
+                  </div>
+                )}
+
+                {x.shot === 'sr' && (
+                  <div class="case-shot phones">
+                    <div class="phone tilt-left">
+                      <div class="island"></div>
+                      <img src="/images/scamranger/learn-hub.png" alt="" />
+                    </div>
+                    <div class="phone center">
+                      <div class="island"></div>
+                      <img src="/images/scamranger/home.png" alt="ScamRanger home" />
+                    </div>
+                    <div class="phone tilt-right">
+                      <div class="island"></div>
+                      <img src="/images/scamranger/onb-paywall.png" alt="" />
+                    </div>
+                  </div>
+                )}
+
+                <div class="case-copy">
+                  <div class="case-meta">
+                    <span class="org">{x.org}</span>
+                    <span class="sep" aria-hidden="true">·</span>
+                    <span class="year">{x.year}</span>
+                  </div>
+                  <div class="case-metric">{x.metric}</div>
+                  <div class="case-metric-label">{x.metricLabel}</div>
+                  <h3 class="case-name">
+                    {x.title}
+                    <i class="ph-bold ph-arrow-up-right case-name-arrow" aria-hidden="true"></i>
+                  </h3>
+                  <p class="case-body">{x.body}</p>
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="section" id="expertise">
+      <header class="sec-head">
+        <h2 class="sec-heading">Where I fit &amp; what I deliver</h2>
+      </header>
+
+      <div class="cap-grid">
+        <div class="cap-card">
+          <h3>Where I fit</h3>
+          <ul>
+            {fitItems.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div class="cap-card">
+          <h3>Capabilities</h3>
+          <ul>
+            {capItems.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="playground">
+      <header class="sec-head">
+        <h2 class="sec-heading">Things I built end to end</h2>
+      </header>
+
+      <div class="project-grid">
+        {
+          projects.map((p) => (
+            <a
+              class="project-card"
+              data-tint={p.tint}
+              href={p.href}
+              target={p.external ? '_blank' : undefined}
+              rel={p.external ? 'noopener noreferrer' : undefined}
+            >
+              <div class:list={['project-thumb', p.thumbClass]}>
+                <img src={p.image} alt={p.alt} style={p.thumbPosition ? `object-position:${p.thumbPosition}` : undefined} />
+              </div>
+              <div class="project-info">
+                <div class="project-meta">
+                  <h3 class="project-name">{p.name}</h3>
+                  <span class="project-tag">{p.tag}</span>
+                </div>
+                <p class="project-desc">{p.desc}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section cta-sec" id="contact">
+      <a class="cta" href="mailto:samuel.d.lucia@gmail.com">
+        <div>
+          <h2 class="sec-heading">Let's build something people can actually get through.</h2>
+          <p class="cta-lead">Open to product design roles, full-time or contract. Seattle or remote.</p>
+        </div>
+        <span class="cta-btn">Email</span>
+      </a>
+    </section>
+  </main>
+</Base>
+
+<style>
+  :global(body.w-home) {
+    --page-max: 1100px;
+    --frame-max: 1100px;
+  }
+  @media (min-width: 1440px) {
+    :global(body.w-home) {
+      --page-max: 1200px;
+      --frame-max: 1200px;
+    }
+  }
+
+  .rpg-home {
+    --split-gap: clamp(48px, 7vw, 72px);
+    --section-pad: clamp(48px, 6vw, 64px);
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 56px;
+  }
+
+  /* Shared EP text model */
+  .sec-heading {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .sec-head { margin-bottom: 28px; }
+
+  .section {
+    padding: var(--section-pad) 0;
+    border-top: 1.5px solid #e6e4e0;
+  }
+
+  /* —— Hero 50/50 (same gap as case rows) —— */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--split-gap);
+    align-items: center;
+    padding: clamp(20px, 3vw, 36px) 0 var(--section-pad);
+  }
+  .hero-copy {
+    min-width: 0;
+  }
+  .hero-copy h1 {
+    margin: -3px 0 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.625rem, 2.35vw, 2.125rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+    color: var(--ink);
+  }
+  .hero-lead {
+    margin: 32px 0 0;
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
+    color: #5c6066;
+  }
+
+  /* Profile card — supporting column, lighter than headline */
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    border: 1px solid rgba(29, 42, 51, 0.08);
+    border-radius: 20px;
+    background: #fff;
+    padding: 20px 22px 18px;
+    box-shadow: 0 4px 16px rgba(29, 42, 51, 0.04);
+  }
+  .profile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .profile-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .profile-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 3px rgba(124, 227, 139, 0.25);
+    flex-shrink: 0;
+  }
+  .exp-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green-dark);
+    background: rgba(124, 227, 139, 0.16);
+    border: 1px solid rgba(44, 122, 77, 0.35);
+    border-radius: 6px;
+    padding: 4px 10px;
+    white-space: nowrap;
+  }
+  .profile-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(29, 42, 51, 0.1);
+  }
+  .profile-role {
+    position: relative;
+    display: block;
+    padding: 11px 12px;
+    border-radius: 12px;
+    background: rgba(29, 42, 51, 0.025);
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.18s ease;
+  }
+  .profile-role:hover,
+  .profile-role:focus-visible {
+    background: rgba(29, 42, 51, 0.06);
+    outline: none;
+  }
+  .profile-role:focus-visible {
+    box-shadow: 0 0 0 2px rgba(124, 227, 139, 0.45);
+  }
+  .role-years {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--muted-2);
+    white-space: nowrap;
+    z-index: 2;
+  }
+  .role-body {
+    position: relative;
+    min-height: 42px;
+    padding-right: 52px;
+    overflow: hidden;
+  }
+  .role-slide,
+  .role-reveal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+  }
+  .role-slide {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .role-reveal {
+    position: absolute;
+    inset: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .profile-role:hover .role-slide,
+  .profile-role:focus-visible .role-slide {
+    transform: translateY(-14px);
+    opacity: 0;
+  }
+  .profile-role:hover .role-reveal,
+  .profile-role:focus-visible .role-reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .role-org {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .role-title {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    color: #5c6066;
+  }
+  .role-logo {
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+  .role-logo--mark {
+    width: 32px;
+    height: 32px;
+  }
+  .role-logo--wordmark {
+    width: auto;
+    height: 22px;
+    max-width: 110px;
+  }
+  .role-link {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    white-space: nowrap;
+  }
+  .profile-role:hover .role-link,
+  .profile-role:focus-visible .role-link {
+    color: var(--ink);
+  }
+  .profile-details {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .profile-details dt {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .profile-details dd {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.45;
+    color: #5c6066;
+  }
+  .profile-avail {
+    margin: 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(29, 42, 51, 0.1);
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--green-dark);
+  }
+
+  /* —— Case rows (text + media, recruiter-readable) —— */
+  .cases-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(56px, 8vw, 88px);
+  }
+  .case-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--split-gap);
+    align-items: center;
+    color: inherit;
+  }
+  .case-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    margin-bottom: 8px;
+  }
+  .case-metric {
+    font-size: clamp(2.25rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .case-metric-label {
+    margin-top: 8px;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+  }
+  .case-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 14px 0 0;
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .case-name-arrow {
+    font-size: 20px;
+    color: var(--accent-dark);
+    opacity: 0;
+    transform: translate(-3px, 3px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .case-row:hover .case-name-arrow,
+  .case-row:focus-visible .case-name-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  .case-body {
+    margin: 12px 0 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5c6066;
+    max-width: none;
+  }
+
+  .case-shot {
+    position: relative;
+    height: clamp(280px, 34vw, 400px);
+    border: 1px solid rgba(29, 42, 51, 0.12);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
+  }
+  .case-row:hover .case-shot {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(29, 42, 51, 0.12);
+  }
+  .case-shot.ep-stack {
+    display: block;
+    padding: 0 10px;
+    overflow: hidden;
+  }
+  /* Figma node 180:3903 — gold frame + layered browser stack */
+  .ep-stack-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .browser {
+    background: #fff;
+    border: 1px solid rgba(47, 42, 36, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(47, 42, 36, 0.14);
+  }
+  .browser-chrome {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    height: 22px;
+    padding: 0 10px;
+    background: #f3f0ea;
+    border-bottom: 1px solid rgba(47, 42, 36, 0.08);
+  }
+  .browser-chrome span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #d5cfc6;
+  }
+  .browser-chrome span:first-child { background: #e39aa4; }
+  .browser-chrome span:nth-child(2) { background: #e0ac2c; }
+  .browser-chrome span:nth-child(3) { background: #3fa37e; }
+  .browser img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    object-position: top left;
+    border-radius: 0;
+    background: #fff;
+  }
+  .browser.detail img {
+    max-height: 135px;
+    object-position: right top;
+  }
+  .browser.back {
+    position: absolute;
+    width: 55.8%;
+    left: 1.8%;
+    top: 16%;
+    transform: rotate(-3.5deg);
+    opacity: 0.9;
+    z-index: 1;
+  }
+  .browser.detail {
+    position: absolute;
+    width: 45.9%;
+    right: 1.2%;
+    top: 11%;
+    transform: rotate(4deg);
+    opacity: 0.93;
+    z-index: 2;
+  }
+  .browser.front {
+    position: absolute;
+    width: 68.7%;
+    left: 13.7%;
+    top: 26%;
+    z-index: 3;
+    box-shadow: 0 24px 48px rgba(47, 42, 36, 0.22);
+  }
+  .browser.front .browser-shot {
+    position: relative;
+    max-height: 320px;
+    overflow: hidden;
+  }
+  /* Figma 188:4110 / 188:4111 — hide grey corner bleed on front screen */
+  .browser.front .browser-shot::before,
+  .browser.front .browser-shot::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .browser.front .browser-shot::before {
+    left: 0;
+    background: #fff;
+  }
+  .browser.front .browser-shot::after {
+    right: 0;
+    background: #f8f8f8;
+  }
+  .browser.front .browser-shot img {
+    max-height: 320px;
+    object-position: top center;
+  }
+
+  .shot-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 12px 28px rgba(29, 42, 51, 0.12);
+  }
+  .shot-img.contain {
+    object-fit: contain;
+    object-position: center;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 12px;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .case-shot.phones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px 24px;
+    overflow: visible;
+  }
+  .phone {
+    position: relative;
+    width: clamp(96px, 13vw, 128px);
+    aspect-ratio: 9 / 19.4;
+    border-radius: 22px;
+    background: #0c0a14;
+    border: 2px solid #1a1628;
+    box-shadow: 0 16px 32px rgba(29, 42, 51, 0.18);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .phone .island {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38%;
+    height: 9px;
+    border-radius: 999px;
+    background: #05040a;
+    z-index: 3;
+  }
+  .phone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+  }
+  .phone.tilt-left {
+    transform: translate(20px, 8px) rotate(-11deg) scale(0.9);
+    z-index: 1;
+  }
+  .phone.tilt-right {
+    transform: translate(-20px, 8px) rotate(11deg) scale(0.9);
+    z-index: 1;
+  }
+  .phone.center {
+    width: clamp(110px, 15vw, 148px);
+    z-index: 3;
+  }
+
+  /* —— Built projects (2×2 grid) —— */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .project-card {
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.12);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(29, 42, 51, 0.06);
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    transition: transform 0.18s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-3px);
+  }
+  .project-thumb {
+    height: clamp(240px, 28vw, 300px);
+    border-bottom: 1px solid rgba(29, 42, 51, 0.12);
+    position: relative;
+    overflow: hidden;
+    background: #f3f0ea;
+    padding: 0;
+  }
+  .project-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  .project-thumb.cover.focus-left img {
+    object-position: left center;
+  }
+  .project-thumb.cover.contain-fit img {
+    object-fit: contain;
+    object-position: center top;
+  }
+  .project-thumb.cover.tanks-fit img {
+    object-position: center 10%;
+  }
+  .project-card[data-tint='blue'] .project-thumb {
+    background: linear-gradient(160deg, #dce8f8 0%, #c8d9f0 100%);
+  }
+  .project-card[data-tint='purple'] .project-thumb {
+    background: linear-gradient(160deg, #ebe4f8 0%, #ddd2f0 100%);
+  }
+  .project-card[data-tint='green'] .project-thumb {
+    background: linear-gradient(160deg, #dff3ea 0%, #c9e8d8 100%);
+  }
+  .project-card[data-tint='pink'] .project-thumb {
+    background: linear-gradient(160deg, #fae8ec 0%, #f2d4da 100%);
+  }
+  .project-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .project-card[data-tint='green'] .project-thumb::after {
+    background: rgba(63, 163, 126, 0.06);
+  }
+  .project-card[data-tint='purple'] .project-thumb::after {
+    background: rgba(125, 104, 179, 0.06);
+  }
+  .project-card[data-tint='blue'] .project-thumb::after {
+    background: rgba(79, 127, 216, 0.06);
+  }
+  .project-card[data-tint='pink'] .project-thumb::after {
+    background: rgba(227, 154, 164, 0.06);
+  }
+  .project-info {
+    padding: 20px;
+  }
+  .project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .project-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .project-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .project-card[data-tint='green'] .project-tag {
+    color: var(--green-dark);
+  }
+  .project-card[data-tint='purple'] .project-tag {
+    color: #5533cc;
+  }
+  .project-card[data-tint='blue'] .project-tag {
+    color: #245a94;
+  }
+  .project-card[data-tint='pink'] .project-tag {
+    color: #b85a66;
+  }
+  .project-desc {
+    margin: 8px 0 0;
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    color: #5c6066;
+  }
+
+  /* —— Caps —— */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .cap-card {
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    background: #fff;
+    padding: 20px 22px;
+  }
+  .cap-card h3 {
+    margin: 0 0 14px;
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .cap-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cap-card li {
+    display: flex;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5c6066;
+  }
+  .cap-card li::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    margin-top: 0.4em;
+    flex-shrink: 0;
+    background: var(--gold);
+    border: 1.5px solid var(--ink);
+  }
+
+  /* —— CTA —— */
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 28px 30px;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .cta:focus-visible {
+    outline: none;
+    box-shadow:
+      var(--card-shadow),
+      0 0 0 3px rgba(124, 227, 139, 0.45);
+  }
+  .cta .sec-heading { max-width: 22ch; }
+  .cta-lead {
+    margin: 10px 0 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: #5c6066;
+  }
+  .cta-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    padding: 14px 22px;
+    background: var(--gold);
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    font-family: var(--font-pixel);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--ink);
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .cta:hover .cta-btn,
+  .cta:focus-visible .cta-btn {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  @media (max-width: 900px) {
+    .rpg-home {
+      --section-pad: 48px;
+      padding: 0 24px;
+    }
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 16px;
+      gap: 40px;
+    }
+    .hero-copy h1 {
+      font-size: clamp(1.625rem, 5vw, 2.125rem);
+    }
+    .case-row {
+      grid-template-columns: 1fr;
+    }
+    .profile-roles {
+      grid-template-columns: 1fr;
+    }
+    .browser.back,
+    .browser.detail {
+      display: none;
+    }
+    .browser.front {
+      position: relative;
+      width: 92%;
+      left: auto;
+      right: auto;
+      top: auto;
+      margin: 8% auto 0;
+    }
+    .cap-grid {
+      grid-template-columns: 1fr;
+    }
+    .cta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

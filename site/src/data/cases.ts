@@ -96,10 +96,10 @@ export const cases: CaseStudy[] = [
     accentDark: '#2c7a4d',
     accentTint: 'rgba(124,227,139,.12)',
     accentBorder: 'rgba(66,180,110,.55)',
-    image: '/images/landing-hero.png',
-    imageAlt: 'MyIntake',
+    image: '/images/myintake/landing-hero.png',
+    imageAlt: 'MyIntake landing page: your health record, always with you',
     imageFit: 'cover',
     imagePosition: 'top',
-    hideCaseHero: true,
+    hideCaseHero: false,
   },
 ];

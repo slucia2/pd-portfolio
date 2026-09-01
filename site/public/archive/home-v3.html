@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sam Lucia · Product Designer</title>
-  <meta name="description" content="Product designer for complex systems and enterprise tools · Seattle." />
+  <title>Sam Lucia · Product Designer (archived home v3)</title>
+  <meta name="description" content="Product designer. Internal tools, content platforms, and AI-driven products. Enterprise scale and 0→1." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -99,9 +99,9 @@
     }
     .hero-copy h1 {
       margin: 0;
-      font-size: clamp(2rem, 4.2vw, 3.25rem);
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
       font-weight: 700;
-      line-height: 1.15;
+      line-height: 1.2;
       letter-spacing: -0.02em;
     }
     .hero-lead {
@@ -109,7 +109,7 @@
       font-size: clamp(1rem, 1.4vw, 1.125rem);
       line-height: 1.5;
       color: var(--muted);
-      max-width: 42ch;
+      max-width: 91%;
     }
 
     .stats-card {
@@ -214,6 +214,9 @@
       line-height: 1.15;
       letter-spacing: -0.02em;
     }
+    .expertise > header .section-title {
+      margin-top: 0;
+    }
     .section-sub {
       margin: 12px 0 0;
       font-size: 16px;
@@ -240,7 +243,7 @@
       padding-bottom: clamp(64px, 10vw, 120px);
       display: flex;
       flex-direction: column;
-      gap: clamp(64px, 10vw, 120px);
+      gap: clamp(28px, 4vw, 40px);
     }
     .cases-list {
       display: flex;
@@ -550,7 +553,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: clamp(20px, 3vw, 48px);
-      margin-top: 48px;
+      margin-top: clamp(28px, 4vw, 40px);
     }
     .cap-card {
       background: var(--white);
@@ -588,13 +591,15 @@
       line-height: 1.4;
       color: var(--muted);
     }
-    .cap-list i.ph {
-      font-size: 16px;
-      color: var(--purple);
+    .cap-list li::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      margin-top: 0.55em;
+      border-radius: 50%;
+      background: var(--purple);
+      opacity: 0.45;
       flex-shrink: 0;
-      line-height: 1.35;
-      margin-top: 1px;
-      opacity: 0.85;
     }
 
     /* Playground */
@@ -870,8 +875,8 @@
 
     <section class="hero">
       <div class="hero-copy">
-        <h1>I design products and experiences for complex, information-heavy environments.</h1>
-        <p class="hero-lead">I've worked as a designer, a product manager, and a systems analyst. I write the requirements, draw the flows, and stay on it after it ships.</p>
+        <h1>Product designer for internal tools, content platforms, and AI-driven products. I design for technically and procedurally complex environments.</h1>
+        <p class="hero-lead">Five years designing end to end: user research and journey mapping, requirements and specs, wireframes through prototyped high-fidelity, accessible dev-ready handoff, and the QA, training, and support after launch.</p>
       </div>
 
       <aside class="stats-card" aria-label="Designer profile">
@@ -880,7 +885,7 @@
             <span class="status-dot" aria-hidden="true"></span>
             SAM LUCIA
           </div>
-          <span class="exp-badge">EXP: 5 YRS</span>
+          <span class="exp-badge">5 years experience</span>
         </div>
         <div class="stats-divider"></div>
         <div>
@@ -889,15 +894,15 @@
             <span class="stat-v">Claimrunner (2026); Rangers AI (2026); T-Mobile (2023-2026); UW-IT (2021-2023)</span>
           </div>
           <div class="stat-row">
-            <span class="stat-k">Base_Coord</span>
+            <span class="stat-k">Based</span>
             <span class="stat-v">Seattle, WA // Pacific Northwest</span>
           </div>
           <div class="stat-row">
-            <span class="stat-k">Class_Type</span>
-            <span class="stat-v">Complex Systems &amp; Enterprise Tools</span>
+            <span class="stat-k">Focus</span>
+            <span class="stat-v">Internal tools, content platforms, AI-driven products</span>
           </div>
           <div class="stat-row">
-            <span class="stat-k">Loadout</span>
+            <span class="stat-k">Tools</span>
             <span class="stat-v">Figma, prototyping, system-architecture, front-end</span>
           </div>
         </div>
@@ -912,10 +917,9 @@
       <header>
         <p class="eyebrow" style="color: var(--green)">
           <span class="dot" style="background: var(--green)"></span>
-          Selected Cases
+          Case studies
         </p>
-        <h2 class="section-title">High-impact system design</h2>
-        <p class="section-sub">Real-world results delivered across highly challenging data domains.</p>
+        <h2 class="section-title">Selected work</h2>
       </header>
 
       <div class="cases-list">
@@ -996,10 +1000,6 @@
 
     <section class="expertise" id="expertise">
       <header>
-        <p class="eyebrow">
-          <span class="dot" style="background: var(--purple)"></span>
-          Expertise
-        </p>
         <h2 class="section-title">How I work</h2>
       </header>
 
@@ -1007,27 +1007,27 @@
         <div class="cap-card">
           <h3 class="cap-title">
             <i class="ph ph-map-trifold" aria-hidden="true"></i>
-            Where I Create Impact
+            Where I fit
           </h3>
           <ul class="cap-list">
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Guided processes: health intake, benefits, legal filing</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Information architecture &amp; wayfinding systems</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Authoring, CMS, and permissions platforms</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Cross-platform software consolidation</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Enterprise B2B tools &amp; admin surfaces</span></li>
+            <li>Guided processes: health intake, benefits, legal filing</li>
+            <li>Information architecture &amp; wayfinding systems</li>
+            <li>Authoring, CMS, and permissions platforms</li>
+            <li>Cross-platform software consolidation</li>
+            <li>Enterprise B2B tools &amp; admin surfaces</li>
           </ul>
         </div>
         <div class="cap-card">
           <h3 class="cap-title">
             <i class="ph ph-pencil-ruler" aria-hidden="true"></i>
-            How I Deliver Impact
+            Capabilities
           </h3>
           <ul class="cap-list">
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>End-to-end user experience &amp; visual design</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Wireframes through high-fidelity, prototyped and tested</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Cross-functional strategic alignment</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Production-grade front-end development support</span></li>
-            <li><i class="ph ph-check" aria-hidden="true"></i><span>Design systems from tokens to handoff, 0→1 and at scale</span></li>
+            <li>End-to-end user experience &amp; visual design</li>
+            <li>Wireframes through high-fidelity, prototyped and tested</li>
+            <li>Requirements, handoff, and design QA through ship</li>
+            <li>Production-grade front-end development support</li>
+            <li>Design systems from tokens to handoff, 0→1 and at scale</li>
           </ul>
         </div>
       </div>
@@ -1052,7 +1052,7 @@
               <h3 class="project-name">ClaimRunner</h3>
               <span class="project-tag">AI STARTUP</span>
             </div>
-            <p class="project-desc">Automatic medical insurance billing claim visual assistant for small practices.</p>
+            <p class="project-desc">LLM-guided small claims filing. End-to-end workflow and design system, 0→1, on a 6-person founding team.</p>
           </div>
         </a>
 
@@ -1071,7 +1071,7 @@
 
         <a class="project-card" data-tint="green" href="/work/myintake/">
           <div class="project-thumb cover contain-fit">
-            <img src="/images/explorations/v3/thumb-myintake.png" alt="MyIntake share screen with QR code for clinics" />
+            <img src="/images/explorations/v3/thumb-myintake.png" alt="MyIntake landing page — your health record, always with you" />
           </div>
           <div class="project-info">
             <div class="project-meta">
