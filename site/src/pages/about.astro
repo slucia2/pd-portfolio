@@ -28,22 +28,11 @@ const availabilityLine =
 </Base>
 
 <style>
-  :global(body.w-home) {
-    --page-max: 1100px;
-    --frame-max: 1100px;
-  }
-  @media (min-width: 1440px) {
-    :global(body.w-home) {
-      --page-max: 1200px;
-      --frame-max: 1200px;
-    }
-  }
-
   .rpg-about {
     --section-pad: clamp(48px, 6vw, 64px);
     max-width: var(--page-max);
     margin: 0 auto;
-    padding: 0 56px;
+    padding: 0 var(--page-pad-x);
   }
 
   .rpg-about :global(.sec-heading) {
@@ -122,7 +111,6 @@ const availabilityLine =
   @media (max-width: 900px) {
     .rpg-about {
       --section-pad: 48px;
-      padding: 0 24px;
     }
     .cta {
       flex-direction: column;

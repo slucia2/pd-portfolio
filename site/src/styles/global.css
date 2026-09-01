@@ -25,23 +25,19 @@
 
 * { box-sizing: border-box; }
 
-/* Page-width system: the content column width can differ per page type, but the
-   nav and footer always follow one consistent frame width (--frame-max) so the
-   header and footer never shift between home and case-study pages.
-   Scales up across breakpoints (~1440px, ~1920px) for large displays. */
-:root { --frame-max: 860px; }
-body.w-home { --page-max: 860px; }
-body.w-case { --page-max: 720px; }
+/* Page-width system: nav and footer always share one frame width (--frame-max).
+   Home/about content uses --page-max (same as frame on w-home). Case studies can
+   use a narrower --page-max while nav stays aligned site-wide. */
+:root {
+  --frame-max: 1100px;
+  --page-pad-x: 56px;
+}
+body.w-home { --page-max: var(--frame-max); }
+body.w-case { --page-max: 960px; }
 
 @media (min-width: 1440px) {
-  :root { --frame-max: 1100px; }
-  body.w-home { --page-max: 1100px; }
-  body.w-case { --page-max: 960px; }
-}
-@media (min-width: 1920px) {
-  :root { --frame-max: 1280px; }
-  body.w-home { --page-max: 1280px; }
-  body.w-case { --page-max: 1280px; }
+  :root { --frame-max: 1200px; }
+  body.w-case { --page-max: 1100px; }
 }
 
 body {
@@ -61,7 +57,7 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 26px 56px;
+  padding: 26px var(--page-pad-x);
   max-width: var(--frame-max);
   margin: 0 auto;
 }
@@ -84,7 +80,7 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 44px 56px 26px;
+  padding: 44px var(--page-pad-x) 26px;
   max-width: var(--frame-max);
   margin: 0 auto;
 }
@@ -110,7 +106,7 @@ a { text-decoration: none; color: inherit; }
 .case-main {
   max-width: var(--page-max);
   margin: 0 auto;
-  padding: 40px 72px 0;
+  padding: 40px var(--page-pad-x) 0;
 }
 .case-breadcrumb {
   font-family: var(--font-pixel);
@@ -492,9 +488,10 @@ video.case-hero {
 
 /* ============ Responsive ============ */
 @media (max-width: 760px) {
-  .nav { padding: 20px 24px; }
-  .footer { padding: 36px 24px 22px; }
-  .case-main { padding: 32px 24px 0; }
+  :root { --page-pad-x: 24px; }
+  .nav { padding: 20px var(--page-pad-x); }
+  .footer { padding: 36px var(--page-pad-x) 22px; }
+  .case-main { padding: 32px var(--page-pad-x) 0; }
   .case-opener, .case-grid-2, .case-grid-3 { grid-template-columns: 1fr; }
   .case-title { font-size: 28px; }
   .case-fig iframe { height: 460px; }
