@@ -102,6 +102,18 @@ a { text-decoration: none; color: inherit; }
   color: var(--ink);
 }
 
+/* ============ RPG homepage / about shell (shared width + rhythm) ============ */
+.rpg-shell {
+  --split-gap: clamp(48px, 7vw, 72px);
+  --section-pad: clamp(48px, 6vw, 64px);
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-pad-x);
+}
+@media (max-width: 900px) {
+  .rpg-shell { --section-pad: 48px; }
+}
+
 /* ============ Case-study page (16c pattern) ============ */
 .case-main {
   max-width: var(--page-max);

@@ -163,7 +163,7 @@ const roles = [
   width="home"
   footerCopyright
 >
-  <main class="rpg-home">
+  <main class="rpg-shell">
     <section class="hero">
       <div class="hero-copy">
         <h1>
@@ -388,13 +388,7 @@ const roles = [
 </Base>
 
 <style>
-  .rpg-home {
-    --split-gap: clamp(48px, 7vw, 72px);
-    --section-pad: clamp(48px, 6vw, 64px);
-    max-width: var(--page-max);
-    margin: 0 auto;
-    padding: 0 var(--page-pad-x);
-  }
+  /* Shared shell width lives in global.css (.rpg-shell) */
 
   /* Shared EP text model */
   .sec-heading {
@@ -1124,9 +1118,6 @@ const roles = [
   }
 
   @media (max-width: 900px) {
-    .rpg-home {
-      --section-pad: 48px;
-    }
     .hero {
       grid-template-columns: 1fr;
       padding-top: 16px;

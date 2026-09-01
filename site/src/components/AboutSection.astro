@@ -523,13 +523,13 @@ const { variant = 'page' } = Astro.props;
   .book-note { font-size: 11.5px; line-height: 1.4; color: var(--muted-3); margin-top: 7px; }
 
   @media (max-width: 1024px) {
-    .about { padding: 72px 40px 8px; }
-    .about-grid { grid-template-columns: 1fr; }
+    .about:not(.about--rpg):not(.about--blend) { padding: 72px 40px 8px; }
+    .about:not(.about--rpg):not(.about--blend) .about-grid { grid-template-columns: 1fr; }
     .about-alt .about-grid { gap: 36px; }
-    .about-cards { width: 100%; max-width: 520px; }
+    .about:not(.about--rpg):not(.about--blend) .about-cards { width: 100%; max-width: 520px; }
   }
   @media (max-width: 760px) {
-    .about { padding: 64px 24px 8px; }
+    .about:not(.about--rpg):not(.about--blend) { padding: 64px 24px 8px; }
     .about-grid { grid-template-columns: 1fr; gap: 28px; }
     .about-alt .about-grid { gap: 28px; }
     .about-cards { max-width: none; }
@@ -602,13 +602,17 @@ const { variant = 'page' } = Astro.props;
   .about--blend .panel-head.blue { color: var(--blue-dark); }
   .about--blend .spin-k { color: var(--blue-dark); }
 
-  /* RPG homepage shell — matches homepage-rpg section rhythm */
-  .about--rpg {
-    padding: clamp(20px, 3vw, 36px) 0 var(--section-pad, clamp(48px, 6vw, 64px));
+  /* RPG homepage shell — matches home hero rhythm; no extra horizontal inset */
+  .about.about--rpg {
+    padding-top: clamp(20px, 3vw, 36px);
+    padding-bottom: var(--section-pad, clamp(48px, 6vw, 64px));
+    padding-left: 0;
+    padding-right: 0;
     scroll-margin-top: 80px;
   }
-  .about--rpg .about-grid {
-    gap: clamp(48px, 7vw, 72px);
+  .about.about--rpg .about-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--split-gap, clamp(48px, 7vw, 72px));
   }
   .about--rpg .about-bio h2 {
     margin: 0 0 24px;
@@ -640,10 +644,12 @@ const { variant = 'page' } = Astro.props;
   }
 
   @media (max-width: 900px) {
-    .about--rpg {
-      padding: clamp(20px, 3vw, 36px) 0 48px;
+    .about.about--rpg {
+      padding-top: clamp(20px, 3vw, 36px);
+      padding-bottom: 48px;
     }
-    .about--rpg .about-grid {
+    .about.about--rpg .about-grid {
+      grid-template-columns: 1fr;
       gap: 36px;
     }
   }
