@@ -46,14 +46,16 @@ const { variant = 'page' } = Astro.props;
         Chinese, and staying connected with design communities through Discord
         and the Fresh Perspective book club.
       </p>
-      <div class="about-chips">
-        {interests.map((it) => (
-          <span class="about-chip">
-            <i class:list={['ph', `ph-${it.icon}`, 'chip-ico', `chip-ico--${it.tone}`]} aria-hidden="true"></i>
-            {it.label}
-          </span>
-        ))}
-      </div>
+      {variant !== 'rpg' && (
+        <div class="about-chips">
+          {interests.map((it) => (
+            <span class="about-chip">
+              <i class:list={['ph', `ph-${it.icon}`, 'chip-ico', `chip-ico--${it.tone}`]} aria-hidden="true"></i>
+              {it.label}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
 
     <div class="about-cards">
@@ -128,6 +130,17 @@ const { variant = 'page' } = Astro.props;
       </aside>
     </div>
   </div>
+
+  {variant === 'rpg' && (
+    <div class="about-chips about-chips--below">
+      {interests.map((it) => (
+        <span class="about-chip">
+          <i class:list={['ph', `ph-${it.icon}`, 'chip-ico', `chip-ico--${it.tone}`]} aria-hidden="true"></i>
+          {it.label}
+        </span>
+      ))}
+    </div>
+  )}
 </section>
 
 <script>
@@ -610,9 +623,11 @@ const { variant = 'page' } = Astro.props;
     padding-right: 0;
     scroll-margin-top: 80px;
   }
+  /* Original about-on-home ratio: bio wider, cards narrower — keeps column heights closer */
   .about.about--rpg .about-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--split-gap, clamp(48px, 7vw, 72px));
+    grid-template-columns: 1.6fr 1fr;
+    gap: 48px;
+    align-items: start;
   }
   .about--rpg .about-bio h2 {
     margin: 0 0 24px;
@@ -629,6 +644,12 @@ const { variant = 'page' } = Astro.props;
     line-height: 1.7;
     color: #5c6066;
     margin: 0 0 16px;
+  }
+  .about--rpg .about-bio p:last-of-type {
+    margin-bottom: 0;
+  }
+  .about--rpg .about-chips--below {
+    margin-top: 28px;
   }
   .about--rpg .about-chip {
     border-color: rgba(29, 42, 51, 0.12);

@@ -20,8 +20,11 @@ const {
 } = Astro.props;
 
 const { pathname } = Astro.url;
-const isWork = pathname === '/' || pathname.startsWith('/work');
-const isAbout = pathname === '/about';
+const path = pathname.replace(/\/$/, '') || '/';
+const isHome = path === '/';
+const isAbout = path === '/about';
+/** Case studies only — home Work state is driven by scroll spy below */
+const isCase = path.startsWith('/work');
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -46,9 +49,9 @@ const isAbout = pathname === '/about';
         <span class="nav-name">Sam Lucia</span>
       </a>
       <div class="nav-links">
-        <a href="/" class={isWork ? 'active' : undefined}>Work</a>
-        <a href="/about" class={isAbout ? 'active' : undefined}>About</a>
-        <a href={isAbout ? '/about#contact' : '/#contact'}>Contact</a>
+        <a href="/#work" data-nav="work" class={isCase ? 'active' : undefined}>Work</a>
+        <a href="/about" data-nav="about" class={isAbout ? 'active' : undefined}>About</a>
+        <a href={isAbout ? '/about#contact' : '/#contact'} data-nav="contact">Contact</a>
       </div>
     </nav>
 
@@ -74,5 +77,23 @@ const isAbout = pathname === '/about';
         </>
       )}
     </footer>
+
+    {isHome && (
+      <script>
+        const workLink = document.querySelector('[data-nav="work"]');
+        const workSection = document.getElementById('work');
+        if (workLink && workSection) {
+          const setWorkActive = (on) => {
+            workLink.classList.toggle('active', on);
+          };
+          if (location.hash === '#work') setWorkActive(true);
+          const io = new IntersectionObserver(
+            ([entry]) => setWorkActive(entry.isIntersecting && entry.intersectionRatio > 0.2),
+            { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.4] },
+          );
+          io.observe(workSection);
+        }
+      </script>
+    )}
   </body>
 </html>
