@@ -1,0 +1,290 @@
+/* Hiring-first motion — MOTION_SPEC (recruiter scan + case TLDR). Vanilla CSS. */
+
+.motion-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: auto;
+  overflow: hidden;
+  display: none;
+}
+
+html.has-recruiter-scan #recruiter-scan,
+html.has-case-tldr #case-tldr {
+  display: block;
+}
+
+html.has-recruiter-scan,
+html.has-case-tldr {
+  overflow: hidden;
+}
+
+.motion-overlay.is-done {
+  pointer-events: none;
+}
+
+.motion-ink {
+  position: absolute;
+  inset: 0;
+  background: #1d2a33;
+}
+
+.motion-field {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.motion-field.is-lifting {
+  animation: motion-lift 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.motion-field.is-lifting-case {
+  animation: motion-lift 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes motion-lift {
+  to {
+    transform: translateY(-105%);
+  }
+}
+
+.motion-copy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 var(--page-pad-x, 56px);
+  max-width: var(--frame-max, 1100px);
+  margin: 0 auto;
+  width: 100%;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+/* —— Recruiter scan (homepage) —— */
+.scan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 16px;
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: motion-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.scan-name {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.scan-role {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f5c84b;
+}
+
+.scan-claim-wrap {
+  overflow: hidden;
+  max-width: 28ch;
+}
+
+.scan-claim {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  opacity: 0;
+  transform: translateY(110%);
+  animation: motion-claim-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+
+.scan-rule {
+  width: min(280px, 55%);
+  height: 2px;
+  margin-top: 18px;
+  background: rgba(245, 200, 75, 0.9);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: motion-rule 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.85s forwards;
+}
+
+.scan-next {
+  margin: 16px 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  animation: motion-fade 0.4s ease 1.35s forwards;
+}
+
+/* —— Case TLDR interstitial —— */
+.tldr-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: motion-fade 0.35s ease forwards;
+}
+
+.tldr-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 12px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: motion-fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+.tldr-meta .sep {
+  opacity: 0.5;
+}
+
+.tldr-hook {
+  margin: 8px 0 0;
+  max-width: 28ch;
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: motion-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+}
+
+.tldr-role {
+  margin: 16px 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  animation: motion-fade 0.4s ease 1s forwards;
+}
+
+.tldr-rule {
+  width: min(240px, 50%);
+  height: 2px;
+  margin-top: 22px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: motion-rule 0.5s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards;
+}
+
+.tldr-continue {
+  margin: 16px 0 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  animation: motion-fade 0.4s ease 1.75s forwards;
+}
+
+/* Case page fades in after interstitial (~3.1s) */
+html.has-case-tldr .case-main {
+  opacity: 0;
+}
+body.motion-case-enter .case-main {
+  opacity: 0;
+  animation: motion-fade 0.45s cubic-bezier(0.22, 1, 0.36, 1) 3.1s forwards;
+}
+
+/* Soft leave from case → Work/About */
+.motion-soft-leave {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #1d2a33;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-soft-leave.is-on {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@keyframes motion-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes motion-fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-claim-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-rule {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-field.is-lifting,
+  .motion-field.is-lifting-case {
+    animation: none;
+    transform: translateY(-105%);
+  }
+  .scan-meta,
+  .scan-claim,
+  .scan-rule,
+  .scan-next,
+  .tldr-kicker,
+  .tldr-meta,
+  .tldr-hook,
+  .tldr-role,
+  .tldr-rule,
+  .tldr-continue,
+  body.motion-case-enter .case-main {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .motion-soft-leave {
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (max-width: 760px) {
+  .motion-copy {
+    padding: 0 24px;
+  }
+}

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import '../styles/motion.css';
+import type { CaseInterstitial } from '../data/case-interstitial';
 
 interface Props {
   title: string;
@@ -9,6 +11,8 @@ interface Props {
   /** Footer right-side text; use footerCopyright for RPG-style single copyright line */
   footerRight?: string;
   footerCopyright?: boolean;
+  /** When set, enables problem interstitial if sessionStorage from-work flag matches */
+  caseInterstitial?: CaseInterstitial;
 }
 
 const {
@@ -17,6 +21,7 @@ const {
   description = 'Sam Lucia, product designer for the messy middle. Complex systems, enterprise tools · T-Mobile, Seattle.',
   footerRight = 'PRESS START',
   footerCopyright = false,
+  caseInterstitial,
 } = Astro.props;
 
 const { pathname } = Astro.url;
@@ -41,8 +46,83 @@ const isCase = path.startsWith('/work');
     />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    {isHome && (
+      <script is:inline>
+        try {
+          if (!sessionStorage.getItem('sl-recruiter-scan')) {
+            document.documentElement.classList.add('has-recruiter-scan');
+          }
+        } catch (e) {}
+      </script>
+    )}
+    {caseInterstitial && (
+      <script is:inline define:vars={{ caseSlug: caseInterstitial.slug }}>
+        try {
+          if (sessionStorage.getItem('sl-case-tldr') === caseSlug) {
+            document.documentElement.classList.add('has-case-tldr');
+          }
+        } catch (e) {}
+      </script>
+    )}
   </head>
   <body class={`w-${width}`}>
+    {
+      isHome && (
+        <div id="recruiter-scan" class="motion-overlay" aria-hidden="true">
+          <div class="motion-field" data-scan-field>
+            <div class="motion-ink" aria-hidden="true"></div>
+            <div class="motion-copy">
+              <div class="scan-meta">
+                <span class="scan-name">Sam Lucia</span>
+                <span class="scan-role">Product designer · Open to roles</span>
+              </div>
+              <div class="scan-claim-wrap">
+                <p class="scan-claim">I design clear paths through complicated products.</p>
+              </div>
+              <div class="scan-rule" aria-hidden="true"></div>
+              <p class="scan-next">Selected work ↓</p>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    {
+      caseInterstitial && (
+        <div
+          id="case-tldr"
+          class="motion-overlay"
+          aria-hidden="true"
+          data-case-slug={caseInterstitial.slug}
+        >
+          <div class="motion-field" data-tldr-field>
+            <div class="motion-ink" aria-hidden="true"></div>
+            <div class="motion-copy">
+              <span class="tldr-kicker">The problem</span>
+              <div class="tldr-meta">
+                <span>{caseInterstitial.org.toUpperCase()}</span>
+                <span class="sep">·</span>
+                <span>{caseInterstitial.year}</span>
+                <span class="sep">·</span>
+                <span>{caseInterstitial.title}</span>
+              </div>
+              <p class="tldr-hook">{caseInterstitial.hook}</p>
+              <p class="tldr-role">{caseInterstitial.role}</p>
+              <div
+                class="tldr-rule"
+                style={`background:${caseInterstitial.accent}`}
+                aria-hidden="true"
+              >
+              </div>
+              <p class="tldr-continue">How it shipped →</p>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    {isCase && <div id="case-soft-leave" class="motion-soft-leave" aria-hidden="true"></div>}
+
     <nav class="nav">
       <a href="/" class="nav-brand">
         <span class="nav-dot"></span>
@@ -78,22 +158,143 @@ const isCase = path.startsWith('/work');
       )}
     </footer>
 
-    {isHome && (
-      <script>
-        const workLink = document.querySelector('[data-nav="work"]');
-        const workSection = document.getElementById('work');
-        if (workLink && workSection) {
-          const setWorkActive = (on) => {
-            workLink.classList.toggle('active', on);
-          };
-          if (location.hash === '#work') setWorkActive(true);
-          const io = new IntersectionObserver(
-            ([entry]) => setWorkActive(entry.isIntersecting && entry.intersectionRatio > 0.2),
-            { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.4] },
-          );
-          io.observe(workSection);
-        }
-      </script>
-    )}
+    {
+      isHome && (
+        <script is:inline>
+          (function () {
+            var SCAN_KEY = 'sl-recruiter-scan';
+            var CASE_KEY = 'sl-case-tldr';
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var pending = document.documentElement.classList.contains('has-recruiter-scan');
+            var scan = document.getElementById('recruiter-scan');
+            var field = scan && scan.querySelector('[data-scan-field]');
+
+            if (scan && field && pending && !scan.dataset.armed) {
+              scan.dataset.armed = '1';
+              try {
+                sessionStorage.setItem(SCAN_KEY, '1');
+              } catch (e) {}
+              if (reduce) {
+                document.documentElement.classList.remove('has-recruiter-scan');
+                scan.remove();
+              } else {
+                document.documentElement.style.overflow = 'hidden';
+                scan.setAttribute('aria-hidden', 'false');
+                window.setTimeout(function () {
+                  field.classList.add('is-lifting');
+                }, 2400);
+                window.setTimeout(function () {
+                  scan.classList.add('is-done');
+                  document.documentElement.classList.remove('has-recruiter-scan');
+                  document.documentElement.style.overflow = '';
+                  scan.setAttribute('aria-hidden', 'true');
+                  scan.remove();
+                }, 3400);
+              }
+            } else if (scan && !pending) {
+              scan.remove();
+            }
+
+            document.querySelectorAll('a.case-row[data-case-slug]').forEach(function (link) {
+              link.addEventListener('click', function () {
+                var slug = link.getAttribute('data-case-slug');
+                if (slug) {
+                  try {
+                    sessionStorage.setItem(CASE_KEY, slug);
+                  } catch (e) {}
+                }
+              });
+            });
+
+            var workLink = document.querySelector('[data-nav="work"]');
+            var workSection = document.getElementById('work');
+            if (workLink && workSection) {
+              var setWorkActive = function (on) {
+                workLink.classList.toggle('active', on);
+              };
+              if (location.hash === '#work') setWorkActive(true);
+              var io = new IntersectionObserver(
+                function (entries) {
+                  var entry = entries[0];
+                  setWorkActive(entry.isIntersecting && entry.intersectionRatio > 0.2);
+                },
+                { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.4] },
+              );
+              io.observe(workSection);
+            }
+          })();
+        </script>
+      )
+    }
+
+    {
+      isCase && (
+        <script is:inline>
+          (function () {
+            var CASE_KEY = 'sl-case-tldr';
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var tldr = document.getElementById('case-tldr');
+            var showTldr = document.documentElement.classList.contains('has-case-tldr');
+
+            if (tldr && showTldr && !tldr.dataset.armed) {
+              tldr.dataset.armed = '1';
+              try {
+                sessionStorage.removeItem(CASE_KEY);
+              } catch (e) {}
+              var field = tldr.querySelector('[data-tldr-field]');
+              if (reduce || !field) {
+                document.documentElement.classList.remove('has-case-tldr');
+                tldr.remove();
+              } else {
+                document.body.classList.add('motion-case-enter');
+                tldr.setAttribute('aria-hidden', 'false');
+                window.setTimeout(function () {
+                  field.classList.add('is-lifting-case');
+                }, 2800);
+                window.setTimeout(function () {
+                  tldr.classList.add('is-done');
+                  document.documentElement.classList.remove('has-case-tldr');
+                  document.body.classList.remove('motion-case-enter');
+                  tldr.setAttribute('aria-hidden', 'true');
+                  tldr.remove();
+                }, 3650);
+              }
+            } else if (tldr && !showTldr) {
+              tldr.remove();
+            }
+
+            var leave = document.getElementById('case-soft-leave');
+            function leaveTargets(href) {
+              try {
+                var u = new URL(href, location.origin);
+                if (u.origin !== location.origin) return false;
+                var p = u.pathname.replace(/\/$/, '') || '/';
+                return p === '/' || p === '/about' || p.indexOf('/archive') === 0;
+              } catch (e) {
+                return false;
+              }
+            }
+
+            document.querySelectorAll('a[href]').forEach(function (a) {
+              a.addEventListener('click', function (e) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank')
+                  return;
+                var href = a.getAttribute('href');
+                if (!href || !leaveTargets(href) || !leave) return;
+                e.preventDefault();
+                if (reduce) {
+                  location.href = a.href;
+                  return;
+                }
+                leave.classList.add('is-on');
+                window.setTimeout(function () {
+                  location.href = a.href;
+                }, 400);
+              });
+            });
+          })();
+        </script>
+      )
+    }
   </body>
 </html>
