@@ -42,6 +42,20 @@ const isCase = path.startsWith('/work');
     />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+    <script is:inline>
+      (function () {
+        try {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            sessionStorage.removeItem('sl-page-enter');
+            return;
+          }
+          if (sessionStorage.getItem('sl-page-enter')) {
+            sessionStorage.removeItem('sl-page-enter');
+            document.documentElement.classList.add('has-page-enter');
+          }
+        } catch (e) {}
+      })();
+    </script>
     {
       isHome && (
         <script is:inline>
@@ -51,9 +65,11 @@ const isCase = path.startsWith('/work');
               var isReload = nav && nav.type === 'reload';
               if (isReload || !sessionStorage.getItem('sl-recruiter-scan')) {
                 document.documentElement.classList.add('has-recruiter-scan');
+                document.documentElement.classList.remove('has-page-enter');
               }
             } catch (e) {
               document.documentElement.classList.add('has-recruiter-scan');
+              document.documentElement.classList.remove('has-page-enter');
             }
           })();
         </script>
@@ -100,7 +116,6 @@ const isCase = path.startsWith('/work');
       <div class="nav-links">
         <a href="/#work" data-nav="work" class={isCase ? 'active' : undefined}>Work</a>
         <a href="/about" data-nav="about" class={isAbout ? 'active' : undefined}>About</a>
-        <a href={isAbout ? '/about#contact' : '/#contact'} data-nav="contact">Contact</a>
       </div>
     </nav>
 
@@ -189,7 +204,7 @@ const isCase = path.startsWith('/work');
           var finalDot = scan.querySelector('[data-scan-dot]');
           var HOLD = 580;
           var SWAP = 180;
-          var FINAL_HOLD = 900;
+          var FINAL_HOLD = 620;
           var i = 0;
 
           function setWipeTarget() {
@@ -230,7 +245,7 @@ const isCase = path.startsWith('/work');
             window.setTimeout(function () {
               var navDot = document.querySelector('.nav-dot');
               if (navDot) navDot.classList.add('is-landing');
-            }, 520);
+            }, 420);
             window.setTimeout(function () {
               window.removeEventListener('resize', setWipeTarget);
               scan.classList.add('is-done');
@@ -239,7 +254,7 @@ const isCase = path.startsWith('/work');
               scan.setAttribute('aria-hidden', 'true');
               scan.remove();
               signalMotionReady();
-            }, 900);
+            }, 720);
           }
 
           function advance() {
@@ -271,7 +286,50 @@ const isCase = path.startsWith('/work');
           return true;
         }
 
-        if (!runRecruiterScan()) signalMotionReady();
+        function navigateWithLeave(href) {
+          if (leaving) return;
+          if (reduce) {
+            location.href = href;
+            return;
+          }
+          leaving = true;
+          try {
+            sessionStorage.setItem('sl-page-enter', '1');
+          } catch (e) {}
+          document.body.classList.add('is-leaving');
+          window.setTimeout(function () {
+            location.href = href;
+          }, 300);
+        }
+
+        /* bfcache restore can leave the page stuck faded out */
+        window.addEventListener('pageshow', function () {
+          leaving = false;
+          document.body.classList.remove('is-leaving');
+          document.documentElement.classList.remove('has-page-enter', 'is-page-entering');
+        });
+
+        function runPageEnter() {
+          if (!document.documentElement.classList.contains('has-page-enter')) return false;
+          if (reduce) {
+            document.documentElement.classList.remove('has-page-enter');
+            return false;
+          }
+          window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function () {
+              document.documentElement.classList.add('is-page-entering');
+              window.setTimeout(function () {
+                document.documentElement.classList.remove('has-page-enter', 'is-page-entering');
+                signalMotionReady();
+              }, 420);
+            });
+          });
+          return true;
+        }
+
+        if (!runRecruiterScan()) {
+          if (!runPageEnter()) signalMotionReady();
+        }
 
         var replay = document.querySelector('[data-replay-scan]');
         if (replay) {
@@ -281,19 +339,6 @@ const isCase = path.startsWith('/work');
             } catch (e) {}
             location.href = '/';
           });
-        }
-
-        function navigateWithLeave(href) {
-          if (leaving) return;
-          if (reduce) {
-            location.href = href;
-            return;
-          }
-          leaving = true;
-          document.body.classList.add('is-leaving');
-          window.setTimeout(function () {
-            location.href = href;
-          }, 280);
         }
 
         function samePageSection(href) {
@@ -333,7 +378,7 @@ const isCase = path.startsWith('/work');
             if (section) {
               e.preventDefault();
               scrollToId(section, reduce ? 'auto' : 'smooth');
-              history.pushState(null, '', '#' + section);
+              history.replaceState(null, '', '#' + section);
               return;
             }
 

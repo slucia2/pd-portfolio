@@ -244,7 +244,7 @@ const roles = [
             const x = caseExtras[c.slug]!;
             return (
               <a
-                class="case-row reveal"
+                class="case-row"
                 href={`/work/${c.slug}/`}
                 style={`--accent:${c.accent};--accent-dark:${c.accentDark}`}
               >
@@ -405,7 +405,7 @@ const roles = [
   .section {
     padding: var(--section-pad) 0;
     border-top: 1.5px solid #e6e4e0;
-    scroll-margin-top: 88px;
+    scroll-margin-top: -16px;
   }
 
   /* —— Hero 50/50 (same gap as case rows) —— */
@@ -650,23 +650,6 @@ const roles = [
     gap: var(--split-gap);
     align-items: center;
     color: inherit;
-  }
-  .case-row.reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition:
-      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .case-row.reveal.is-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .case-row.reveal:nth-child(2) {
-    transition-delay: 0.08s;
-  }
-  .case-row.reveal:nth-child(3) {
-    transition-delay: 0.16s;
   }
   .case-meta {
     display: flex;
@@ -970,11 +953,6 @@ const roles = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .case-row.reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
     .case-shot,
     .browser.back,
     .browser.detail,
@@ -1249,30 +1227,3 @@ const roles = [
     }
   }
 </style>
-
-<script is:inline>
-  (function () {
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var rows = document.querySelectorAll('.case-row.reveal');
-    if (!rows.length) return;
-    if (reduce) {
-      rows.forEach(function (row) {
-        row.classList.add('is-in');
-      });
-      return;
-    }
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-in');
-          io.unobserve(entry.target);
-        });
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.18 },
-    );
-    rows.forEach(function (row) {
-      io.observe(row);
-    });
-  })();
-</script>

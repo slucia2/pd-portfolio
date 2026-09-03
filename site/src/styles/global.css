@@ -25,6 +25,11 @@
 
 * { box-sizing: border-box; }
 
+html {
+  /* Avoid left-shift when intro unlocks scroll and the scrollbar returns */
+  scrollbar-gutter: stable;
+}
+
 /* Page-width system: nav and footer always share one frame width (--frame-max).
    Home/about content uses --page-max (same as frame on w-home). Case studies can
    use a narrower --page-max while nav stays aligned site-wide. */
