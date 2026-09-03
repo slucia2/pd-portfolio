@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import '../styles/motion.css';
-import type { CaseInterstitial } from '../data/case-interstitial';
 
 interface Props {
   title: string;
@@ -11,8 +10,6 @@ interface Props {
   /** Footer right-side text; use footerCopyright for RPG-style single copyright line */
   footerRight?: string;
   footerCopyright?: boolean;
-  /** When set, enables problem interstitial if sessionStorage from-work flag matches */
-  caseInterstitial?: CaseInterstitial;
 }
 
 const {
@@ -21,7 +18,6 @@ const {
   description = 'Sam Lucia, product designer for the messy middle. Complex systems, enterprise tools · T-Mobile, Seattle.',
   footerRight = 'PRESS START',
   footerCopyright = false,
-  caseInterstitial,
 } = Astro.props;
 
 const { pathname } = Astro.url;
@@ -46,82 +42,53 @@ const isCase = path.startsWith('/work');
     />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
-    {isHome && (
-      <script is:inline>
-        try {
-          if (!sessionStorage.getItem('sl-recruiter-scan')) {
-            document.documentElement.classList.add('has-recruiter-scan');
-          }
-        } catch (e) {}
-      </script>
-    )}
-    {caseInterstitial && (
-      <script is:inline define:vars={{ caseSlug: caseInterstitial.slug }}>
-        try {
-          if (sessionStorage.getItem('sl-case-tldr') === caseSlug) {
-            document.documentElement.classList.add('has-case-tldr');
-          }
-        } catch (e) {}
-      </script>
-    )}
+    {
+      isHome && (
+        <script is:inline>
+          (function () {
+            try {
+              var params = new URLSearchParams(location.search);
+              var forceScan = params.get('scan') === '1' || params.get('demo') === 'scan';
+              if (forceScan || !sessionStorage.getItem('sl-recruiter-scan')) {
+                document.documentElement.classList.add('has-recruiter-scan');
+              }
+            } catch (e) {}
+          })();
+        </script>
+      )
+    }
   </head>
   <body class={`w-${width}`}>
     {
       isHome && (
         <div id="recruiter-scan" class="motion-overlay" aria-hidden="true">
           <div class="motion-field" data-scan-field>
-            <div class="motion-ink" aria-hidden="true"></div>
-            <div class="motion-copy">
-              <div class="scan-meta">
-                <span class="scan-name">Sam Lucia</span>
-                <span class="scan-role">Product designer · Open to roles</span>
+            <div class="scan-stage">
+              <div class="scan-header" data-scan-header>
+                <div class="scan-frame is-on" data-scan-frame>
+                  <span class="scan-frame-text t1">HCI</span>
+                </div>
+                <div class="scan-frame" data-scan-frame>
+                  <span class="scan-frame-text t5">AI-driven</span>
+                </div>
+                <div class="scan-frame" data-scan-frame>
+                  <span class="scan-frame-text t4">Wayfinding</span>
+                </div>
+                <div class="scan-frame" data-scan-frame>
+                  <span class="scan-frame-text t2">Design systems</span>
+                </div>
+                <div class="scan-frame scan-frame--final" data-scan-frame data-scan-final>
+                  <span class="scan-final">
+                    <span class="scan-final-dot" data-scan-dot aria-hidden="true"></span>
+                    <span class="scan-frame-text t-final">Actively applying</span>
+                  </span>
+                </div>
               </div>
-              <div class="scan-claim-wrap">
-                <p class="scan-claim">I design clear paths through complicated products.</p>
-              </div>
-              <div class="scan-rule" aria-hidden="true"></div>
-              <p class="scan-next">Selected work ↓</p>
             </div>
           </div>
         </div>
       )
     }
-
-    {
-      caseInterstitial && (
-        <div
-          id="case-tldr"
-          class="motion-overlay"
-          aria-hidden="true"
-          data-case-slug={caseInterstitial.slug}
-        >
-          <div class="motion-field" data-tldr-field>
-            <div class="motion-ink" aria-hidden="true"></div>
-            <div class="motion-copy">
-              <span class="tldr-kicker">The problem</span>
-              <div class="tldr-meta">
-                <span>{caseInterstitial.org.toUpperCase()}</span>
-                <span class="sep">·</span>
-                <span>{caseInterstitial.year}</span>
-                <span class="sep">·</span>
-                <span>{caseInterstitial.title}</span>
-              </div>
-              <p class="tldr-hook">{caseInterstitial.hook}</p>
-              <p class="tldr-role">{caseInterstitial.role}</p>
-              <div
-                class="tldr-rule"
-                style={`background:${caseInterstitial.accent}`}
-                aria-hidden="true"
-              >
-              </div>
-              <p class="tldr-continue">How it shipped →</p>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    {isCase && <div id="case-soft-leave" class="motion-soft-leave" aria-hidden="true"></div>}
 
     <nav class="nav">
       <a href="/" class="nav-brand">
@@ -140,7 +107,14 @@ const isCase = path.startsWith('/work');
     <footer class="footer">
       {footerCopyright ? (
         <>
-          <span class="footer-copy">© 2026 Sam Lucia · All rights reserved</span>
+          <span class="footer-copy">
+            © 2026 Sam Lucia · All rights reserved
+            {isHome && (
+              <button type="button" class="motion-demo-btn" id="replay-scan" data-replay-scan>
+                Replay intro
+              </button>
+            )}
+          </span>
           <span class="footer-mid">Seattle, WA</span>
           <div class="footer-socials">
             <a href="https://www.linkedin.com/in/samlucia" target="_blank" rel="noopener noreferrer"
@@ -158,143 +132,240 @@ const isCase = path.startsWith('/work');
       )}
     </footer>
 
-    {
-      isHome && (
-        <script is:inline>
-          (function () {
-            var SCAN_KEY = 'sl-recruiter-scan';
-            var CASE_KEY = 'sl-case-tldr';
-            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            var pending = document.documentElement.classList.contains('has-recruiter-scan');
-            var scan = document.getElementById('recruiter-scan');
-            var field = scan && scan.querySelector('[data-scan-field]');
+    <script is:inline>
+      (function () {
+        var SCAN_KEY = 'sl-recruiter-scan';
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var motionReady = false;
+        var leaving = false;
 
-            if (scan && field && pending && !scan.dataset.armed) {
-              scan.dataset.armed = '1';
-              try {
-                sessionStorage.setItem(SCAN_KEY, '1');
-              } catch (e) {}
-              if (reduce) {
-                document.documentElement.classList.remove('has-recruiter-scan');
-                scan.remove();
-              } else {
-                document.documentElement.style.overflow = 'hidden';
-                scan.setAttribute('aria-hidden', 'false');
-                window.setTimeout(function () {
-                  field.classList.add('is-lifting');
-                }, 2400);
-                window.setTimeout(function () {
-                  scan.classList.add('is-done');
-                  document.documentElement.classList.remove('has-recruiter-scan');
-                  document.documentElement.style.overflow = '';
-                  scan.setAttribute('aria-hidden', 'true');
-                  scan.remove();
-                }, 3400);
+        function signalMotionReady() {
+          if (motionReady) return;
+          motionReady = true;
+          window.dispatchEvent(new CustomEvent('sl:motion-ready'));
+        }
+
+        function playDeferredVideos() {
+          document.querySelectorAll('video[data-defer-play]').forEach(function (v) {
+            try {
+              var p = v.play();
+              if (p && p.catch) p.catch(function () {});
+            } catch (e) {}
+          });
+        }
+
+        window.addEventListener('sl:motion-ready', playDeferredVideos);
+
+        function scrollToId(id, behavior) {
+          var el = document.getElementById(id);
+          if (!el) return false;
+          el.scrollIntoView({ behavior: behavior || (reduce ? 'auto' : 'smooth'), block: 'start' });
+          return true;
+        }
+
+        function runRecruiterScan() {
+          var pending = document.documentElement.classList.contains('has-recruiter-scan');
+          var scan = document.getElementById('recruiter-scan');
+          var field = scan && scan.querySelector('[data-scan-field]');
+          if (!scan) return false;
+          if (!pending) {
+            scan.remove();
+            return false;
+          }
+          if (scan.dataset.armed) return true;
+          scan.dataset.armed = '1';
+          try {
+            sessionStorage.setItem(SCAN_KEY, '1');
+          } catch (e) {}
+          try {
+            var u = new URL(location.href);
+            if (u.searchParams.has('scan') || u.searchParams.has('demo')) {
+              u.searchParams.delete('scan');
+              u.searchParams.delete('demo');
+              history.replaceState({}, '', u.pathname + u.search + u.hash);
+            }
+          } catch (e) {}
+          if (reduce) {
+            document.documentElement.classList.remove('has-recruiter-scan');
+            scan.remove();
+            return false;
+          }
+
+          var frames = Array.prototype.slice.call(scan.querySelectorAll('[data-scan-frame]'));
+          var finalDot = scan.querySelector('[data-scan-dot]');
+          var HOLD = 580;
+          var SWAP = 180;
+          var FINAL_HOLD = 900;
+          var i = 0;
+
+          function setWipeTarget() {
+            var dot = document.querySelector('.nav-dot');
+            var x = '50%';
+            var y = '50%';
+            if (dot) {
+              var r = dot.getBoundingClientRect();
+              x = r.left + r.width / 2 + 'px';
+              y = r.top + r.height / 2 + 'px';
+            }
+            field.style.setProperty('--wipe-x', x);
+            field.style.setProperty('--wipe-y', y);
+          }
+
+          setWipeTarget();
+          window.addEventListener('resize', setWipeTarget);
+
+          document.documentElement.style.overflow = 'hidden';
+          scan.setAttribute('aria-hidden', 'false');
+
+          function showFrame(index) {
+            frames.forEach(function (frame, idx) {
+              var on = idx === index;
+              frame.classList.toggle('is-on', on);
+              frame.classList.remove('is-leaving');
+              if (on && frame.hasAttribute('data-scan-final') && finalDot) {
+                finalDot.classList.add('is-on');
+              } else if (finalDot) {
+                finalDot.classList.remove('is-on');
               }
-            } else if (scan && !pending) {
+            });
+          }
+
+          function finish() {
+            setWipeTarget();
+            field.classList.add('is-wiping');
+            window.setTimeout(function () {
+              var navDot = document.querySelector('.nav-dot');
+              if (navDot) navDot.classList.add('is-landing');
+            }, 520);
+            window.setTimeout(function () {
+              window.removeEventListener('resize', setWipeTarget);
+              scan.classList.add('is-done');
+              document.documentElement.classList.remove('has-recruiter-scan');
+              document.documentElement.style.overflow = '';
+              scan.setAttribute('aria-hidden', 'true');
               scan.remove();
+              signalMotionReady();
+            }, 900);
+          }
+
+          function advance() {
+            var frame = frames[i];
+            if (!frame) {
+              finish();
+              return;
             }
+            var isFinal = frame.hasAttribute('data-scan-final');
+            var hold = isFinal ? FINAL_HOLD : HOLD;
 
-            document.querySelectorAll('a.case-row[data-case-slug]').forEach(function (link) {
-              link.addEventListener('click', function () {
-                var slug = link.getAttribute('data-case-slug');
-                if (slug) {
-                  try {
-                    sessionStorage.setItem(CASE_KEY, slug);
-                  } catch (e) {}
-                }
-              });
-            });
-
-            var workLink = document.querySelector('[data-nav="work"]');
-            var workSection = document.getElementById('work');
-            if (workLink && workSection) {
-              var setWorkActive = function (on) {
-                workLink.classList.toggle('active', on);
-              };
-              if (location.hash === '#work') setWorkActive(true);
-              var io = new IntersectionObserver(
-                function (entries) {
-                  var entry = entries[0];
-                  setWorkActive(entry.isIntersecting && entry.intersectionRatio > 0.2);
-                },
-                { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.4] },
-              );
-              io.observe(workSection);
-            }
-          })();
-        </script>
-      )
-    }
-
-    {
-      isCase && (
-        <script is:inline>
-          (function () {
-            var CASE_KEY = 'sl-case-tldr';
-            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            var tldr = document.getElementById('case-tldr');
-            var showTldr = document.documentElement.classList.contains('has-case-tldr');
-
-            if (tldr && showTldr && !tldr.dataset.armed) {
-              tldr.dataset.armed = '1';
-              try {
-                sessionStorage.removeItem(CASE_KEY);
-              } catch (e) {}
-              var field = tldr.querySelector('[data-tldr-field]');
-              if (reduce || !field) {
-                document.documentElement.classList.remove('has-case-tldr');
-                tldr.remove();
-              } else {
-                document.body.classList.add('motion-case-enter');
-                tldr.setAttribute('aria-hidden', 'false');
-                window.setTimeout(function () {
-                  field.classList.add('is-lifting-case');
-                }, 2800);
-                window.setTimeout(function () {
-                  tldr.classList.add('is-done');
-                  document.documentElement.classList.remove('has-case-tldr');
-                  document.body.classList.remove('motion-case-enter');
-                  tldr.setAttribute('aria-hidden', 'true');
-                  tldr.remove();
-                }, 3650);
+            window.setTimeout(function () {
+              if (isFinal) {
+                finish();
+                return;
               }
-            } else if (tldr && !showTldr) {
-              tldr.remove();
+              frame.classList.add('is-leaving');
+              frame.classList.remove('is-on');
+              i += 1;
+              window.setTimeout(function () {
+                showFrame(i);
+                advance();
+              }, SWAP);
+            }, hold);
+          }
+
+          showFrame(0);
+          advance();
+          return true;
+        }
+
+        if (!runRecruiterScan()) signalMotionReady();
+
+        var replay = document.querySelector('[data-replay-scan]');
+        if (replay) {
+          replay.addEventListener('click', function () {
+            try {
+              sessionStorage.removeItem(SCAN_KEY);
+            } catch (e) {}
+            location.href = '/?scan=1';
+          });
+        }
+
+        function navigateWithLeave(href) {
+          if (leaving) return;
+          if (reduce) {
+            location.href = href;
+            return;
+          }
+          leaving = true;
+          document.body.classList.add('is-leaving');
+          window.setTimeout(function () {
+            location.href = href;
+          }, 280);
+        }
+
+        function samePageSection(href) {
+          try {
+            var u = new URL(href, location.origin);
+            if (u.origin !== location.origin) return null;
+            var p = u.pathname.replace(/\/$/, '') || '/';
+            var cur = location.pathname.replace(/\/$/, '') || '/';
+            if (p !== cur) return null;
+            if (u.hash === '#work' || u.hash === '#contact') return u.hash.slice(1);
+            return null;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function leaveTargets(href) {
+          try {
+            var u = new URL(href, location.origin);
+            if (u.origin !== location.origin) return false;
+            var p = u.pathname.replace(/\/$/, '') || '/';
+            var cur = location.pathname.replace(/\/$/, '') || '/';
+            if (p === cur) return false;
+            return p === '/' || p === '/about' || p.indexOf('/work') === 0 || p.indexOf('/archive') === 0;
+          } catch (e) {
+            return false;
+          }
+        }
+
+        document.querySelectorAll('a[href]').forEach(function (a) {
+          a.addEventListener('click', function (e) {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank') return;
+            var href = a.getAttribute('href');
+            if (!href || href.indexOf('mailto:') === 0) return;
+
+            var section = samePageSection(href);
+            if (section) {
+              e.preventDefault();
+              scrollToId(section, reduce ? 'auto' : 'smooth');
+              history.pushState(null, '', '#' + section);
+              return;
             }
 
-            var leave = document.getElementById('case-soft-leave');
-            function leaveTargets(href) {
-              try {
-                var u = new URL(href, location.origin);
-                if (u.origin !== location.origin) return false;
-                var p = u.pathname.replace(/\/$/, '') || '/';
-                return p === '/' || p === '/about' || p.indexOf('/archive') === 0;
-              } catch (e) {
-                return false;
-              }
-            }
+            if (!leaveTargets(href)) return;
+            e.preventDefault();
+            navigateWithLeave(a.href);
+          });
+        });
 
-            document.querySelectorAll('a[href]').forEach(function (a) {
-              a.addEventListener('click', function (e) {
-                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank')
-                  return;
-                var href = a.getAttribute('href');
-                if (!href || !leaveTargets(href) || !leave) return;
-                e.preventDefault();
-                if (reduce) {
-                  location.href = a.href;
-                  return;
-                }
-                leave.classList.add('is-on');
-                window.setTimeout(function () {
-                  location.href = a.href;
-                }, 400);
-              });
-            });
-          })();
-        </script>
-      )
-    }
+        var workLink = document.querySelector('[data-nav="work"]');
+        var workSection = document.getElementById('work');
+        if (workLink && workSection) {
+          var setWorkActive = function (on) {
+            workLink.classList.toggle('active', on);
+          };
+          if (location.hash === '#work') setWorkActive(true);
+          var io = new IntersectionObserver(
+            function (entries) {
+              var entry = entries[0];
+              setWorkActive(entry.isIntersecting && entry.intersectionRatio > 0.2);
+            },
+            { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.4] },
+          );
+          io.observe(workSection);
+        }
+      })();
+    </script>
   </body>
 </html>

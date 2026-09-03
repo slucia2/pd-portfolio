@@ -244,9 +244,8 @@ const roles = [
             const x = caseExtras[c.slug]!;
             return (
               <a
-                class="case-row"
+                class="case-row reveal"
                 href={`/work/${c.slug}/`}
-                data-case-slug={c.slug}
                 style={`--accent:${c.accent};--accent-dark:${c.accentDark}`}
               >
                 {x.shot === 'ep' && (
@@ -406,6 +405,7 @@ const roles = [
   .section {
     padding: var(--section-pad) 0;
     border-top: 1.5px solid #e6e4e0;
+    scroll-margin-top: 88px;
   }
 
   /* —— Hero 50/50 (same gap as case rows) —— */
@@ -651,6 +651,23 @@ const roles = [
     align-items: center;
     color: inherit;
   }
+  .case-row.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .case-row.reveal.is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .case-row.reveal:nth-child(2) {
+    transition-delay: 0.08s;
+  }
+  .case-row.reveal:nth-child(3) {
+    transition-delay: 0.16s;
+  }
   .case-meta {
     display: flex;
     align-items: center;
@@ -666,6 +683,11 @@ const roles = [
     letter-spacing: -0.03em;
     line-height: 1;
     color: var(--accent);
+    transition: letter-spacing 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .case-row:hover .case-metric,
+  .case-row:focus-visible .case-metric {
+    letter-spacing: -0.045em;
   }
   .case-metric-label {
     margin-top: 8px;
@@ -692,8 +714,10 @@ const roles = [
     font-size: 20px;
     color: var(--accent-dark);
     opacity: 0;
-    transform: translate(-3px, 3px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translate(-4px, 4px);
+    transition:
+      opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .case-row:hover .case-name-arrow,
   .case-row:focus-visible .case-name-arrow {
@@ -720,11 +744,16 @@ const roles = [
     align-items: center;
     justify-content: center;
     padding: 24px;
-    transition: transform 0.24s ease, box-shadow 0.24s ease;
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease;
   }
-  .case-row:hover .case-shot {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(29, 42, 51, 0.12);
+  .case-row:hover .case-shot,
+  .case-row:focus-visible .case-shot {
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 22px 48px rgba(29, 42, 51, 0.16);
+    border-color: rgba(29, 42, 51, 0.2);
   }
   .case-shot.ep-stack {
     display: block;
@@ -784,6 +813,7 @@ const roles = [
     transform: rotate(-3.5deg);
     opacity: 0.9;
     z-index: 1;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
   }
   .browser.detail {
     position: absolute;
@@ -793,6 +823,7 @@ const roles = [
     transform: rotate(4deg);
     opacity: 0.93;
     z-index: 2;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
   }
   .browser.front {
     position: absolute;
@@ -801,6 +832,22 @@ const roles = [
     top: 26%;
     z-index: 3;
     box-shadow: 0 24px 48px rgba(47, 42, 36, 0.22);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+  }
+  .case-row:hover .browser.back,
+  .case-row:focus-visible .browser.back {
+    transform: rotate(-5deg) translate(-6px, -4px);
+    opacity: 1;
+  }
+  .case-row:hover .browser.detail,
+  .case-row:focus-visible .browser.detail {
+    transform: rotate(6deg) translate(6px, -6px);
+    opacity: 1;
+  }
+  .case-row:hover .browser.front,
+  .case-row:focus-visible .browser.front {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 28px 56px rgba(47, 42, 36, 0.28);
   }
   .browser.front .browser-shot {
     position: relative;
@@ -840,6 +887,7 @@ const roles = [
     border-radius: 10px;
     background: #fff;
     box-shadow: 0 12px 28px rgba(29, 42, 51, 0.12);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .shot-img.contain {
     object-fit: contain;
@@ -870,6 +918,7 @@ const roles = [
     box-shadow: 0 16px 32px rgba(29, 42, 51, 0.18);
     overflow: hidden;
     flex-shrink: 0;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
   }
   .phone .island {
     position: absolute;
@@ -900,6 +949,46 @@ const roles = [
   .phone.center {
     width: clamp(110px, 15vw, 148px);
     z-index: 3;
+  }
+  .case-row:hover .phone.tilt-left,
+  .case-row:focus-visible .phone.tilt-left {
+    transform: translate(8px, 2px) rotate(-14deg) scale(0.92);
+  }
+  .case-row:hover .phone.tilt-right,
+  .case-row:focus-visible .phone.tilt-right {
+    transform: translate(-8px, 2px) rotate(14deg) scale(0.92);
+  }
+  .case-row:hover .phone.center,
+  .case-row:focus-visible .phone.center {
+    transform: translateY(-10px) scale(1.04);
+    box-shadow: 0 22px 40px rgba(29, 42, 51, 0.28);
+  }
+
+  .case-row:hover .shot-img,
+  .case-row:focus-visible .shot-img {
+    transform: scale(1.03);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-row.reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .case-shot,
+    .browser.back,
+    .browser.detail,
+    .browser.front,
+    .phone,
+    .shot-img,
+    .case-name-arrow,
+    .case-metric {
+      transition: none !important;
+    }
+    .case-row:hover .case-shot,
+    .case-row:focus-visible .case-shot {
+      transform: none;
+    }
   }
 
   /* —— Built projects (2×2 grid) —— */
@@ -1160,3 +1249,30 @@ const roles = [
     }
   }
 </style>
+
+<script is:inline>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var rows = document.querySelectorAll('.case-row.reveal');
+    if (!rows.length) return;
+    if (reduce) {
+      rows.forEach(function (row) {
+        row.classList.add('is-in');
+      });
+      return;
+    }
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.18 },
+    );
+    rows.forEach(function (row) {
+      io.observe(row);
+    });
+  })();
+</script>

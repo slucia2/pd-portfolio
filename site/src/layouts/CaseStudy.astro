@@ -1,7 +1,6 @@
 ---
 import Base from './Base.astro';
 import type { CaseStudy } from '../data/cases';
-import { interstitialForSlug } from '../data/case-interstitial';
 
 interface Props {
   case: CaseStudy;
@@ -18,15 +17,8 @@ interface Props {
 
 const { case: c, intro, meta, credentials = [], heroAlt, problem, outcome, hideOpener = false } =
   Astro.props;
-
-const interstitial = interstitialForSlug(c.slug);
 ---
-<Base
-  title={`${c.title} · Sam Lucia`}
-  description={intro}
-  width="case"
-  caseInterstitial={interstitial}
->
+<Base title={`${c.title} · Sam Lucia`} description={intro} width="case">
   <main
     class="case-main"
     style={`--accent:${c.accent};--accent-dark:${c.accentDark};--accent-tint:${c.accentTint};--accent-border:${c.accentBorder}`}
@@ -55,10 +47,11 @@ const interstitial = interstitialForSlug(c.slug);
         <video
           class="case-hero"
           src={c.heroVideo}
-          autoplay
           muted
           loop
           playsinline
+          preload="metadata"
+          data-defer-play
           aria-label={heroAlt}
           style={[
             c.imagePosition ? `object-position:${c.imagePosition}` : '',
