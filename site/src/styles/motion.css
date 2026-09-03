@@ -125,34 +125,35 @@ html.has-recruiter-scan .nav-dot {
   color: #1d2a33;
 }
 .scan-frame-text.t2 {
-  font-weight: 600;
-  font-style: italic;
+  font-weight: 700;
   color: #1d2a33;
+  padding-bottom: 0.08em;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 4px;
+}
+.scan-frame-text.t3 {
+  font-weight: 700;
+  color: #1d2a33;
+  -webkit-text-stroke: 0.85px #1d2a33;
+  paint-order: stroke fill;
 }
 .scan-frame-text.t4 {
-  font-weight: 500;
-  color: #1d2a33;
-  text-decoration: underline;
-  text-underline-offset: 0.14em;
-  text-decoration-thickness: 3px;
-  text-decoration-color: #1d2a33;
-}
-.scan-frame-text.t5 {
   font-weight: 700;
   font-style: italic;
-  color: #2c7a4d;
+  color: #1d2a33;
 }
 .scan-frame-text.t-final {
   font-weight: 700;
   color: #1d2a33;
-  -webkit-text-stroke: 0;
 }
 
 .scan-final {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35em;
+  gap: 0.55em;
   white-space: nowrap;
 }
 

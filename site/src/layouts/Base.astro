@@ -47,12 +47,14 @@ const isCase = path.startsWith('/work');
         <script is:inline>
           (function () {
             try {
-              var params = new URLSearchParams(location.search);
-              var forceScan = params.get('scan') === '1' || params.get('demo') === 'scan';
-              if (forceScan || !sessionStorage.getItem('sl-recruiter-scan')) {
+              var nav = performance.getEntriesByType('navigation')[0];
+              var isReload = nav && nav.type === 'reload';
+              if (isReload || !sessionStorage.getItem('sl-recruiter-scan')) {
                 document.documentElement.classList.add('has-recruiter-scan');
               }
-            } catch (e) {}
+            } catch (e) {
+              document.documentElement.classList.add('has-recruiter-scan');
+            }
           })();
         </script>
       )
@@ -69,13 +71,13 @@ const isCase = path.startsWith('/work');
                   <span class="scan-frame-text t1">HCI</span>
                 </div>
                 <div class="scan-frame" data-scan-frame>
-                  <span class="scan-frame-text t5">AI-driven</span>
+                  <span class="scan-frame-text t2">IA</span>
                 </div>
                 <div class="scan-frame" data-scan-frame>
-                  <span class="scan-frame-text t4">Wayfinding</span>
+                  <span class="scan-frame-text t4">Design systems</span>
                 </div>
                 <div class="scan-frame" data-scan-frame>
-                  <span class="scan-frame-text t2">Design systems</span>
+                  <span class="scan-frame-text t3">AI Builds</span>
                 </div>
                 <div class="scan-frame scan-frame--final" data-scan-frame data-scan-final>
                   <span class="scan-final">
@@ -177,14 +179,6 @@ const isCase = path.startsWith('/work');
           try {
             sessionStorage.setItem(SCAN_KEY, '1');
           } catch (e) {}
-          try {
-            var u = new URL(location.href);
-            if (u.searchParams.has('scan') || u.searchParams.has('demo')) {
-              u.searchParams.delete('scan');
-              u.searchParams.delete('demo');
-              history.replaceState({}, '', u.pathname + u.search + u.hash);
-            }
-          } catch (e) {}
           if (reduce) {
             document.documentElement.classList.remove('has-recruiter-scan');
             scan.remove();
@@ -285,7 +279,7 @@ const isCase = path.startsWith('/work');
             try {
               sessionStorage.removeItem(SCAN_KEY);
             } catch (e) {}
-            location.href = '/?scan=1';
+            location.href = '/';
           });
         }
 
