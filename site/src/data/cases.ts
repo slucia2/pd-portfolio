@@ -75,7 +75,7 @@ export const cases: CaseStudy[] = [
     title: 'ScamRanger',
     cartridgeLabel: 'NO.3 · MOBILE',
     cardMeta: 'RANGERS AI · 2026',
-    description: 'Fraud protection rebuilt for the people fraud actually targets.',
+    description: 'Bank-distributed scam protection, redesigned for the people fraud targets.',
     accent: '#9B85FF',
     accentDark: '#5533CC',
     accentTint: 'rgba(123, 92, 248, .12)',

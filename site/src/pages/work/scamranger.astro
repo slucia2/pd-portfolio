@@ -13,12 +13,13 @@ const gallerySlides = [
 ];
 
 const typeScale = [
-  { name: 'Display', spec: '45 / 115, Regular' },
-  { name: 'H1', spec: '34 / 130, Medium' },
-  { name: 'H2', spec: '26 / 130, Medium' },
-  { name: 'Body Large', spec: '20 / 160, Regular' },
-  { name: 'Body', spec: '18 / 160, Regular' },
-  { name: 'UI Button', spec: '18 / 130, Semibold' },
+  { name: 'Display', spec: '48 / 125, Regular' },
+  { name: 'H1', spec: '34 / 125, Medium' },
+  { name: 'H2', spec: '28 / 162, Medium' },
+  { name: 'H3', spec: '22 / 150, Medium' },
+  { name: 'Body Large', spec: '20 / 165, Regular' },
+  { name: 'Body', spec: '18 / 165, Regular' },
+  { name: 'UI Button', spec: '18 / 125, Semibold' },
 ];
 
 const colors = [
@@ -33,33 +34,128 @@ const colors = [
 ];
 
 const guidelines = [
-  { title: 'No opacity fills', text: 'Solid hex only. Opacity over gradients caused inconsistent contrast on production screens.' },
-  { title: '18px body minimum', text: 'Older target audience. Caption/label at 14px only for secondary chrome.' },
-  { title: '44px tap targets', text: 'Buttons, links, and icon hits meet WCAG touch guidance, including secondary actions.' },
-  { title: '4px spacing grid', text: 'In-screen margins and element gaps follow a 4px rhythm for handoff clarity.' },
-  { title: 'Inline T&C at commitment', text: 'Terms sit next to the action that creates the account, not a standalone interrupt screen.' },
+  { title: '18px body floor', text: 'Real content never drops below 18. 14px only for chrome like field labels. Older audience, NN/g guidance.' },
+  { title: '44px+ tap targets', text: 'Buttons, rows, and nav meet Apple HIG / WCAG touch guidance, sized for motor impairment risk.' },
+  { title: 'Solid color, not opacity', text: 'Solid tokens only. Opacity washes over gradients made contrast unreliable in production.' },
+  { title: 'Dedicated T&C for banks', text: 'Partnerships need explicit consent. Dedicated terms screen, not buried next to a secondary action.' },
+  { title: 'Permission with context', text: 'Explain why each setting matters before sending someone into iOS Settings.' },
 ];
+
+const rationale = [
+  {
+    area: 'Home',
+    delivered: 'Opens on content: tip, scan, bank block, links',
+    now: 'Opens on “am I safe?”, then recent checks',
+    why: 'Answers the question people open the app with. Untested with users.',
+    seen: 'Rocket Money: summary first, then recent activity',
+  },
+  {
+    area: 'Type',
+    delivered: 'Body 16–18, nav labels 11',
+    now: 'Body 18 throughout, titles 22, nav 13',
+    why: 'People in their 40s already need larger type (NN/g).',
+    seen: 'Apple HIG: 17pt body by default',
+  },
+  {
+    area: 'Touch targets',
+    delivered: 'Rows ~72pt, nav ~56pt, links inline',
+    now: 'Rows 76–80pt, buttons 60–64pt, tabs 75pt',
+    why: 'About 1 in 5 over-65s has some tremor (W3C).',
+    seen: 'Apple HIG: 44pt minimum',
+  },
+  {
+    area: 'Color',
+    delivered: 'Brand carried by gradients and purple surfaces',
+    now: 'Flat purple, only on actions and status',
+    why: 'Keeps the brand without gradients. Saturation drives arousal more than hue.',
+    seen: 'Quizlet, Duolingo: flat brand on key actions',
+  },
+  {
+    area: 'Contrast',
+    delivered: 'Button 4.44:1 on gradient, nav outline 2.20:1',
+    now: 'Light: button passes. Dark: 4.44:1. Nav 3.09:1, body 7:1',
+    why: 'Higher contrast across the board. Dark fix is lightness, not hue.',
+    seen: 'WCAG AA, AAA for body text',
+  },
+  {
+    area: 'Surfaces',
+    delivered: 'Four one-off card styles',
+    now: 'One content surface, one brand card',
+    why: 'Fewer styles to build, test, and keep consistent.',
+    seen: '8 of 8 finance apps sampled: white cards on grey',
+  },
+  {
+    area: 'Theme',
+    delivered: 'Dark only',
+    now: 'Dark and light from one switch',
+    why: 'Easy switch because tokens are layered. Dark blue and black blur with age.',
+    seen: 'Quizlet, Rocket Money: light by default',
+  },
+];
+
+const takeaways = {
+  worked: [
+    'Meeting often, so decisions didn’t stall',
+    'Building fast with Figma’s agent and Claude',
+    'Componentizing early. When blue became purple after delivery, it was a token change, not a redesign',
+  ],
+  hard: [
+    'Reviews competed with the CEO’s live client meetings',
+    'Aligning on brand: logo size, and dark mode before light',
+    'No budget for user research. Market review and two scam experts helped, but it’s not the same',
+  ],
+  next: [
+    'First bank deal was signed post handoff',
+    'Full app IA review and redesign at page level',
+    'Usability testing, starting with setup',
+    'Open up to trial and paid direct users',
+  ],
+};
 ---
 <CaseStudy
   case={c}
-  intro="Joined mid-build with no clean handoff. Audited the live app, rebuilt onboarding for real activation paths, and overhauled home + learning on a tighter system."
+  intro="A bank-distributed app that catches scam messages before people act on them. Brought in mid-build to audit the live product, rebuild onboarding for real activation paths, and tighten home, learning, and the system behind them."
   meta={[
-    { key: 'ROLE', value: 'UX / product design' },
+    { key: 'ROLE', value: 'Product Design Lead' },
     { key: 'CLIENT', value: 'RangersAI' },
-    { key: 'SCOPE', value: 'Onboarding + app overhaul' },
+    { key: 'SCOPE', value: 'A11y, system, onboarding, home, learning' },
   ]}
-  credentials={['Accessibility bar', 'Design system', 'B2C + B2B paths']}
+  credentials={['Bank-contract timeline', 'No research budget', 'B2C + B2B paths']}
   heroAlt="ScamRanger mobile product"
-  problem="The product wasn’t ready for institutional eyes: weak accessibility, inconsistent UI, and onboarding that fought activation instead of enabling it."
-  outcome="Design approved for first-client testing with a major UK bank: a clearer path from audit to screens the customer could stand behind."
+  problem="Inherited a live app with no docs, no style guide, and screens that weren’t frames. Accessibility, activation sequencing, and visual consistency weren’t ready for a bank pilot."
+  outcome="Design approved for first-client testing with a major bank. First bank deal signed post handoff. Proposed a calmer dark/light system for the next pass."
 >
   <section class="sec">
-    <div class="sec-label">THE AUDIT</div>
-    <h2 class="sec-heading">Joined mid-build. Mapped what was actually broken.</h2>
+    <div class="sec-label">THE CONTEXT</div>
+    <h2 class="sec-heading">Stopping scams before they start.</h2>
     <p class="sec-body">
-      Sparse handoff, inconsistent UI, and an older audience the product wasn’t serving well.
-      I audited the live app first: activation sequencing, path confusion, media quality, and accessibility.
-      That pass set priorities for onboarding and the broader mobile overhaul.
+      Cybercriminals exploit messaging platforms. Victims turn to banks. Banks absorb deposit losses,
+      ops cost, and reimbursement pressure. ScamRanger is sold white-labeled to banks and fintechs—
+      the job is to break the cycle early, before emotional manipulation takes hold.
+    </p>
+    <div class="case-grid-3 sr-findings" style="margin-top:22px">
+      <div class="case-card">
+        <div class="case-card-label">1 in 4 Americans</div>
+        <div class="case-card-body">Scammed at some point in adult life.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">$442B / year</div>
+        <div class="case-card-body">Global cost of scams (Global Anti-Scam Alliance, 2025).</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">Best lever: early</div>
+        <div class="case-card-body">Catch the message before the victim responds. Much harder after money moves.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">THE AUDIT</div>
+    <h2 class="sec-heading">Pitched with an audit. Mapped what was actually broken.</h2>
+    <p class="sec-body">
+      Brought in via referral to advise the CEO and product. The app was live; the files had no documentation,
+      no style guide, and groups instead of frames. I mapped the entire onboarding and activation flow in one place,
+      annotated every screen, and categorized issues so the team could prioritize.
     </p>
 
     <figure class="sr-frame">
@@ -74,16 +170,16 @@ const guidelines = [
 
     <div class="case-grid-3 sr-findings" style="margin-top:22px">
       <div class="case-card">
-        <div class="case-card-label">Intro experience</div>
-        <div class="case-card-body">Too many screens before value. Vague copy, tiny fast videos, images off context.</div>
+        <div class="case-card-label">9 accessibility</div>
+        <div class="case-card-body">Contrast, missing labels, form UX, tap targets under 44pt, body under 18px.</div>
       </div>
       <div class="case-card">
-        <div class="case-card-label">Paths mixed</div>
-        <div class="case-card-body">No clear initial B2C option. Code, QR, and consumer shared one path.</div>
+        <div class="case-card-label">12 flow logic</div>
+        <div class="case-card-body">Redundancy, weak feedback, error states, leave-the-app friction on core setup.</div>
       </div>
       <div class="case-card">
-        <div class="case-card-label">Accessibility</div>
-        <div class="case-card-body">Body under 18px, weak contrast on gradients, tap targets under 44pt.</div>
+        <div class="case-card-label">9 visual consistency</div>
+        <div class="case-card-body">Off-system gradients, mixed structure, tone, and headers across screens.</div>
       </div>
     </div>
 
@@ -106,11 +202,13 @@ const guidelines = [
 
   <section class="sec">
     <div class="sec-label">PATHS &amp; ITERATION</div>
-    <h2 class="sec-heading">Branch the entry. Wire the steps. Borrow what works.</h2>
+    <h2 class="sec-heading">Three paths, one shared setup core.</h2>
     <p class="sec-body">
       Production forced everyone through one linear path. The redesign splits B2C purchase, B2B code/QR, and seeded/auto,
-      then shares setup downstream. Lo-fi locked step order before polish, checked against patterns from Calm, Headspace,
-      and similar onboarding, and absorbed CEO direction pivots (including blue to purple).
+      then shares setup downstream—mapped to NN/g’s onboarding model (Promotion → Customize → Instructions).
+      Lo-fi locked structure before color. Reviews with the CEO and scam advisor pushed value earlier, kept a dedicated
+      T&amp;C for bank consent, and required permission context before leaving the app. Scope grew from flow fixes to
+      hi-fi, a dark-mode style guide, and a full rebrand from blue to purple.
     </p>
 
     <div class="sr-ia">
@@ -121,15 +219,15 @@ const guidelines = [
       <div class="sr-ia-paths">
         <div class="case-card accent">
           <div class="case-card-label">B2C purchase</div>
-          <div class="case-card-body">Gallery to account (inline T&amp;C) to paywall to setup.</div>
+          <div class="case-card-body">Gallery → account → paywall → shared setup.</div>
         </div>
         <div class="case-card">
           <div class="case-card-label">B2B code / QR</div>
-          <div class="case-card-body">Code or scan to provider confirm to shared setup.</div>
+          <div class="case-card-body">Code or scan → provider confirm → shared setup.</div>
         </div>
         <div class="case-card">
           <div class="case-card-label">B2B seeded</div>
-          <div class="case-card-body">Auto-confirmed provider to shared setup. No code step.</div>
+          <div class="case-card-body">Auto-confirmed provider → shared setup. No code step.</div>
         </div>
       </div>
     </div>
@@ -148,15 +246,16 @@ const guidelines = [
         <img src="/images/scamranger/lofi-09.png" alt="Lo-fi first-run home intro" width="402" height="874" loading="lazy" />
       </figure>
     </div>
-    <p class="sr-audit-cap">Lo-fi B2B sample: activation, setup overview, filtering, first-run home.</p>
+    <p class="sr-audit-cap">Lo-fi sample: activation, setup overview, filtering, first-run home. Structure before polish.</p>
   </section>
 
   <section class="sec">
     <div class="sec-label">FLOW 01 / Onboarding</div>
-    <h2 class="sec-heading">Consumer path: value, account, then paywall.</h2>
+    <h2 class="sec-heading">Three paths in hi-fi. Same shared middle.</h2>
     <p class="sec-body">
-      Featured here is the B2C purchase route. Commitment lands after account creation.
-      B2B branches share setup screens downstream: same system, different entry.
+      Featured here is the B2C purchase route: value screens, account, trial-first paywall with Apple Pay, then setup.
+      B2B code and seeded branches differ only at entry—confirmation with bank branding, then the same permission
+      sequence and success screen.
     </p>
     <div class="sr-phones" aria-label="B2C onboarding screens">
       <figure class="sr-phone sr-phone--gallery" data-sr-gallery aria-label="Onboarding gallery, auto-advancing through three slides">
@@ -202,50 +301,75 @@ const guidelines = [
 
   <section class="sec">
     <div class="sec-label">FLOW 02 / Home, scan</div>
-    <h2 class="sec-heading">Iteration, then a customer veto.</h2>
+    <h2 class="sec-heading">Home: the biggest changes.</h2>
     <p class="sec-body">
-      First pass put scan higher in the stack, added a dismissible daily tip, and dialed back the logo.
-      A bank-trust path followed: Get started, From your bank, tip pushed lower.
-      Customer veto: no X on the tip, bring the logo back, keep the page simpler.
-      Final pass restored brand presence and a quieter tip. Scan stays the primary action at the bottom.
+      Six moves that mattered. Live app stacked tip and bank notice with no hierarchy. I pushed a gamified quest
+      concept; structure settled on tip, scan, bank notice. CEO approved a denser pass—the bank found it too busy.
+      Brand came back as a logo with no job; final pass makes the logo the status. Scan stays the primary action.
     </p>
-    <div class="sr-compare sr-compare--dirs" aria-label="Home iteration paths: tip stack, bank trust, and revised">
+    <div class="sr-home-steps" aria-label="Home iteration stages">
+      <div class="sr-home-step">
+        <div class="case-card-label">01 Live app</div>
+        <div class="case-card-body">Tip and bank notice, no hierarchy</div>
+      </div>
+      <div class="sr-home-step">
+        <div class="case-card-label">02 Quest concept</div>
+        <div class="case-card-body">Gamified: quests, streaks, alerts</div>
+      </div>
+      <div class="sr-home-step">
+        <div class="case-card-label">03 Structure set</div>
+        <div class="case-card-body">Tip, scan, bank notice, extras</div>
+      </div>
+      <div class="sr-home-step">
+        <div class="case-card-label">04 CEO approved</div>
+        <div class="case-card-body">Bank found it too busy</div>
+      </div>
+      <div class="sr-home-step">
+        <div class="case-card-label">05 Brand back in</div>
+        <div class="case-card-body">A big logo with no job</div>
+      </div>
+      <div class="sr-home-step">
+        <div class="case-card-label">06 Final</div>
+        <div class="case-card-body">The logo becomes the status</div>
+      </div>
+    </div>
+    <div class="sr-compare sr-compare--dirs" aria-label="Home iteration paths: structure, bank trust, and final">
       <div class="sr-compare-item">
         <figure class="sr-phone">
-          <img src="/images/scamranger/home-iter1.png" alt="Iteration 1 home with dismissible daily tip and scan card" width="402" height="874" loading="lazy" />
+          <img src="/images/scamranger/home-before.png" alt="Live app home before redesign with tip and bank notice stacked" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Iteration 1, rejected: tip X, logo reduced</p>
+        <p class="sr-compare-cap">Live app: tip + bank, no hierarchy</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
-          <img src="/images/scamranger/home-bank.png" alt="Iteration 2 home with Get started scan card and From your bank Capital One block" width="402" height="874" loading="lazy" />
+          <img src="/images/scamranger/home-iter1.png" alt="Structure-set home with tip, scan card, and bank notice" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Iteration 2, bank trust / Get started</p>
+        <p class="sr-compare-cap">Structure set → CEO pass (bank: too busy)</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
-          <img src="/images/scamranger/home.png" alt="Revised home with logo restored, tip without dismiss, and scan CTA" width="402" height="874" loading="lazy" />
+          <img src="/images/scamranger/home.png" alt="Final home with logo as status, tip without dismiss, and scan CTA" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Revised: logo back, no tip dismiss</p>
+        <p class="sr-compare-cap">Final: logo becomes the status</p>
       </div>
     </div>
   </section>
 
   <section class="sec">
     <div class="sec-label">FLOW 03 / Learning Lab</div>
-    <h2 class="sec-heading">Long-term vision vs. what shipped on time.</h2>
+    <h2 class="sec-heading">The bigger pitch, then simple.</h2>
     <p class="sec-body">
-      I proposed a richer Learning surface: editorial hub, favorites, Scam Library, and insight articles.
-      For a quick client turnaround and an easier lift for engineering, we shipped a simpler Learning Lab:
-      three entry cards into Safety insights, scam types, and skill building, then those secondary screens.
-      Same job, smaller build.
+      Learning was a new ask from the bank. I proposed a richer surface: editorial hub, favorites, Scam Library,
+      and illustrated insight articles. Time and budget pushed the ship version down to three sections the team
+      could build and maintain—Safety insights, Common scam types, and Skill builder. Richer content vs. three
+      simple sections that still do the job.
     </p>
     <div class="sr-compare sr-compare--learn" aria-label="Learning proposed versus delivered">
       <div class="sr-compare-item">
         <figure class="sr-phone">
           <img src="/images/scamranger/learn-vision.png" alt="Proposed learning hub: Outsmart every Scam with categories and favorites" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Proposed: hub, editorial + favorites</p>
+        <p class="sr-compare-cap">Proposed: Outsmart every Scam</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
@@ -257,37 +381,88 @@ const guidelines = [
         <figure class="sr-phone">
           <img src="/images/scamranger/learn-hub-3.png" alt="Proposed insight article: Why awareness helps" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Proposed: insight article</p>
+        <p class="sr-compare-cap">Proposed: Why awareness helps</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
           <img src="/images/scamranger/learn-hub.png" alt="Delivered Learning lab hub with three category cards" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Delivered: Learning Lab hub</p>
+        <p class="sr-compare-cap">Shipped: three simple sections</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
           <img src="/images/scamranger/learn-vision-2.png" alt="Delivered Safety insights educational screen" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Delivered: Safety insights</p>
+        <p class="sr-compare-cap">Shipped: Safety insights</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
           <img src="/images/scamranger/learn-vision-3.png" alt="Delivered Scam Types alphabetical directory" width="402" height="874" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Delivered: Scam types</p>
+        <p class="sr-compare-cap">Shipped: Scam types A–Z</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-label">PROPOSED SYSTEM</div>
+    <h2 class="sec-heading">Then the style changed again.</h2>
+    <p class="sec-body">
+      Once Home and Learning were in, pulling every component into one library showed a problem: everything was purple—
+      canvas, cards, even body text. Strong saturation raises arousal, the opposite of what an anxious user needs.
+      Eight of eight finance apps sampled use white cards on a grey canvas. The proposed direction (mocked in the system,
+      not shipped) moves brand purple onto actions and status only, and gets dark and light from one variable switch—
+      not redrawn screens.
+    </p>
+
+    <div class="case-grid-3 sr-findings" style="margin-top:22px">
+      <div class="case-card">
+        <div class="case-card-label">01 Saturation</div>
+        <div class="case-card-body">Everything purple left no neutral ground, so nothing stood out.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">02 Emotion</div>
+        <div class="case-card-body">Saturation drives arousal more than hue—wrong for a scary-message moment.</div>
+      </div>
+      <div class="case-card">
+        <div class="case-card-label">03 One switch</div>
+        <div class="case-card-body">Light mode from layered tokens. Same screens, mode on the frame.</div>
+      </div>
+    </div>
+
+    <div class="sr-rationale" style="margin-top:22px">
+      <div class="sr-panel-head">
+        <h3 class="sr-panel-title">What changed, and why</h3>
+        <p class="sr-panel-lede">Delivered vs. proposed. Every row ties to a standard, a study, or a pattern people already use—and calls out what isn’t tested.</p>
+      </div>
+      <div class="sr-rationale-table" role="table" aria-label="Design rationale: delivered versus proposed">
+        <div class="sr-rationale-head" role="row">
+          <span role="columnheader">Area</span>
+          <span role="columnheader">Delivered</span>
+          <span role="columnheader">Now</span>
+          <span role="columnheader">Why</span>
+          <span role="columnheader">Seen in</span>
+        </div>
+        {rationale.map((r) => (
+          <div class="sr-rationale-row" role="row">
+            <span class="sr-rationale-area" role="cell" data-label="Area">{r.area}</span>
+            <span role="cell" data-label="Delivered">{r.delivered}</span>
+            <span role="cell" data-label="Now">{r.now}</span>
+            <span role="cell" data-label="Why">{r.why}</span>
+            <span class="sr-rationale-seen" role="cell" data-label="Seen in">{r.seen}</span>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
   <section class="sec" style="padding-bottom:28px">
     <div class="sec-label">DESIGN SYSTEM / Snapshot</div>
-    <h2 class="sec-heading">A slice of the purple system, not the full library.</h2>
+    <h2 class="sec-heading">A slice of the system that made the rebrand cheap.</h2>
     <p class="sec-body">
-      Tokens, a few core components, and the rules that mattered for handoff.
-      Locking those base patterns early made it cheap to retheme the whole product:
-      first blue, then this purple at the CEO’s request, without redrawing every screen.
-      Snapshot only; not every state or component.
+      Sofia Pro on a scale with an 18px content floor. Tokens, a few core components, and the rules that mattered for handoff.
+      Componentizing early meant blue → purple after delivery was a token change, not a redesign. Snapshot of the delivered
+      dark system—not every state, and not the full proposed light/dark library.
     </p>
 
     <div class="sr-notebook" data-sr-notebook>
@@ -307,7 +482,7 @@ const guidelines = [
         <div class="sr-panel is-active" role="tabpanel" data-panel="styles">
           <div class="sr-panel-head">
             <h3 class="sr-panel-title">Color &amp; type</h3>
-            <p class="sr-panel-lede">Key tokens only. Background runs a 221° gradient across the three bg values.</p>
+            <p class="sr-panel-lede">Delivered dark tokens. Content floor is 18. Background runs a 221° gradient across the bg values.</p>
           </div>
           <div class="sr-color-grid">
             {colors.map((t) => (
@@ -451,6 +626,34 @@ const guidelines = [
     </div>
   </section>
 
+  <section class="sec" style="padding-bottom:28px">
+    <div class="sec-label">REVIEW</div>
+    <h2 class="sec-heading">Key takeaways.</h2>
+    <p class="sec-body">
+      Clearest sign it worked: they came back for a second round. First bank deal signed after handoff.
+    </p>
+    <div class="sr-takeaways">
+      <div class="sr-takeaway">
+        <div class="case-card-label">What worked</div>
+        <ul>
+          {takeaways.worked.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="sr-takeaway">
+        <div class="case-card-label">What was hard</div>
+        <ul>
+          {takeaways.hard.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="sr-takeaway">
+        <div class="case-card-label">What’s next</div>
+        <ul>
+          {takeaways.next.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <a href={nextHref} class="case-next" style={`--accent-dark:${next.accentDark}`}>
     <div>
       <div class="case-next-label">NEXT CASE STUDY · NO.{next.no}</div>
@@ -553,6 +756,77 @@ const guidelines = [
   }
   .sr-findings {
     margin-top: 14px;
+  }
+  .sr-home-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .sr-home-step {
+    background: #F5F6F7;
+    border: 1px solid rgba(29, 42, 51, .09);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .sr-rationale {
+    border: 1px solid rgba(29, 42, 51, .1);
+    border-radius: 14px;
+    padding: 20px 20px 8px;
+    background: #fff;
+  }
+  .sr-rationale-table {
+    display: grid;
+    gap: 0;
+    margin-top: 8px;
+  }
+  .sr-rationale-head,
+  .sr-rationale-row {
+    display: grid;
+    grid-template-columns: 0.7fr 1.15fr 1.15fr 1.35fr 1.1fr;
+    gap: 12px;
+    padding: 12px 4px;
+    border-top: 1px solid rgba(29, 42, 51, .08);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .sr-rationale-head {
+    border-top: 0;
+    color: var(--muted-3);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+  .sr-rationale-area {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .sr-rationale-seen {
+    color: var(--muted-3);
+  }
+  .sr-takeaways {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .sr-takeaway {
+    background: #F5F6F7;
+    border: 1px solid rgba(29, 42, 51, .09);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .sr-takeaway ul {
+    margin: 10px 0 0;
+    padding: 0 0 0 1.1em;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--body);
+  }
+  .sr-takeaway li + li {
+    margin-top: 8px;
   }
   .sr-phones--lofi {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -988,6 +1262,23 @@ const guidelines = [
     .sr-ia { grid-template-columns: 1fr; }
     .sr-guide-grid,
     .sr-color-grid { grid-template-columns: 1fr; }
+    .sr-home-steps { grid-template-columns: repeat(2, 1fr); }
+    .sr-takeaways { grid-template-columns: 1fr; }
+    .sr-rationale-head { display: none; }
+    .sr-rationale-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 14px 0;
+    }
+    .sr-rationale-row span::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 10px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--muted-3);
+      margin-bottom: 2px;
+    }
   }
   @media (max-width: 560px) {
     .sr-phones,
@@ -997,5 +1288,6 @@ const guidelines = [
     .sr-compare--learn { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .sr-notebook-chrome { align-items: flex-start; }
     .sr-demo-row { grid-template-columns: 1fr; gap: 6px; }
+    .sr-home-steps { grid-template-columns: 1fr 1fr; }
   }
 </style>
