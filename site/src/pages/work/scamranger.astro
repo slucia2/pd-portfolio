@@ -1,7 +1,8 @@
 ---
 /**
  * ScamRanger case study — styled to match Enterprise Permissions,
- * content and frames from the portfolio-review Figma slides.
+ * content from the portfolio-review Figma slides. Deck figures are
+ * 2× Figma MCP exports (1920×1080 slides → 3840×2160 PNGs).
  */
 import CaseStudy from '../../layouts/CaseStudy.astro';
 import { cases } from '../../data/cases';
@@ -498,10 +499,6 @@ const learnings = [
     <p class="sec-body">
       Every row ties to a standard, a study, or a pattern people already use—and calls out what isn’t tested.
     </p>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/18-rationale.png" alt="Rationale table comparing delivered versus proposed design decisions" loading="lazy" />
-      <figcaption>Delivered → now → why → seen in</figcaption>
-    </figure>
 
     <div class="sr-rationale-table" role="table" aria-label="Design rationale: delivered versus proposed">
       <div class="sr-rationale-head" role="row">
@@ -642,7 +639,7 @@ const learnings = [
   </section>
 
   <section class="sec sr-band sr-impact">
-    <div class="sec-label">REVIEW</div>
+    <div class="sec-label">IMPACT</div>
     <h2 class="sec-heading">They came back for a second round. First bank deal signed after handoff.</h2>
     <p class="sec-body">
       What’s next: full app IA review, usability testing starting with setup, and opening trial and paid direct users.
@@ -1003,16 +1000,32 @@ const learnings = [
     color: #5c6066;
   }
 
+  /* Figma-export matte — matches Enterprise Permissions figure treatment */
   .sr-deck {
     margin-top: 22px;
+    background: #f5f5f5;
+    padding: 22px;
   }
   .sr-deck img {
     width: 100%;
     height: auto;
     display: block;
-    border: 1px solid rgba(29, 42, 51, 0.1);
-    border-radius: 8px;
-    background: #fff;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+  :global(.case-fig.sr-deck) {
+    background: #f5f5f5;
+    padding: 22px;
+  }
+  :global(.case-fig.sr-deck img) {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+  :global(.case-fig.sr-deck figcaption) {
+    margin-top: 14px;
+    padding: 0 2px;
   }
   .sr-findings {
     margin-top: 22px;
