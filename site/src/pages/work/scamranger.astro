@@ -110,32 +110,41 @@ const rationale = [
 ];
 
 const typeScale = [
-  { name: 'Display', spec: '48 / 125, Regular' },
-  { name: 'H1', spec: '34 / 125, Medium' },
-  { name: 'H2', spec: '28 / 162, Medium' },
-  { name: 'H3', spec: '22 / 150, Medium' },
-  { name: 'Body Large', spec: '20 / 165, Regular' },
-  { name: 'Body', spec: '18 / 165, Regular' },
-  { name: 'UI Button', spec: '18 / 125, Semibold' },
+  { name: 'Display', spec: '45 / 115, Regular', sample: 'Stay safe.' },
+  { name: 'H1', spec: '34 / 130, Medium', sample: 'Set up ScamRanger' },
+  { name: 'H2', spec: '26 / 130, Medium', sample: 'Enable notifications' },
+  { name: 'H3', spec: '22 / 130, Medium', sample: 'Your plan is active' },
+  { name: 'Body Large', spec: '20 / 160, Regular', sample: 'We scan your messages for suspicious activity.' },
+  { name: 'Body', spec: '18 / 160, Regular', sample: 'Turn on alerts so ScamRanger can warn you.' },
+  { name: 'Body Small', spec: '16 / 160, Regular', sample: 'Your data is never sold or shared.' },
+  { name: 'UI Button', spec: '18 / 130, Semibold', sample: 'Get started' },
 ];
 
-const colors = [
-  { name: 'brand/primary', hex: '#7B5CF8', use: 'Primary action' },
-  { name: 'brand/medium', hex: '#9B85FF', use: 'Press, links' },
-  { name: 'brand/light', hex: '#C9BDFF', use: 'Text tints' },
-  { name: 'brand/dark', hex: '#5533CC', use: 'Disabled' },
-  { name: 'bg/start', hex: '#2E1B6E', use: 'Gradient 0%' },
-  { name: 'bg/end', hex: '#08052A', use: 'Gradient 100%' },
-  { name: 'text/primary', hex: '#FFFFFF', use: 'Body, labels' },
-  { name: 'status/error', hex: '#FF8080', use: 'Errors' },
+const brandRamp = ['#E4E3FF', '#CBC9FF', '#B0AAFF', '#9485FF', '#7B5CF8', '#6444D5', '#5032B1', '#37217E', '#221452'];
+const slateRamp = ['#EBECF6', '#D9D9E9', '#B5B5CA', '#9898AB', '#646476', '#504F5F', '#3B385B', '#2F2C50', '#22222A'];
+
+const aliasTokens = [
+  { name: 'surface/canvas', value: 'slate/100 · #F5F5F9', use: 'Page ground' },
+  { name: 'surface/raised', value: 'base/white', use: 'Cards and sheets' },
+  { name: 'surface/tint', value: 'purple/50', use: 'Chips, secondary, active' },
+  { name: 'action/primary', value: 'purple/500 · #6444D5', use: 'Primary buttons' },
+  { name: 'text/primary', value: 'slate/900', use: 'Body and titles' },
+  { name: 'status/danger', value: 'red/500', use: 'Errors, high risk' },
+];
+
+const tokenLayers = [
+  { name: 'Brand', body: 'Raw values, hidden from the library. OKLCH ramps for purple, slate, status.' },
+  { name: 'Alias', body: 'Meaning + modes. Dark and Light live here—one switch, not redrawn screens.' },
+  { name: 'Mapped', body: 'Names per component role: surface/raised, action/primary, text/primary.' },
+  { name: 'Components', body: 'Bind to Mapped only. Rebrand stays a token change.' },
 ];
 
 const guidelines = [
-  { title: '18px body floor', text: 'Real content never drops below 18. 14px only for chrome like field labels.' },
+  { title: '18px body floor', text: 'Real content never drops below 18. 16px only for secondary chrome.' },
   { title: '44px+ tap targets', text: 'Buttons, rows, and nav meet Apple HIG / WCAG touch guidance.' },
-  { title: 'Solid color, not opacity', text: 'Solid tokens only. Opacity washes over gradients made contrast unreliable.' },
-  { title: 'Dedicated T&C for banks', text: 'Partnerships need explicit consent—not buried next to a secondary action.' },
-  { title: 'Permission with context', text: 'Explain why each setting matters before sending someone into iOS Settings.' },
+  { title: 'Purple on actions only', text: 'Brand color on buttons and status—not canvas, cards, or body text.' },
+  { title: 'Solid color, not opacity', text: 'Solid tokens only. Opacity over gradients made contrast unreliable.' },
+  { title: 'Bind to Mapped', text: 'Components never reference Brand directly—so modes and rebrands stay cheap.' },
 ];
 
 const learnings = [
@@ -524,64 +533,84 @@ const learnings = [
     <div class="sec-label">DESIGN SYSTEM</div>
     <h2 class="sec-heading">A slice of the system that made the rebrand cheap.</h2>
     <p class="sec-body">
-      Sofia Pro with an 18px content floor. Componentizing early meant blue → purple after delivery was a token
-      change, not a redesign. Foundations and token architecture from the review deck; snapshot of delivered dark
-      components below.
+      Sofia Pro with an 18px content floor. Proposed direction: purple on actions and status only, white cards on a
+      grey canvas, dark and light from one Alias switch. Componentizing early meant blue → purple after delivery
+      was a token change, not a redesign.
     </p>
 
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/19-foundations.png" alt="Typography scale and brand color palette foundations" loading="lazy" />
-      <figcaption>Type + color foundations</figcaption>
-    </figure>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/20-tokens.png" alt="Four-layer token architecture: Brand, Alias, Mapped, Components" loading="lazy" />
-      <figcaption>Token architecture: Brand → Alias (modes) → Mapped → Components</figcaption>
-    </figure>
+    <h3 class="sec-subhead">Foundations</h3>
+    <div class="sr-foundations">
+      <div class="sr-foundations-type">
+        <div class="case-card-label">TYPOGRAPHY · SOFIA PRO</div>
+        <div class="sr-type-list">
+          {typeScale.map((t) => (
+            <div class="sr-type-row">
+              <span class="sr-type-name">{t.name}</span>
+              <span class="sr-type-sample">{t.sample}</span>
+              <span class="sr-type-spec">{t.spec}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="sr-foundations-color">
+        <div class="case-card-label">BRAND RAMPS</div>
+        <div class="sr-ramp">
+          <div class="sr-ramp-label">purple</div>
+          <div class="sr-ramp-swatches" aria-label="Purple scale">
+            {brandRamp.map((hex) => <span class="sr-ramp-swatch" style={`background:${hex}`} title={hex}></span>)}
+          </div>
+        </div>
+        <div class="sr-ramp">
+          <div class="sr-ramp-label">slate</div>
+          <div class="sr-ramp-swatches" aria-label="Slate scale">
+            {slateRamp.map((hex) => <span class="sr-ramp-swatch" style={`background:${hex}`} title={hex}></span>)}
+          </div>
+        </div>
+        <div class="sr-alias-grid">
+          {aliasTokens.map((t) => (
+            <div class="sr-alias">
+              <div class="sr-alias-name">{t.name}</div>
+              <div class="sr-alias-value">{t.value}</div>
+              <div class="sr-alias-use">{t.use}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
 
+    <h3 class="sec-subhead">Token architecture</h3>
+    <p class="sec-body">
+      Brand holds raw values. Alias gives them meaning and is where Dark and Light live. Mapped names them per
+      component. Components bind to Mapped only.
+    </p>
+    <div class="sr-token-layers" aria-label="Four-layer token architecture">
+      {tokenLayers.map((layer, i) => (
+        <div class="sr-token-layer">
+          <div class="sr-token-layer-num">{String(i + 1).padStart(2, '0')}</div>
+          <div class="sr-token-layer-name">{layer.name}</div>
+          <p class="sr-token-layer-body">{layer.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <h3 class="sec-subhead">Proposed components</h3>
     <div class="sr-notebook" data-sr-notebook>
       <div class="sr-notebook-chrome">
         <div class="sr-notebook-title">
           <span class="sr-notebook-dot" aria-hidden="true"></span>
-          ScamRanger system snapshot
+          Proposed system · light mode
         </div>
         <div class="sr-notebook-tabs" role="tablist" aria-label="Design system sections">
-          <button type="button" class="sr-tab is-active" role="tab" aria-selected="true" data-tab="styles">Styles</button>
-          <button type="button" class="sr-tab" role="tab" aria-selected="false" data-tab="components">Components</button>
+          <button type="button" class="sr-tab is-active" role="tab" aria-selected="true" data-tab="components">Components</button>
           <button type="button" class="sr-tab" role="tab" aria-selected="false" data-tab="guidelines">Guidelines</button>
         </div>
       </div>
 
       <div class="sr-notebook-body">
-        <div class="sr-panel is-active" role="tabpanel" data-panel="styles">
-          <div class="sr-panel-head">
-            <h3 class="sr-panel-title">Color &amp; type</h3>
-            <p class="sr-panel-lede">Delivered dark tokens. Content floor is 18.</p>
-          </div>
-          <div class="sr-color-grid">
-            {colors.map((t) => (
-              <div class="sr-color">
-                <span class="sr-color-swatch" style={`background:${t.hex}`}></span>
-                <div>
-                  <div class="sr-color-name">{t.name}</div>
-                  <div class="sr-color-meta">{t.hex}, {t.use}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div class="sr-type-list">
-            {typeScale.map((t) => (
-              <div class="sr-type-row">
-                <span class="sr-type-name">{t.name}</span>
-                <span class="sr-type-spec">{t.spec}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div class="sr-panel" role="tabpanel" data-panel="components" hidden>
+        <div class="sr-panel is-active" role="tabpanel" data-panel="components">
           <div class="sr-panel-head">
             <h3 class="sr-panel-title">Core components</h3>
-            <p class="sr-panel-lede">Building blocks used across onboarding and the app. Live CSS, no screenshots.</p>
+            <p class="sr-panel-lede">Light canvas, raised surfaces, purple on actions. Live CSS from the proposed tokens.</p>
           </div>
           <div class="sr-comp-stack">
             <div class="sr-comp-block">
@@ -600,7 +629,7 @@ const learnings = [
                   <button type="button" class="sr-demo-btn primary is-disabled" disabled>Continue</button>
                 </div>
               </div>
-              <p class="sr-comp-note">44px min height · 18 Semibold · primary #7B5CF8</p>
+              <p class="sr-comp-note">44px min · 18 Semibold · action/primary #6444D5</p>
             </div>
             <div class="sr-comp-block">
               <h4 class="sr-comp-name">Input</h4>
@@ -615,7 +644,17 @@ const learnings = [
                   <em>Enter the 6-digit code from your email</em>
                 </label>
               </div>
-              <p class="sr-comp-note">Fill #321A80 · error #FF8080 · solid hex only</p>
+              <p class="sr-comp-note">Raised fill · status/danger on error · solid hex only</p>
+            </div>
+            <div class="sr-comp-block">
+              <h4 class="sr-comp-name">Status card</h4>
+              <div class="sr-comp-live">
+                <div class="sr-demo-card">
+                  <div class="sr-demo-card-status">You’re protected</div>
+                  <p class="sr-demo-card-body">We check texts from unknown numbers as they arrive.</p>
+                </div>
+              </div>
+              <p class="sr-comp-note">surface/raised on surface/canvas · brand on status only</p>
             </div>
           </div>
         </div>
@@ -1171,12 +1210,140 @@ const learnings = [
     color: var(--muted-3);
   }
 
-  /* Design system notebook */
+  /* Design system — native foundations + proposed light notebook */
+  .sr-foundations {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 28px;
+    margin-top: 18px;
+    align-items: start;
+  }
+  .sr-foundations-type .case-card-label,
+  .sr-foundations-color .case-card-label {
+    margin-bottom: 12px;
+  }
+  .sr-type-list {
+    margin-top: 0;
+    border: 1px solid rgba(29, 42, 51, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .sr-type-row {
+    display: grid;
+    grid-template-columns: 0.85fr 1.4fr auto;
+    gap: 12px;
+    align-items: baseline;
+    padding: 12px 14px;
+    border-top: 1px solid rgba(29, 42, 51, 0.08);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .sr-type-row:first-child {
+    border-top: 0;
+  }
+  .sr-type-name {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .sr-type-sample {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #5c6066;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sr-type-spec {
+    color: var(--muted-3);
+    white-space: nowrap;
+  }
+  .sr-ramp {
+    margin-bottom: 14px;
+  }
+  .sr-ramp-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted-3);
+    margin-bottom: 6px;
+  }
+  .sr-ramp-swatches {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 3px;
+  }
+  .sr-ramp-swatch {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    border: 1px solid rgba(29, 42, 51, 0.08);
+  }
+  .sr-alias-grid {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .sr-alias {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr 1fr;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.1);
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .sr-alias-name {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .sr-alias-value {
+    color: #5c6066;
+  }
+  .sr-alias-use {
+    color: var(--muted-3);
+  }
+  .sr-token-layers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .sr-token-layer {
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.12);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .sr-token-layer-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--accent-dark);
+  }
+  .sr-token-layer-name {
+    margin-top: 8px;
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sr-token-layer-body {
+    margin: 8px 0 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: #5c6066;
+  }
+
   .sr-notebook {
-    margin-top: 22px;
-    border: 2.5px solid var(--ink);
+    margin-top: 18px;
+    border: 1px solid rgba(29, 42, 51, 0.14);
     border-radius: 16px;
-    box-shadow: 5px 6px 0 rgba(29, 42, 51, 0.1);
     overflow: hidden;
     background: #fff;
   }
@@ -1187,23 +1354,24 @@ const learnings = [
     justify-content: space-between;
     gap: 12px;
     padding: 12px 16px;
-    background: #120a2a;
-    border-bottom: 2.5px solid var(--ink);
+    background: #F5F5F9;
+    border-bottom: 1px solid rgba(29, 42, 51, 0.1);
   }
   .sr-notebook-title {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: var(--font-pixel);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    color: #C9BDFF;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
   }
   .sr-notebook-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #7B5CF8;
+    background: #6444D5;
   }
   .sr-notebook-tabs {
     display: flex;
@@ -1211,32 +1379,31 @@ const learnings = [
   }
   .sr-tab {
     appearance: none;
-    border: 1px solid rgba(201, 189, 255, 0.35);
-    background: transparent;
-    color: #C9BDFF;
+    border: 1px solid rgba(29, 42, 51, 0.14);
+    background: #fff;
+    color: #5c6066;
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.04em;
     padding: 8px 12px;
-    border-radius: 999px;
+    border-radius: 8px;
     cursor: pointer;
   }
   .sr-tab.is-active {
-    background: #7B5CF8;
-    border-color: #7B5CF8;
+    background: #6444D5;
+    border-color: #6444D5;
     color: #fff;
   }
   .sr-notebook-body {
     padding: 22px 22px 26px;
-    height: 560px;
-    overflow: hidden;
+    background: #F5F5F9;
+    min-height: 420px;
     display: flex;
     flex-direction: column;
   }
   .sr-panel[data-panel='components'] {
     flex: 1;
     min-height: 0;
-    overflow-y: auto;
   }
   .sr-panel-head {
     margin-bottom: 18px;
@@ -1253,70 +1420,13 @@ const learnings = [
     line-height: 1.6;
     color: var(--body);
   }
-  .sr-color-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  .sr-color {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    padding: 10px 12px;
-    border-radius: 12px;
-    background: #F5F6F7;
-    border: 1px solid rgba(29, 42, 51, 0.08);
-  }
-  .sr-color-swatch {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    flex: none;
-    border: 1px solid rgba(29, 42, 51, 0.1);
-  }
-  .sr-color-name {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--accent-dark);
-  }
-  .sr-color-meta {
-    margin-top: 2px;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted-3);
-  }
-  .sr-type-list {
-    margin-top: 16px;
-    border: 1px solid rgba(29, 42, 51, 0.1);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .sr-type-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 14px;
-    border-top: 1px solid rgba(29, 42, 51, 0.08);
-    font-family: var(--font-mono);
-    font-size: 11px;
-  }
-  .sr-type-row:first-child {
-    border-top: 0;
-  }
-  .sr-type-name {
-    color: var(--ink);
-    font-weight: 600;
-  }
-  .sr-type-spec {
-    color: var(--muted-3);
-  }
   .sr-comp-stack {
     display: grid;
-    gap: 22px;
-    max-width: 360px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
   }
   .sr-comp-name {
-    margin: 0;
+    margin: 0 0 8px;
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 600;
@@ -1330,7 +1440,8 @@ const learnings = [
     gap: 12px;
     padding: 16px 14px;
     border-radius: 12px;
-    background: linear-gradient(221deg, #2E1B6E, #1A0F5A 50%, #08052A);
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.1);
   }
   .sr-demo-row {
     display: grid;
@@ -1342,13 +1453,13 @@ const learnings = [
     font-family: var(--font-mono);
     font-size: 9px;
     letter-spacing: 0.05em;
-    color: #C9BDFF;
+    color: var(--muted-3);
     text-transform: uppercase;
   }
   .sr-demo-btn {
     appearance: none;
     border: 0;
-    border-radius: 999px;
+    border-radius: 12px;
     min-height: 44px;
     width: 100%;
     max-width: 220px;
@@ -1359,40 +1470,59 @@ const learnings = [
     cursor: default;
   }
   .sr-demo-btn.primary {
-    background: #7B5CF8;
+    background: #6444D5;
     color: #fff;
   }
   .sr-demo-btn.primary.is-press {
-    background: #9B85FF;
+    background: #5032B1;
   }
   .sr-demo-btn.primary.is-disabled {
-    background: #5533CC;
-    color: rgba(255, 255, 255, 0.72);
+    background: #CBC9FF;
+    color: rgba(47, 44, 80, 0.55);
   }
   .sr-demo-field {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    color: #fff;
+    color: var(--ink);
     font-family: var(--font-body);
     font-size: 14px;
   }
   .sr-demo-field input {
     min-height: 44px;
     border-radius: 12px;
-    border: 1.5px solid transparent;
-    background: #321A80;
-    color: #fff;
+    border: 1.5px solid rgba(29, 42, 51, 0.12);
+    background: #F5F5F9;
+    color: var(--ink);
     padding: 0 14px;
     font-size: 18px;
   }
   .sr-demo-field.is-error input {
-    border-color: #FF8080;
+    border-color: #E5484D;
   }
   .sr-demo-field em {
     font-style: normal;
-    color: #FF8080;
+    color: #E5484D;
     font-size: 13px;
+  }
+  .sr-demo-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #F5F5F9;
+    border: 1px solid rgba(29, 42, 51, 0.08);
+  }
+  .sr-demo-card-status {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    color: #6444D5;
+  }
+  .sr-demo-card-body {
+    margin: 6px 0 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.45;
+    color: #5c6066;
   }
   .sr-comp-note {
     margin: 12px 0 0;
@@ -1408,7 +1538,7 @@ const learnings = [
     gap: 12px;
   }
   .sr-guide {
-    background: #F5F6F7;
+    background: #fff;
     border: 1px solid rgba(29, 42, 51, 0.09);
     border-radius: 12px;
     padding: 16px 18px;
@@ -1486,9 +1616,21 @@ const learnings = [
     .sr-home-steps {
       grid-template-columns: repeat(2, 1fr);
     }
-    .sr-guide-grid,
-    .sr-color-grid {
+    .sr-foundations,
+    .sr-token-layers,
+    .sr-comp-stack,
+    .sr-guide-grid {
       grid-template-columns: 1fr;
+    }
+    .sr-alias {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .sr-type-row {
+      grid-template-columns: 1fr auto;
+    }
+    .sr-type-sample {
+      display: none;
     }
     .sr-rationale-head {
       display: none;
