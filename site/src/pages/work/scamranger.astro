@@ -153,14 +153,6 @@ const tokenLayers = [
   { name: 'Components', body: 'Bind to Mapped only. Light mode = one mode switch on the frame.' },
 ];
 
-const guidelines = [
-  { title: '18px body floor', text: 'Real content never drops below 18. 16px only for secondary chrome.' },
-  { title: '44px+ tap targets', text: 'Buttons, rows, and nav meet Apple HIG / WCAG touch guidance.' },
-  { title: 'Purple on actions only', text: 'Brand color on buttons and status—not canvas, cards, or body text.' },
-  { title: 'Solid color, not opacity', text: 'Solid tokens only. Opacity over gradients made contrast unreliable.' },
-  { title: 'Bind to Mapped', text: 'Components never reference Brand directly—so modes and rebrands stay cheap.' },
-];
-
 const learnings = [
   'Meeting often kept decisions moving when reviews competed with live client meetings.',
   'Componentizing early meant blue → purple after delivery was a token change, not a redesign.',
@@ -668,16 +660,6 @@ const learnings = [
           <img src={s.src} alt={s.alt} loading="lazy" />
           <figcaption>{s.label}</figcaption>
         </figure>
-      ))}
-    </div>
-
-    <h3 class="sec-subhead">Rules that kept the system honest</h3>
-    <div class="sr-guide-grid">
-      {guidelines.map((g) => (
-        <div class="sr-guide">
-          <div class="case-card-label">{g.title}</div>
-          <p class="case-card-body">{g.text}</p>
-        </div>
       ))}
     </div>
   </section>
@@ -1442,19 +1424,6 @@ const learnings = [
     background: #fff;
     border-top: 1px solid rgba(29, 42, 51, 0.08);
   }
-  .sr-guide-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 18px;
-  }
-  .sr-guide {
-    background: #fff;
-    border: 1px solid rgba(29, 42, 51, 0.09);
-    border-radius: 12px;
-    padding: 16px 18px;
-  }
-
   /* Impact / takeaways */
   .sr-impact .sec-heading {
     margin-top: 14px;
@@ -1529,8 +1498,7 @@ const learnings = [
     }
     .sr-token-layers,
     .sr-mapped-grid,
-    .sr-comp-examples,
-    .sr-guide-grid {
+    .sr-comp-examples {
       grid-template-columns: 1fr;
     }
     .sr-phones--modes,
