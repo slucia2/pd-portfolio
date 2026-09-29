@@ -117,14 +117,15 @@ const rationale = [
 ];
 
 const modePair = [
-  { src: '/images/scamranger/system/home-dark.png', alt: 'Proposed home in dark mode from one Alias switch', label: 'Home · dark' },
-  { src: '/images/scamranger/system/home-light.png', alt: 'Proposed home in light mode from the same tokens', label: 'Home · light' },
+  { src: '/images/scamranger/system/home-dark.png', alt: 'Case study home in dark mode from the design system', label: 'Home · dark' },
+  { src: '/images/scamranger/system/home-light.png', alt: 'Case study home in light mode from the same components', label: 'Home · light' },
 ];
 
 const coreScreens = [
-  { src: '/images/scamranger/system/learn-landing.png', alt: 'Learning Lab hub with Safety insights, Common scam types, and Skill builder cards', label: 'Learning Lab' },
-  { src: '/images/scamranger/system/learn-insights.png', alt: 'Safety insights article with hero icon, body sections, and page control', label: 'Safety insights' },
-  { src: '/images/scamranger/system/learn-types.png', alt: 'Alphabetical Common scam types list with letter indexes and rows', label: 'Scam types' },
+  { src: '/images/scamranger/system/protected.png', alt: 'You’re protected success screen after setup', label: 'You’re protected' },
+  { src: '/images/scamranger/system/learn-landing.png', alt: 'Learning Lab hub with Safety insights, Common scam types, and Skill builder', label: 'Learning Lab' },
+  { src: '/images/scamranger/system/learn-insights.png', alt: 'Safety insights article with sections and next control', label: 'Safety insights' },
+  { src: '/images/scamranger/system/learn-types.png', alt: 'Common scam types glossary list with letter indexes', label: 'Scam types' },
 ];
 
 const surfaceElements = [
@@ -645,9 +646,9 @@ const learnings = [
 
     <h3 class="sec-subhead">Dark and light in the system</h3>
     <p class="sec-body">
-      Final home from the design-system file—same layout, Alias switched.
+      Case study home from the design-system file—same components, one mode switch.
     </p>
-    <div class="sr-phones sr-phones--modes" aria-label="Proposed home in dark and light">
+    <div class="sr-phones sr-phones--modes" aria-label="Case study home in dark and light">
       {modePair.map((s) => (
         <figure class="sr-phone sr-phone--system">
           <img src={s.src} alt={s.alt} loading="lazy" />
@@ -658,9 +659,10 @@ const learnings = [
 
     <h3 class="sec-subhead">Core screens</h3>
     <p class="sec-body">
-      Learning Lab from the same file—hub, insights, and scam types. Cards, lists, headers, and nav in context.
+      From the design-system case study set: setup success, Learning Lab, insights, and scam types—buttons, cards,
+      lists, and nav on the proposed tokens.
     </p>
-    <div class="sr-phones sr-phones--core" aria-label="Core screens from the design system file">
+    <div class="sr-phones sr-phones--core" aria-label="Core screens from the design system case study set">
       {coreScreens.map((s) => (
         <figure class="sr-phone sr-phone--system">
           <img src={s.src} alt={s.alt} loading="lazy" />
@@ -1423,7 +1425,7 @@ const learnings = [
     justify-content: start;
   }
   .sr-phones--core {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
   .sr-phone--system {
     background: #F5F5F9;
