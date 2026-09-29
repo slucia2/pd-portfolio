@@ -101,12 +101,30 @@ const rationale = [
     seen: '8 of 8 finance apps sampled: white cards on grey',
   },
   {
+    area: 'Navigation',
+    delivered: 'Flat bar with three active cues',
+    now: 'Glass pill vs flat bar, still open',
+    why: 'Glass carries one active cue; the flat bar carried three (WCAG 1.4.1).',
+    seen: 'iOS 26 Liquid Glass tab bars',
+  },
+  {
     area: 'Theme',
     delivered: 'Dark only',
     now: 'Dark and light from one switch',
     why: 'Easy switch because tokens are layered. Dark blue and black blur with age.',
     seen: 'Quizlet, Rocket Money: light by default',
   },
+];
+
+const modePair = [
+  { src: '/images/scamranger/system/home-dark.png', alt: 'Proposed home in dark mode from one Alias switch', label: 'Home · dark' },
+  { src: '/images/scamranger/system/home-light.png', alt: 'Proposed home in light mode from the same tokens', label: 'Home · light' },
+];
+
+const coreScreens = [
+  { src: '/images/scamranger/system/learn-landing.png', alt: 'Learning Lab hub with Safety insights, Common scam types, and Skill builder cards', label: 'Learning Lab' },
+  { src: '/images/scamranger/system/learn-insights.png', alt: 'Safety insights article with hero icon, body sections, and page control', label: 'Safety insights' },
+  { src: '/images/scamranger/system/learn-types.png', alt: 'Alphabetical Common scam types list with letter indexes and rows', label: 'Scam types' },
 ];
 
 const surfaceElements = [
@@ -118,18 +136,20 @@ const surfaceElements = [
   { name: 'text/primary', dark: '#EBECF6', light: '#22222A', use: 'Headlines and body' },
 ];
 
-const systemScreens = [
-  { src: '/images/scamranger/system/home-dark.png', alt: 'Proposed home in dark mode: You’re protected status, tip card, bank notice, scan CTA', label: 'Home · dark' },
-  { src: '/images/scamranger/system/home-light.png', alt: 'Proposed home in light mode from the same tokens', label: 'Home · light' },
-  { src: '/images/scamranger/system/learn-landing.png', alt: 'Learning Lab hub with Safety insights, Common scam types, and Skill builder cards', label: 'Learning Lab' },
-  { src: '/images/scamranger/system/learn-types.png', alt: 'Alphabetical Common scam types list with page header and list rows', label: 'Scam types' },
+const mappedExamples = [
+  { mapped: 'button/bg', alias: 'action/primary', note: 'Primary fill' },
+  { mapped: 'card/fill', alias: 'surface/raised', note: 'Card surface' },
+  { mapped: 'chip/bg', alias: 'surface/tint', note: 'Badge / tip chip' },
+  { mapped: 'tab/active-bg', alias: 'surface/tint', note: 'Active tab pill' },
+  { mapped: 'text/title', alias: 'text/primary', note: 'Headlines' },
+  { mapped: 'input/fill', alias: 'surface/raised', note: 'Field background' },
 ];
 
 const tokenLayers = [
-  { name: 'Brand', body: 'Raw values, hidden from the library. OKLCH ramps for purple, slate, status.' },
-  { name: 'Alias', body: 'Meaning + modes. Dark and Light live here—one switch, not redrawn screens.' },
-  { name: 'Mapped', body: 'Names per component role: surface/raised, action/primary, text/primary.' },
-  { name: 'Components', body: 'Bind to Mapped only. Rebrand stays a token change.' },
+  { name: 'Brand', body: '83 colours, 19 sizes. Raw OKLCH ramps—hidden from publishing.' },
+  { name: 'Alias', body: '30 colour tokens × Dark/Light. The only place modes exist.' },
+  { name: 'Mapped', body: '54 component tokens: button/, card/, chip/, tab-bar/… resolve through Alias.' },
+  { name: 'Components', body: 'Bind to Mapped only. Light mode = one mode switch on the frame.' },
 ];
 
 const guidelines = [
@@ -492,9 +512,12 @@ const learnings = [
     </div>
 
     <h3 class="sec-subhead">Dark and light, from one switch</h3>
+    <p class="sec-body">
+      Setup through scan, results, and Learning Lab—light on top, dark underneath. Same screens, mode on the frame.
+    </p>
     <figure class="case-fig sr-deck">
       <img src="/images/scamranger/deck/17-proposed-system.png" alt="Proposed system screens in light and dark modes from one token switch" loading="lazy" />
-      <figcaption>Proposed direction mocked in the system—not shipped. Same screens, mode on the frame.</figcaption>
+      <figcaption>Proposed direction mocked in the system—not shipped</figcaption>
     </figure>
 
     <h3 class="sec-subhead">What changed, and why</h3>
@@ -526,8 +549,7 @@ const learnings = [
     <div class="sec-label">DESIGN SYSTEM</div>
     <h2 class="sec-heading">A slice of the system that made the rebrand cheap.</h2>
     <p class="sec-body">
-      Sofia Pro with an 18px content floor. Proposed direction: purple on actions and status only, white cards on a
-      grey canvas, dark and light from one Alias switch. Componentizing early meant blue → purple after delivery
+      Sofia Pro with an 18px content floor. Brand → Alias → Mapped → Components meant blue → purple after delivery
       was a token change, not a redesign.
     </p>
 
@@ -551,6 +573,8 @@ const learnings = [
         </div>
       ))}
     </div>
+
+    <h4 class="sr-token-sub">Alias · modes</h4>
     <div class="sr-surface-elements" aria-label="Alias surface and action tokens across dark and light">
       <div class="sr-surface-head" aria-hidden="true">
         <span>Token</span>
@@ -563,7 +587,7 @@ const learnings = [
           <div class="sr-surface-name">{el.name}</div>
           <span class="sr-surface-swatch" style={`background:${el.dark}`} title={`Dark ${el.dark}`}></span>
           <span
-            class:list={['sr-surface-swatch', { 'has-border': el.light === '#FFFFFF' }]}
+            class:list={['sr-surface-swatch', { 'has-border': el.light === '#FFFFFF' || el.light === '#F5F5F9' }]}
             style={`background:${el.light}`}
             title={`Light ${el.light}`}
           ></span>
@@ -572,13 +596,72 @@ const learnings = [
       ))}
     </div>
 
+    <h4 class="sr-token-sub">Mapped · component roles</h4>
+    <p class="sr-token-note">Mapped names resolve through Alias—one mode, no Brand references in the library.</p>
+    <div class="sr-mapped-grid" aria-label="Mapped tokens resolving to Alias">
+      {mappedExamples.map((m) => (
+        <div class="sr-mapped">
+          <div class="sr-mapped-name">{m.mapped}</div>
+          <div class="sr-mapped-arrow" aria-hidden="true">→</div>
+          <div class="sr-mapped-alias">{m.alias}</div>
+          <div class="sr-mapped-note">{m.note}</div>
+        </div>
+      ))}
+    </div>
+
+    <h4 class="sr-token-sub">Components · bind to Mapped</h4>
+    <p class="sr-token-note">Live CSS from Mapped roles. Rebrand stays a token swap.</p>
+    <div class="sr-comp-examples" aria-label="Component examples bound to Mapped tokens">
+      <div class="sr-comp-ex">
+        <div class="sr-comp-ex-label">Button · button/bg</div>
+        <div class="sr-comp-ex-live">
+          <button type="button" class="sr-ex-btn" tabindex="-1">Scan a message</button>
+          <button type="button" class="sr-ex-btn is-secondary" tabindex="-1">I’ve done this</button>
+        </div>
+      </div>
+      <div class="sr-comp-ex">
+        <div class="sr-comp-ex-label">Card · card/fill + chip/bg</div>
+        <div class="sr-comp-ex-live">
+          <div class="sr-ex-card">
+            <span class="sr-ex-chip">Today’s tip</span>
+            <div class="sr-ex-card-title">Fake friends online</div>
+            <p class="sr-ex-card-body">Impersonators copy people you know, then ask for money.</p>
+          </div>
+        </div>
+      </div>
+      <div class="sr-comp-ex">
+        <div class="sr-comp-ex-label">Tab · tab/active-bg</div>
+        <div class="sr-comp-ex-live">
+          <div class="sr-ex-tabs" aria-hidden="true">
+            <span class="is-active">Home</span>
+            <span>Scan</span>
+            <span>Results</span>
+            <span>Learn</span>
+            <span>Settings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sec-subhead">Dark and light in the system</h3>
+    <p class="sec-body">
+      Final home from the design-system file—same layout, Alias switched.
+    </p>
+    <div class="sr-phones sr-phones--modes" aria-label="Proposed home in dark and light">
+      {modePair.map((s) => (
+        <figure class="sr-phone sr-phone--system">
+          <img src={s.src} alt={s.alt} loading="lazy" />
+          <figcaption>{s.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+
     <h3 class="sec-subhead">Core screens</h3>
     <p class="sec-body">
-      From the design-system file: home (dark + light from one switch), Learning Lab, and scam types—buttons,
-      cards, lists, and nav the tokens actually ship through.
+      Learning Lab from the same file—hub, insights, and scam types. Cards, lists, headers, and nav in context.
     </p>
-    <div class="sr-phones sr-phones--system" aria-label="Proposed system core screens">
-      {systemScreens.map((s) => (
+    <div class="sr-phones sr-phones--core" aria-label="Core screens from the design system file">
+      {coreScreens.map((s) => (
         <figure class="sr-phone sr-phone--system">
           <img src={s.src} alt={s.alt} loading="lazy" />
           <figcaption>{s.label}</figcaption>
@@ -1110,7 +1193,7 @@ const learnings = [
     color: var(--muted-3);
   }
 
-  /* Design system — foundations slide + token layers + core screens */
+  /* Design system — foundations, tokens (Alias→Mapped→Components), screens */
   .sr-token-layers {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1144,8 +1227,22 @@ const learnings = [
     line-height: 1.5;
     color: #5c6066;
   }
+  .sr-token-sub {
+    margin: 28px 0 0;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 650;
+    color: var(--ink);
+  }
+  .sr-token-note {
+    margin: 6px 0 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: #5c6066;
+  }
   .sr-surface-elements {
-    margin-top: 16px;
+    margin-top: 14px;
     display: grid;
     gap: 8px;
   }
@@ -1191,8 +1288,142 @@ const learnings = [
     font-size: 13px;
     color: #5c6066;
   }
-  .sr-phones--system {
-    grid-template-columns: repeat(4, 1fr);
+  .sr-mapped-grid {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .sr-mapped {
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.1);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 6px 8px;
+    align-items: center;
+  }
+  .sr-mapped-name,
+  .sr-mapped-alias {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .sr-mapped-arrow {
+    color: var(--muted-3);
+    font-size: 12px;
+  }
+  .sr-mapped-note {
+    grid-column: 1 / -1;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #5c6066;
+  }
+  .sr-comp-examples {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .sr-comp-ex {
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.1);
+    border-radius: 12px;
+    padding: 14px 16px 16px;
+  }
+  .sr-comp-ex-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--muted-3);
+    margin-bottom: 12px;
+  }
+  .sr-comp-ex-live {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #F5F5F9;
+  }
+  .sr-ex-btn {
+    appearance: none;
+    border: 0;
+    border-radius: 14px;
+    min-height: 48px;
+    padding: 0 18px;
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 600;
+    background: #6444D5;
+    color: #fff;
+    cursor: default;
+  }
+  .sr-ex-btn.is-secondary {
+    background: #E4E3FF;
+    color: #37217E;
+  }
+  .sr-ex-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 1px solid rgba(29, 42, 51, 0.08);
+  }
+  .sr-ex-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #E4E3FF;
+    color: #5032B1;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .sr-ex-card-title {
+    margin-top: 10px;
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sr-ex-card-body {
+    margin: 6px 0 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.45;
+    color: #5c6066;
+  }
+  .sr-ex-tabs {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 8px 6px;
+    background: #fff;
+    border-radius: 14px;
+  }
+  .sr-ex-tabs span {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: #5c6066;
+    padding: 10px 4px;
+    border-radius: 999px;
+  }
+  .sr-ex-tabs span.is-active {
+    background: #E4E3FF;
+    color: #37217E;
+    font-weight: 600;
+  }
+  .sr-phones--modes {
+    grid-template-columns: repeat(2, minmax(0, 280px));
+    justify-content: start;
+  }
+  .sr-phones--core {
+    grid-template-columns: repeat(3, 1fr);
   }
   .sr-phone--system {
     background: #F5F5F9;
@@ -1295,10 +1526,13 @@ const learnings = [
       grid-template-columns: repeat(2, 1fr);
     }
     .sr-token-layers,
+    .sr-mapped-grid,
+    .sr-comp-examples,
     .sr-guide-grid {
       grid-template-columns: 1fr;
     }
-    .sr-phones--system {
+    .sr-phones--modes,
+    .sr-phones--core {
       grid-template-columns: repeat(2, 1fr);
     }
     .sr-surface-head {
