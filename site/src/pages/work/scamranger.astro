@@ -20,13 +20,13 @@ const gallerySlides = [
 const topMetrics = [
   { label: 'AUDIT', stat: '30', body: 'issues categorized across a11y, flow, and visuals.' },
   { label: 'PATHS', stat: '3', body: 'entry types sharing one setup core.' },
-  { label: 'OUTCOME', stat: '1st', body: 'bank deal signed post handoff.' },
+  { label: 'OUTCOME', stat: '1st', body: 'bank deal signed after handoff.' },
 ];
 
 const opener = {
   constraint: 'Timeline tied to a bank contract, no research budget, and an inherited live app with no documentation or style guide.',
-  problem: 'Accessibility, activation sequencing, and visual consistency weren’t ready for a bank pilot. Paths mixed B2C and B2B into one linear flow.',
-  outcome: 'Design approved for first-client testing. First bank deal signed post handoff. Proposed a calmer dark/light system for the next pass.',
+  problem: 'Accessibility, setup flow, and visual consistency weren’t ready for a bank pilot. Paths mixed B2C and B2B into one linear flow.',
+  outcome: 'Design approved for first-client testing. First bank deal signed after handoff. Proposed a dark/light system for the next pass.',
 };
 
 const auditFindings = [
@@ -51,10 +51,10 @@ const homeSteps = [
 ];
 
 const systemPoints = [
-  { label: '01 SATURATION', text: 'Everything was purple: canvas, cards, even body text. No neutral ground.' },
-  { label: '02 EMOTION', text: 'Strong color raises arousal—the opposite of what an anxious user needs.' },
+  { label: '01 SATURATION', text: 'Everything was purple: canvas, cards, even body text. Nowhere to rest.' },
+  { label: '02 TONE', text: 'That much purple is loud—the opposite of what an anxious user needs.' },
   { label: '03 PATTERN', text: '8 of 8 finance apps sampled use white cards on a grey canvas.' },
-  { label: '04 ONE SWITCH', text: 'Light mode from layered tokens, not redrawn screens.' },
+  { label: '04 LIGHT MODE', text: 'Light mode from token layers, not redrawn screens.' },
 ];
 
 const rationale = [
@@ -83,14 +83,14 @@ const rationale = [
     area: 'Color',
     delivered: 'Brand carried by gradients and purple surfaces',
     now: 'Flat purple, only on actions and status',
-    why: 'Keeps the brand without gradients. Saturation drives arousal more than hue.',
+    why: 'Keeps the brand without gradients. Less purple on every surface.',
     seen: 'Quizlet, Duolingo: flat brand on key actions',
   },
   {
     area: 'Contrast',
     delivered: 'Button 4.44:1 on gradient, nav outline 2.20:1',
     now: 'Light: button passes. Dark: 4.44:1. Nav 3.09:1, body 7:1',
-    why: 'Higher contrast across the board. Dark fix is lightness, not hue.',
+    why: 'Higher contrast overall. Dark fix is lightness, not hue.',
     seen: 'WCAG AA, AAA for body text',
   },
   {
@@ -110,8 +110,8 @@ const rationale = [
   {
     area: 'Theme',
     delivered: 'Dark only',
-    now: 'Dark and light from one switch',
-    why: 'Easy switch because tokens are layered. Dark blue and black blur with age.',
+    now: 'Dark and light from one mode',
+    why: 'Token layers make both modes one change. Dark blue and black blur with age.',
     seen: 'Quizlet, Rocket Money: light by default',
   },
 ];
@@ -150,18 +150,18 @@ const tokenLayers = [
   { name: 'Brand', body: '83 colours, 19 sizes. Raw OKLCH ramps—hidden from publishing.' },
   { name: 'Alias', body: '30 colour tokens × Dark/Light. The only place modes exist.' },
   { name: 'Mapped', body: '54 component tokens: button/, card/, chip/, tab-bar/… resolve through Alias.' },
-  { name: 'Components', body: 'Bind to Mapped only. Light mode = one mode switch on the frame.' },
+  { name: 'Components', body: 'Bind to Mapped only. Light mode is a mode change on the frame.' },
 ];
 
 const learnings = [
   'Meeting often kept decisions moving when reviews competed with live client meetings.',
-  'Componentizing early meant blue → purple after delivery was a token change, not a redesign.',
+  'Building components early meant blue → purple after delivery was a token change, not a redesign.',
   'Without a research budget, market review and two scam experts helped—but usability testing still has to come next.',
 ];
 ---
 <CaseStudy
   case={c}
-  intro="Clear design to protect targeted users. A bank-distributed scam-protection app—audited mid-build, rebuilt for real activation paths, then tightened across home, learning, and the system behind them."
+  intro="A bank-distributed scam-protection app. Audited mid-build; rebuilt onboarding, home, learning, and the design system."
   meta={[
     { key: 'ROLE', value: 'Product Design Lead' },
     { key: 'CLIENT', value: 'RangersAI' },
@@ -190,8 +190,8 @@ const learnings = [
         <h2 class="sec-heading">A bank-distributed app that catches scam messages before people act on them.</h2>
         <p class="sec-body">
           RangersAI’s product is sold white-labeled to banks and fintechs. Cybercriminals exploit messaging;
-          victims turn to banks; banks absorb losses and reimbursement pressure. The job is to break the cycle
-          early—before emotional manipulation takes hold.
+          victims turn to banks; banks absorb losses and reimbursement pressure. Stop it at the incoming
+          message—before someone replies or sends money.
         </p>
         <p class="sr-context-partner">Partnered with CEO, scam research advisor (PhD), Android and iOS developers.</p>
       </div>
@@ -214,13 +214,13 @@ const learnings = [
 
   <section class="sec sr-band">
     <div class="sec-label">THE COMPANY</div>
-    <h2 class="sec-heading">Stopping scams before they start.</h2>
+    <h2 class="sec-heading">Best chance to protect users is at the incoming message.</h2>
     <p class="sec-body">
       1 in 4 Americans scammed in adult life. Global cost surpassed $442B/year. Best potential to protect users
       is at the incoming message—much harder once money has moved.
     </p>
     <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/04-company.png" alt="Scam lifecycle diagram: stop early before emotional manipulation and money transfer" loading="lazy" />
+      <img src="/images/scamranger/deck/04-company.png" alt="Scam lifecycle diagram: stop early before money transfer" loading="lazy" />
       <figcaption>Problem space from the portfolio review: catch the message before the victim responds</figcaption>
     </figure>
   </section>
@@ -230,7 +230,7 @@ const learnings = [
     <h2 class="sec-heading">Brought in via referral to advise CEO and product.</h2>
     <p class="sec-body">
       The app was live. The design files had no documentation, no style guide, and groups instead of frames.
-      I pitched for the role with an audit of the live onboarding and activation flow.
+      I pitched for the role with an audit of the live onboarding and setup flow.
     </p>
     <figure class="case-fig sr-deck">
       <img src="/images/scamranger/deck/05-handoff.png" alt="State of handoff: production screens with no documentation, style guide, or frames" loading="lazy" />
@@ -244,10 +244,10 @@ const learnings = [
 
   <section class="sec sr-band">
     <div class="sec-label">THE AUDIT</div>
-    <h2 class="sec-heading">Pitched with an audit. Mapped what was actually broken.</h2>
+    <h2 class="sec-heading">Pitched for the role with a live-app audit.</h2>
     <p class="sec-body">
-      First job was making the app visible: the entire live onboarding and activation flow in one place, with
-      annotations on every screen. Issues categorized by type and priority so the team could act.
+      First job was documenting the live onboarding and setup flow in one place, with annotations on every
+      screen. Issues categorized by type and priority so the team could act.
     </p>
 
     <figure class="case-fig sr-deck">
@@ -302,7 +302,7 @@ const learnings = [
 
     <figure class="case-fig sr-deck">
       <img src="/images/scamranger/deck/08-flow-restructure.png" alt="Flow restructuring: existing broken state versus code path, QR path, and unified IA diagram" loading="lazy" />
-      <figcaption>From broken linear flow to color-coded B2C / B2B / shared architecture</figcaption>
+      <figcaption>From broken linear flow to B2C / B2B / shared setup</figcaption>
     </figure>
 
     <div class="case-grid-3 sr-findings">
@@ -314,10 +314,10 @@ const learnings = [
       ))}
     </div>
 
-    <h3 class="sec-subhead">Early drafting, then structure in grey</h3>
+    <h3 class="sec-subhead">Wireframes before polish</h3>
     <p class="sec-body">
-      Market references and quick mockups to move fast, then wireframes locked step order before polish.
-      Feedback rounds separated flow, annotated screens, and hi-fi so nobody stalled on color before structure agreed.
+      Market references and quick mockups to move fast, then wireframes locked step order before color.
+      Feedback rounds separated flow, annotated screens, and hi-fi so structure got agreed first.
     </p>
     <figure class="case-fig sr-deck">
       <img src="/images/scamranger/deck/09-early-drafting.png" alt="Early drafting board with screenshots, AI mockups, and reference wireframes" loading="lazy" />
@@ -335,7 +335,7 @@ const learnings = [
 
     <div class="sr-phones sr-phones--lofi" aria-label="Lo-fi wireframe sample">
       <figure class="sr-phone sr-phone--lofi">
-        <img src="/images/scamranger/lofi-02.png" alt="Lo-fi activation confirmation" width="402" height="874" loading="lazy" />
+        <img src="/images/scamranger/lofi-02.png" alt="Lo-fi setup confirmation" width="402" height="874" loading="lazy" />
       </figure>
       <figure class="sr-phone sr-phone--lofi">
         <img src="/images/scamranger/lofi-04.png" alt="Lo-fi setup overview" width="402" height="874" loading="lazy" />
@@ -351,7 +351,7 @@ const learnings = [
 
   <section class="sec sr-band">
     <div class="sec-label">ONBOARDING</div>
-    <h2 class="sec-heading">Three paths in hi-fi. Same shared middle.</h2>
+    <h2 class="sec-heading">Hi-fi for all three paths, sharing the same setup.</h2>
     <p class="sec-body">
       Consumer pays, so value screens and a trial-first paywall come first. Bank code and seeded paths differ only
       at entry—then the same permission sequence and success screen.
@@ -404,10 +404,10 @@ const learnings = [
 
   <section class="sec">
     <div class="sec-label">HOME</div>
-    <h2 class="sec-heading">Home: the biggest changes.</h2>
+    <h2 class="sec-heading">Home went through six iterations with CEO and bank feedback.</h2>
     <p class="sec-body">
-      Six moves that mattered—from a flat live stack, through a quest concept and a CEO-approved pass the bank
-      rejected as too busy, to a final where the logo becomes the status signal.
+      From a flat live stack, through a quest concept and a CEO-approved pass the bank rejected as too busy,
+      to a final where the logo becomes the status signal.
     </p>
 
     <figure class="case-fig sr-deck">
@@ -448,9 +448,9 @@ const learnings = [
 
   <section class="sec sr-band">
     <div class="sec-label">LEARNING LAB</div>
-    <h2 class="sec-heading">The bigger pitch, then simple.</h2>
+    <h2 class="sec-heading">Learning Lab shipped as three sections the team could maintain.</h2>
     <p class="sec-body">
-      Learning was a new bank ask. I proposed an editorial hub with favorites, Scam Library, and illustrated articles.
+      Learning was a new bank ask. I proposed favorites, a Scam Library, and illustrated articles.
       Time and budget pushed the ship version to three sections the team could build and maintain.
     </p>
 
@@ -483,16 +483,16 @@ const learnings = [
 
   <section class="sec">
     <div class="sec-label">PROPOSED SYSTEM</div>
-    <h2 class="sec-heading">Then the style changed again.</h2>
+    <h2 class="sec-heading">Proposed direction: purple on actions and status only.</h2>
     <p class="sec-body">
       Pulling every component into one library showed the problem: everything was purple. The proposed direction—
-      mocked in the system, not shipped—moves brand onto actions and status only, and gets dark and light from
-      one variable switch.
+      mocked in the system, not shipped—puts brand on actions and status only, and gets dark and light from
+      the same tokens.
     </p>
 
     <figure class="case-fig sr-deck">
       <img src="/images/scamranger/deck/16-new-system.png" alt="Delivered saturated purple home versus proposed light-mode home" loading="lazy" />
-      <figcaption>Saturation problem → calmer light canvas with purple on actions only</figcaption>
+      <figcaption>Saturated purple → light canvas, purple on actions only</figcaption>
     </figure>
 
     <div class="case-grid-2 sr-findings">
@@ -504,18 +504,18 @@ const learnings = [
       ))}
     </div>
 
-    <h3 class="sec-subhead">Dark and light, from one switch</h3>
+    <h3 class="sec-subhead">Dark and light</h3>
     <p class="sec-body">
       Setup through scan, results, and Learning Lab—light on top, dark underneath. Same screens, mode on the frame.
     </p>
     <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/17-proposed-system.png" alt="Proposed system screens in light and dark modes from one token switch" loading="lazy" />
+      <img src="/images/scamranger/deck/17-proposed-system.png" alt="Proposed system screens in light and dark modes" loading="lazy" />
       <figcaption>Proposed direction mocked in the system—not shipped</figcaption>
     </figure>
 
     <h3 class="sec-subhead">What changed, and why</h3>
     <p class="sec-body">
-      Every row ties to a standard, a study, or a pattern people already use—and calls out what isn’t tested.
+      Each row cites a standard, a study, or a pattern in comparable apps—and notes what isn’t tested.
     </p>
 
     <div class="sr-rationale-table" role="table" aria-label="Design rationale: delivered versus proposed">
@@ -540,10 +540,10 @@ const learnings = [
 
   <section class="sec sr-band">
     <div class="sec-label">DESIGN SYSTEM</div>
-    <h2 class="sec-heading">A slice of the system that made the rebrand cheap.</h2>
+    <h2 class="sec-heading">Four-layer tokens so the blue → purple rebrand stayed a swap.</h2>
     <p class="sec-body">
-      Sofia Pro with an 18px content floor. Brand → Alias → Mapped → Components meant blue → purple after delivery
-      was a token change, not a redesign.
+      Sofia Pro with an 18px content floor. Brand → Alias → Mapped → Components meant the rebrand after delivery
+      was a token change.
     </p>
 
     <h3 class="sec-subhead">Foundations</h3>
@@ -552,12 +552,12 @@ const learnings = [
       <figcaption>Type + color foundations from the portfolio review</figcaption>
     </figure>
 
-    <h3 class="sec-subhead">Token architecture</h3>
+    <h3 class="sec-subhead">Token layers</h3>
     <p class="sec-body">
       Brand holds raw values. Alias gives them meaning and is where Dark and Light live. Mapped names them per
       component. Components bind to Mapped only.
     </p>
-    <div class="sr-token-layers" aria-label="Four-layer token architecture">
+    <div class="sr-token-layers" aria-label="Four-layer token stack">
       {tokenLayers.map((layer, i) => (
         <div class="sr-token-layer">
           <div class="sr-token-layer-num">{String(i + 1).padStart(2, '0')}</div>
@@ -638,7 +638,7 @@ const learnings = [
 
     <h3 class="sec-subhead">Dark and light in the system</h3>
     <p class="sec-body">
-      Case study home from the design-system file—same components, one mode switch.
+      Case study home from the design-system file—same components, dark and light.
     </p>
     <div class="sr-phones sr-phones--modes" aria-label="Case study home in dark and light">
       {modePair.map((s) => (
@@ -666,7 +666,7 @@ const learnings = [
 
   <section class="sec sr-band sr-impact">
     <div class="sec-label">IMPACT</div>
-    <h2 class="sec-heading">They came back for a second round. First bank deal signed after handoff.</h2>
+    <h2 class="sec-heading">First bank deal signed after handoff; returned for a second engagement.</h2>
     <p class="sec-body">
       What’s next: full app IA review, usability testing starting with setup, and opening trial and paid direct users.
     </p>
@@ -678,15 +678,15 @@ const learnings = [
       </div>
       <div class="sr-impact-stat" role="listitem">
         <div class="sr-impact-stat-num">3</div>
-        <div class="sr-impact-stat-label">activation paths sharing one setup core</div>
+        <div class="sr-impact-stat-label">entry paths sharing one setup core</div>
       </div>
       <div class="sr-impact-stat" role="listitem">
         <div class="sr-impact-stat-num">1</div>
-        <div class="sr-impact-stat-label">bank deal signed post handoff</div>
+        <div class="sr-impact-stat-label">bank deal signed after handoff</div>
       </div>
     </div>
 
-    <h3 class="sr-takeaways-label">Key takeaways</h3>
+    <h3 class="sr-takeaways-label">What I learned</h3>
     <ol class="case-factors sr-learnings">
       {learnings.map((item, i) => (
         <li class="case-factor">
