@@ -36,11 +36,33 @@ const companyFacts = [
 ];
 
 const lifecycle = [
-  { n: '01', title: 'Incoming', note: 'Best potential to protect', tone: 'early' },
-  { n: '02', title: 'Victim', note: '', tone: 'early' },
-  { n: '03', title: 'Emotional', note: '', tone: 'mid' },
-  { n: '04', title: 'Money', note: 'Much harder to stop', tone: 'late' },
-  { n: '05', title: 'Reported', note: '', tone: 'late' },
+  { n: '01', title: 'Incoming Message', note: 'Best potential to protect users', tone: 'early' },
+  { n: '02', title: 'Victim Responds', note: '', tone: 'early' },
+  { n: '03', title: 'Emotional Manipulation', note: '', tone: 'mid' },
+  { n: '04', title: 'Money Transferred', note: 'Much harder to stop', tone: 'late' },
+  { n: '05', title: 'Reported to Authorities', note: '', tone: 'late' },
+];
+
+const flowFigures = [
+  { src: '/images/scamranger/figures/flow-existing.png', alt: 'Existing broken linear onboarding flow with placement callouts', caption: 'Existing: one linear path, wrong order' },
+  { src: '/images/scamranger/figures/flow-code-path.png', alt: 'Restructured code-path onboarding flow', caption: 'Code path + shared setup' },
+  { src: '/images/scamranger/figures/flow-ia.png', alt: 'Consolidated IA map for B2C, B2B code/QR, and seeded entry', caption: 'Consolidated IA' },
+];
+
+const hifiRows = [
+  { src: '/images/scamranger/figures/hifi-b2c.png', alt: 'Hi-fi B2C purchase onboarding row', label: 'B2C' },
+  { src: '/images/scamranger/figures/hifi-b2b.png', alt: 'Hi-fi B2B code/QR onboarding row', label: 'B2B' },
+  { src: '/images/scamranger/figures/hifi-seeded.png', alt: 'Hi-fi B2B seeded onboarding row', label: 'B2B Seed' },
+];
+
+const homeIterations = [
+  { src: '/images/scamranger/figures/home-01-live.png', alt: 'Live app home before redesign', label: '01 · Live app', note: 'Tip and bank notice, no hierarchy' },
+  { src: '/images/scamranger/figures/home-02-quest.png', alt: 'Quest-concept home iteration', label: '02 · Quest concept', note: 'Gamified: quests, streaks, alerts' },
+  { src: '/images/scamranger/figures/home-03-structure.png', alt: 'Structure-set home iteration', label: '03 · Structure set', note: 'Tip, scan, bank notice, extras' },
+  { src: '/images/scamranger/figures/home-04-ceo.png', alt: 'CEO-approved home the bank found too busy', label: '04 · CEO approved', note: 'Bank found it too busy' },
+  { src: '/images/scamranger/figures/home-05-brand.png', alt: 'Brand-first home with large logo', label: '05 · Brand back in', note: 'A big logo with no job' },
+  { src: '/images/scamranger/figures/home-06-final-dark.png', alt: 'Final home dark mode with logo as status', label: '06 · Final dark', note: 'Logo becomes the status' },
+  { src: '/images/scamranger/figures/home-07-final-light.png', alt: 'Final home light mode with logo as status', label: '07 · Final light', note: 'Same structure, light mode' },
 ];
 
 const handoffGaps = [
@@ -66,15 +88,6 @@ const lofiNotes = [
   { label: 'DEDICATED T&C', text: 'Terms as their own step, not buried in setup.' },
   { label: 'PERMISSION CONTEXT', text: 'Explain why each leave-the-app setting matters.' },
   { label: 'REBRAND READY', text: 'Blue → purple stayed a token swap after delivery.' },
-];
-
-const homeSteps = [
-  { n: '01', title: 'Live app', text: 'Tip and bank notice, no hierarchy' },
-  { n: '02', title: 'Quest concept', text: 'Gamified: quests, streaks, alerts' },
-  { n: '03', title: 'Structure set', text: 'Tip, scan, bank notice, extras' },
-  { n: '04', title: 'CEO approved', text: 'Bank found it too busy' },
-  { n: '05', title: 'Brand back in', text: 'A big logo with no job' },
-  { n: '06', title: 'Final', text: 'The logo becomes the status' },
 ];
 
 const systemPoints = [
@@ -305,8 +318,8 @@ const learnings = [
 
     <figure class="case-fig sr-figure">
       <img
-        src="/images/scamranger/audit-annotated.png"
-        alt="Annotated onboarding audit: email and gallery screens with accessibility and flow callouts"
+        src="/images/scamranger/figures/audit-board.png"
+        alt="Annotated onboarding and activation audit board with accessibility and flow callouts"
         loading="lazy"
       />
       <figcaption>Onboarding audit board used to pitch for the role</figcaption>
@@ -321,18 +334,18 @@ const learnings = [
       ))}
     </div>
 
-    <h3 class="sec-subhead">Activation flow under the microscope</h3>
+    <h3 class="sec-subhead">One screen up close: message filtering setup</h3>
     <p class="sec-body">
       Filtering is the product—if it isn’t turned on, nobody is protected. iOS forces users out of the app;
       the live screen buried steps, used jargon, and failed contrast and tap-target checks. Marked P1.
     </p>
     <figure class="case-fig sr-figure">
       <img
-        src="/images/scamranger/audit-annotated-2.png"
-        alt="Activation flow audit with Priority 1 callouts on code entry, terms, and SMS permissions"
+        src="/images/scamranger/figures/audit-filtering.png"
+        alt="Filtering setup screen with numbered accessibility and flow callouts"
         loading="lazy"
       />
-      <figcaption>Activation critique: leave-the-app friction, weak feedback, contrast, and tap targets</figcaption>
+      <figcaption>Filtering critique: leave-the-app friction, weak feedback, contrast, and tap targets</figcaption>
     </figure>
 
     <h3 class="sec-subhead">Production UI from the review</h3>
@@ -369,23 +382,13 @@ const learnings = [
       ))}
     </div>
 
-    <div class="sr-ia-pair" aria-label="Restructured flows and consolidated IA">
-      <figure class="case-fig sr-figure sr-figure--ia">
-        <img
-          src="/images/scamranger/figures/flow-restructure.png"
-          alt="Existing broken flow versus code path, QR path, and consolidated system map"
-          loading="lazy"
-        />
-        <figcaption>From broken linear flow to B2C / B2B / shared setup</figcaption>
-      </figure>
-      <figure class="case-fig sr-figure sr-figure--ia-side">
-        <img
-          src="/images/scamranger/ia-flowchart.png"
-          alt="Consolidated IA: B2C, B2B code/QR, and seeded paths merging into shared setup"
-          loading="lazy"
-        />
-        <figcaption>IA: three entries, one shared setup core</figcaption>
-      </figure>
+    <div class="sr-flow-grid" aria-label="Restructured flows and consolidated IA">
+      {flowFigures.map((f) => (
+        <figure class="case-fig sr-figure sr-figure--flow">
+          <img src={f.src} alt={f.alt} loading="lazy" />
+          <figcaption>{f.caption}</figcaption>
+        </figure>
+      ))}
     </div>
 
     <h3 class="sec-subhead">Wireframes before polish</h3>
@@ -435,14 +438,14 @@ const learnings = [
       at entry—then the same permission sequence and success screen.
     </p>
 
-    <figure class="case-fig sr-figure">
-      <img
-        src="/images/scamranger/figures/hifi-paths.png"
-        alt="Hi-fidelity onboarding rows for B2C, B2B code, and B2B seeded paths"
-        loading="lazy"
-      />
-      <figcaption>Hi-fi flows: three entries, one shared setup</figcaption>
-    </figure>
+    <div class="sr-hifi-rows" aria-label="Hi-fi onboarding paths">
+      {hifiRows.map((row) => (
+        <figure class="case-fig sr-figure sr-figure--hifi">
+          <div class="sr-hifi-label">{row.label}</div>
+          <img src={row.src} alt={row.alt} loading="lazy" />
+        </figure>
+      ))}
+    </div>
 
     <h3 class="sec-subhead">B2C purchase route</h3>
     <div class="sr-phones" aria-label="B2C onboarding screens">
@@ -492,43 +495,18 @@ const learnings = [
       to a final where the logo becomes the status signal.
     </p>
 
-    <div class="sr-home-steps" aria-label="Home iteration stages">
-      {homeSteps.map((s) => (
-        <div class="sr-home-step">
-          <div class="case-card-label">{s.n} · {s.title}</div>
-          <div class="case-card-body">{s.text}</div>
-        </div>
+    <div class="sr-home-iter" aria-label="Home iteration stages from Figma">
+      {homeIterations.map((s) => (
+        <figure class="sr-home-iter-item">
+          <div class="sr-phone">
+            <img src={s.src} alt={s.alt} loading="lazy" />
+          </div>
+          <figcaption>
+            <span class="sr-home-iter-label">{s.label}</span>
+            <span class="sr-home-iter-note">{s.note}</span>
+          </figcaption>
+        </figure>
       ))}
-    </div>
-
-    <figure class="case-fig sr-figure">
-      <img
-        src="/images/scamranger/figures/home-iterations.png"
-        alt="Home screen iterations from live app through quest concept to final dark and light"
-        loading="lazy"
-      />
-      <figcaption>Iteration arc: live → quest → structure → CEO → brand → final</figcaption>
-    </figure>
-
-    <div class="sr-compare sr-compare--dirs" aria-label="Home before, mid, and final">
-      <div class="sr-compare-item">
-        <figure class="sr-phone">
-          <img src="/images/scamranger/home-before.png" alt="Live app home before redesign" width="402" height="874" loading="lazy" />
-        </figure>
-        <p class="sr-compare-cap">Live app: tip + bank, no hierarchy</p>
-      </div>
-      <div class="sr-compare-item">
-        <figure class="sr-phone">
-          <img src="/images/scamranger/home-iter1.png" alt="Structure-set home iteration" width="402" height="874" loading="lazy" />
-        </figure>
-        <p class="sr-compare-cap">Structure set → CEO pass (bank: too busy)</p>
-      </div>
-      <div class="sr-compare-item">
-        <figure class="sr-phone">
-          <img src="/images/scamranger/home.png" alt="Final home with logo as status" width="402" height="874" loading="lazy" />
-        </figure>
-        <p class="sr-compare-cap">Final: logo becomes the status</p>
-      </div>
     </div>
   </section>
 
@@ -543,19 +521,19 @@ const learnings = [
     <div class="sr-compare sr-compare--learn" aria-label="Learning proposed versus delivered">
       <div class="sr-compare-item">
         <figure class="sr-phone">
-          <img src="/images/scamranger/learn-vision.png" alt="Proposed learning hub" width="402" height="874" loading="lazy" />
+          <img src="/images/scamranger/figures/learn-vision.png" alt="Proposed Learning Lab landing: Outsmart every Scam" loading="lazy" />
         </figure>
         <p class="sr-compare-cap">Proposed: Outsmart every Scam</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
-          <img src="/images/scamranger/learn-hub-2.png" alt="Proposed Scam Library" width="402" height="874" loading="lazy" />
+          <img src="/images/scamranger/figures/learn-browse.png" alt="Proposed Learning browse and gallery" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Proposed: Scam Library</p>
+        <p class="sr-compare-cap">Proposed: richer browse</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone">
-          <img src="/images/scamranger/learn-hub.png" alt="Delivered Learning Lab hub" width="402" height="874" loading="lazy" />
+          <img src="/images/scamranger/figures/learn-hub.png" alt="Shipped Learning Lab hub with three sections" loading="lazy" />
         </figure>
         <p class="sr-compare-cap">Shipped: three simple sections</p>
       </div>
@@ -580,20 +558,33 @@ const learnings = [
       ))}
     </div>
 
-    <div class="sr-compare sr-compare--system" aria-label="Delivered purple home versus proposed light direction">
+    <div class="sr-compare sr-compare--system" aria-label="Proposed dark and light home from the design system">
       <div class="sr-compare-item">
-        <figure class="sr-phone">
-          <img src="/images/scamranger/home.png" alt="Delivered home with saturated purple surfaces" width="402" height="874" loading="lazy" />
+        <figure class="sr-phone sr-phone--system">
+          <img src="/images/scamranger/figures/system-home-dark.png" alt="Proposed home in dark mode" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Delivered: brand on every surface</p>
+        <p class="sr-compare-cap">Proposed · dark</p>
       </div>
       <div class="sr-compare-item">
         <figure class="sr-phone sr-phone--system">
-          <img src="/images/scamranger/system/home-light.png" alt="Proposed light-mode home with purple on actions only" loading="lazy" />
+          <img src="/images/scamranger/figures/system-home-light.png" alt="Proposed home in light mode with purple on actions only" loading="lazy" />
         </figure>
-        <p class="sr-compare-cap">Proposed: light canvas, purple on actions</p>
+        <p class="sr-compare-cap">Proposed · light</p>
       </div>
     </div>
+
+    <h3 class="sec-subhead">Proposed system screens</h3>
+    <p class="sec-body">
+      Setup through scan, results, and Learning Lab—same components, mode on the frame.
+    </p>
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/figures/proposed-system.png"
+        alt="Proposed system screens in light and dark modes across core flows"
+        loading="lazy"
+      />
+      <figcaption>Proposed direction mocked in the system—not shipped</figcaption>
+    </figure>
 
     <h3 class="sec-subhead">What changed, and why</h3>
     <p class="sec-body">
@@ -1172,7 +1163,7 @@ const learnings = [
     font-size: 12px;
     line-height: 1.35;
     color: #a13a3a;
-    max-width: 11ch;
+    max-width: 16ch;
   }
   .sr-lifecycle-cap {
     margin: 12px 0 0;
@@ -1182,32 +1173,68 @@ const learnings = [
     color: #5c6066;
   }
 
-  .sr-ia-pair {
+  .sr-flow-grid {
     display: grid;
-    grid-template-columns: 1.55fr 0.7fr;
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
     margin-top: 22px;
     align-items: start;
   }
-  .sr-ia-pair :global(.case-fig) {
+  .sr-flow-grid :global(.case-fig) {
     margin-top: 0;
+  }
+  .sr-hifi-rows {
+    display: grid;
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .sr-hifi-rows :global(.case-fig) {
+    margin-top: 0;
+  }
+  .sr-hifi-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 10px;
   }
   .sr-compare--system {
     grid-template-columns: repeat(2, minmax(0, 220px));
     margin-top: 22px;
   }
-
-  .sr-home-steps {
+  .sr-home-iter {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 10px;
     margin-top: 22px;
   }
-  .sr-home-step {
-    background: #fff;
-    border: 1px solid rgba(29, 42, 51, 0.12);
-    border-radius: 12px;
-    padding: 14px 16px;
+  .sr-home-iter-item {
+    margin: 0;
+    min-width: 0;
+  }
+  .sr-home-iter-item .sr-phone {
+    margin: 0;
+  }
+  .sr-home-iter-item figcaption {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sr-home-iter-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+  }
+  .sr-home-iter-note {
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.35;
+    color: #5c6066;
   }
 
   .sr-phones {
@@ -1653,11 +1680,11 @@ const learnings = [
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
     }
-    .sr-home-steps {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .sr-ia-pair {
+    .sr-flow-grid {
       grid-template-columns: 1fr;
+    }
+    .sr-home-iter {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     .sr-lifecycle {
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1740,9 +1767,15 @@ const learnings = [
     .sr-compare--system {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    .sr-home-iter {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
     .sr-lifecycle {
       overflow-x: auto;
       grid-template-columns: repeat(5, minmax(72px, 1fr));
+    }
+    .sr-lifecycle-title {
+      font-size: 11px;
     }
   }
 </style>
