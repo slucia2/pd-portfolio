@@ -1,8 +1,8 @@
 ---
 /**
- * ScamRanger case study — styled to match Enterprise Permissions,
- * content from the portfolio-review Figma slides. Deck figures are
- * 2× Figma MCP exports (1920×1080 slides → 3840×2160 PNGs).
+ * ScamRanger case study — styled to match Enterprise Permissions.
+ * Story and figures from the portfolio-review deck, rendered as native
+ * web sections (not full-slide screenshots).
  */
 import CaseStudy from '../../layouts/CaseStudy.astro';
 import { cases } from '../../data/cases';
@@ -29,6 +29,26 @@ const opener = {
   outcome: 'Design approved for first-client testing. First bank deal signed after handoff. Proposed a dark/light system for the next pass.',
 };
 
+const companyFacts = [
+  { label: '1 IN 4', text: 'Americans scammed at some point in adult life.' },
+  { label: '$442B+', text: 'Global annual cost of scams.' },
+  { label: 'INCOMING', text: 'Best chance to protect users—before they reply or send money.' },
+];
+
+const lifecycle = [
+  { n: '01', title: 'Incoming', note: 'Best potential to protect', tone: 'early' },
+  { n: '02', title: 'Victim', note: '', tone: 'early' },
+  { n: '03', title: 'Emotional', note: '', tone: 'mid' },
+  { n: '04', title: 'Money', note: 'Much harder to stop', tone: 'late' },
+  { n: '05', title: 'Reported', note: '', tone: 'late' },
+];
+
+const handoffGaps = [
+  { label: 'NO DOCS', text: 'Live app with no product or design documentation.' },
+  { label: 'NO SYSTEM', text: 'No style guide—gradients and structure improvised per screen.' },
+  { label: 'NO FRAMES', text: 'Figma was groups, not frames. Nothing shippable to hand to eng.' },
+];
+
 const auditFindings = [
   { label: '9 ACCESSIBILITY', text: 'Contrast failures, missing labels, form UX gaps, tap targets under 44pt, body under 18px.' },
   { label: '12 FLOW LOGIC', text: 'Redundancy, weak feedback, error states, leave-the-app friction on core message-filtering setup.' },
@@ -39,6 +59,13 @@ const paths = [
   { label: 'B2C PURCHASE', text: 'Gallery → account → trial-first paywall → shared setup.' },
   { label: 'B2B CODE / QR', text: 'Code or scan → provider confirm → shared setup.' },
   { label: 'B2B SEEDED', text: 'Auto-confirmed provider → shared setup. No code step.' },
+];
+
+const lofiNotes = [
+  { label: 'VALUE FIRST', text: 'Move value screens before activation asks.' },
+  { label: 'DEDICATED T&C', text: 'Terms as their own step, not buried in setup.' },
+  { label: 'PERMISSION CONTEXT', text: 'Explain why each leave-the-app setting matters.' },
+  { label: 'REBRAND READY', text: 'Blue → purple stayed a token swap after delivery.' },
 ];
 
 const homeSteps = [
@@ -216,29 +243,55 @@ const learnings = [
     <div class="sec-label">THE COMPANY</div>
     <h2 class="sec-heading">Best chance to protect users is at the incoming message.</h2>
     <p class="sec-body">
-      1 in 4 Americans scammed in adult life. Global cost surpassed $442B/year. Best potential to protect users
-      is at the incoming message—much harder once money has moved.
+      Cybercriminals exploit messaging; victims turn to banks; banks absorb losses and reimbursement pressure.
+      Stop it at the incoming message—before someone replies or sends money.
     </p>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/04-company.png" alt="Scam lifecycle diagram: stop early before money transfer" loading="lazy" />
-      <figcaption>Problem space from the portfolio review: catch the message before the victim responds</figcaption>
-    </figure>
+
+    <div class="case-grid-3 sr-findings">
+      {companyFacts.map((f) => (
+        <div class="case-card">
+          <div class="case-card-label">{f.label}</div>
+          <div class="case-card-body">{f.text}</div>
+        </div>
+      ))}
+    </div>
+
+    <ol class="sr-lifecycle" aria-label="Scam lifecycle: protect early">
+      {lifecycle.map((step) => (
+        <li class:list={['sr-lifecycle-step', `is-${step.tone}`]}>
+          <div class="sr-lifecycle-n">{step.n}</div>
+          <div class="sr-lifecycle-title">{step.title}</div>
+          {step.note ? <div class="sr-lifecycle-note">{step.note}</div> : null}
+        </li>
+      ))}
+    </ol>
+    <p class="sr-lifecycle-cap">Catch the message before the victim responds—protection gets harder once money has moved.</p>
   </section>
 
   <section class="sec">
     <div class="sec-label">THE HANDOFF</div>
     <h2 class="sec-heading">Brought in via referral to advise CEO and product.</h2>
     <p class="sec-body">
-      The app was live. The design files had no documentation, no style guide, and groups instead of frames.
+      The app was live. Design files had no documentation, no style guide, and groups instead of frames.
       I pitched for the role with an audit of the live onboarding and setup flow.
     </p>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/05-handoff.png" alt="State of handoff: production screens with no documentation, style guide, or frames" loading="lazy" />
-      <figcaption>Inherited state: live product, loose groups, no system</figcaption>
-    </figure>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/03-snapshot.png" alt="Project snapshot: role, team, scope, and constraints next to ScamRanger home screen" loading="lazy" />
-      <figcaption>Snapshot: Product Design Lead · a11y, system, onboarding, home, learning</figcaption>
+
+    <div class="case-grid-3 sr-findings">
+      {handoffGaps.map((g) => (
+        <div class="case-card">
+          <div class="case-card-label">{g.label}</div>
+          <div class="case-card-body">{g.text}</div>
+        </div>
+      ))}
+    </div>
+
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/figures/handoff-phones.png"
+        alt="Inherited production screens: splash through settings with no design system"
+        loading="lazy"
+      />
+      <figcaption>Inherited state: live product screens, no system underneath</figcaption>
     </figure>
   </section>
 
@@ -250,9 +303,13 @@ const learnings = [
       screen. Issues categorized by type and priority so the team could act.
     </p>
 
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/06-audit.png" alt="Annotated ScamRanger onboarding audit with accessibility, flow, and visual findings" loading="lazy" />
-      <figcaption>Full onboarding audit board used to pitch for the role</figcaption>
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/audit-annotated.png"
+        alt="Annotated onboarding audit: email and gallery screens with accessibility and flow callouts"
+        loading="lazy"
+      />
+      <figcaption>Onboarding audit board used to pitch for the role</figcaption>
     </figure>
 
     <div class="case-grid-3 sr-findings">
@@ -264,15 +321,18 @@ const learnings = [
       ))}
     </div>
 
-    <h3 class="sec-subhead">One screen up close: message filtering setup</h3>
+    <h3 class="sec-subhead">Activation flow under the microscope</h3>
     <p class="sec-body">
-      Marked P1 because filtering is the product. If it isn’t turned on, nobody is protected. iOS forces users
-      out of the app; the live screen buried steps in a fast video, used jargon breadcrumbs, and failed contrast
-      and tap-target checks.
+      Filtering is the product—if it isn’t turned on, nobody is protected. iOS forces users out of the app;
+      the live screen buried steps, used jargon, and failed contrast and tap-target checks. Marked P1.
     </p>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/07-audit-example.png" alt="Filtering setup screen annotated with eight accessibility and flow issues" loading="lazy" />
-      <figcaption>Example critique: leave-the-app friction, video-only steps, contrast, and tap targets</figcaption>
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/audit-annotated-2.png"
+        alt="Activation flow audit with Priority 1 callouts on code entry, terms, and SMS permissions"
+        loading="lazy"
+      />
+      <figcaption>Activation critique: leave-the-app friction, weak feedback, contrast, and tap targets</figcaption>
     </figure>
 
     <h3 class="sec-subhead">Production UI from the review</h3>
@@ -300,11 +360,6 @@ const learnings = [
       then shares setup downstream—mapped to NN/g’s onboarding model (Promotion → Customize → Instructions).
     </p>
 
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/08-flow-restructure.png" alt="Flow restructuring: existing broken state versus code path, QR path, and unified IA diagram" loading="lazy" />
-      <figcaption>From broken linear flow to B2C / B2B / shared setup</figcaption>
-    </figure>
-
     <div class="case-grid-3 sr-findings">
       {paths.map((p) => (
         <div class="case-card">
@@ -314,24 +369,47 @@ const learnings = [
       ))}
     </div>
 
+    <div class="sr-ia-pair" aria-label="Restructured flows and consolidated IA">
+      <figure class="case-fig sr-figure sr-figure--ia">
+        <img
+          src="/images/scamranger/figures/flow-restructure.png"
+          alt="Existing broken flow versus code path, QR path, and consolidated system map"
+          loading="lazy"
+        />
+        <figcaption>From broken linear flow to B2C / B2B / shared setup</figcaption>
+      </figure>
+      <figure class="case-fig sr-figure sr-figure--ia-side">
+        <img
+          src="/images/scamranger/ia-flowchart.png"
+          alt="Consolidated IA: B2C, B2B code/QR, and seeded paths merging into shared setup"
+          loading="lazy"
+        />
+        <figcaption>IA: three entries, one shared setup core</figcaption>
+      </figure>
+    </div>
+
     <h3 class="sec-subhead">Wireframes before polish</h3>
     <p class="sec-body">
       Market references and quick mockups to move fast, then wireframes locked step order before color.
       Feedback rounds separated flow, annotated screens, and hi-fi so structure got agreed first.
     </p>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/09-early-drafting.png" alt="Early drafting board with screenshots, AI mockups, and reference wireframes" loading="lazy" />
-      <figcaption>Screenshots, AI mockups, and reference patterns from Calm, Headspace, and similar apps</figcaption>
-    </figure>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/10-wireframes.png" alt="Grey wireframes for B2C and B2B onboarding paths with numbered change callouts" loading="lazy" />
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/figures/wireframes-board.png"
+        alt="Grey wireframes for B2C/code and B2B QR onboarding paths with numbered change callouts"
+        loading="lazy"
+      />
       <figcaption>Lo-fi: value before asks, plain-language settings, three ways in, one permission per screen</figcaption>
     </figure>
 
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/11-after-lofi.png" alt="After first lo-fi: review feedback and cohesive solution notes" loading="lazy" />
-      <figcaption>Review notes: value earlier, dedicated T&amp;C, permission context, blue → purple rebrand</figcaption>
-    </figure>
+    <div class="case-grid-2 sr-findings">
+      {lofiNotes.map((n) => (
+        <div class="case-card">
+          <div class="case-card-label">{n.label}</div>
+          <div class="case-card-body">{n.text}</div>
+        </div>
+      ))}
+    </div>
 
     <div class="sr-phones sr-phones--lofi" aria-label="Lo-fi wireframe sample">
       <figure class="sr-phone sr-phone--lofi">
@@ -357,8 +435,12 @@ const learnings = [
       at entry—then the same permission sequence and success screen.
     </p>
 
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/12-hifi-paths.png" alt="Hi-fidelity onboarding rows for B2C, B2B code, and B2B seeded paths" loading="lazy" />
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/figures/hifi-paths.png"
+        alt="Hi-fidelity onboarding rows for B2C, B2B code, and B2B seeded paths"
+        loading="lazy"
+      />
       <figcaption>Hi-fi flows: three entries, one shared setup</figcaption>
     </figure>
 
@@ -410,11 +492,6 @@ const learnings = [
       to a final where the logo becomes the status signal.
     </p>
 
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/14-home-iterations.png" alt="Six home screen iterations from live app through quest concept to final dark and light" loading="lazy" />
-      <figcaption>Iteration arc: live → quest → structure → CEO → brand → final (dark + light)</figcaption>
-    </figure>
-
     <div class="sr-home-steps" aria-label="Home iteration stages">
       {homeSteps.map((s) => (
         <div class="sr-home-step">
@@ -423,6 +500,15 @@ const learnings = [
         </div>
       ))}
     </div>
+
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/figures/home-iterations.png"
+        alt="Home screen iterations from live app through quest concept to final dark and light"
+        loading="lazy"
+      />
+      <figcaption>Iteration arc: live → quest → structure → CEO → brand → final</figcaption>
+    </figure>
 
     <div class="sr-compare sr-compare--dirs" aria-label="Home before, mid, and final">
       <div class="sr-compare-item">
@@ -453,11 +539,6 @@ const learnings = [
       Learning was a new bank ask. I proposed favorites, a Scam Library, and illustrated articles.
       Time and budget pushed the ship version to three sections the team could build and maintain.
     </p>
-
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/15-learning.png" alt="Learning Lab proposed rich hub versus shipped three-section version" loading="lazy" />
-      <figcaption>Proposed depth vs. shipped: Safety insights, Common scam types, Skill builder</figcaption>
-    </figure>
 
     <div class="sr-compare sr-compare--learn" aria-label="Learning proposed versus delivered">
       <div class="sr-compare-item">
@@ -490,11 +571,6 @@ const learnings = [
       the same tokens.
     </p>
 
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/16-new-system.png" alt="Delivered saturated purple home versus proposed light-mode home" loading="lazy" />
-      <figcaption>Saturated purple → light canvas, purple on actions only</figcaption>
-    </figure>
-
     <div class="case-grid-2 sr-findings">
       {systemPoints.map((p) => (
         <div class="case-card">
@@ -504,14 +580,20 @@ const learnings = [
       ))}
     </div>
 
-    <h3 class="sec-subhead">Dark and light</h3>
-    <p class="sec-body">
-      Setup through scan, results, and Learning Lab—light on top, dark underneath. Same screens, mode on the frame.
-    </p>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/17-proposed-system.png" alt="Proposed system screens in light and dark modes" loading="lazy" />
-      <figcaption>Proposed direction mocked in the system—not shipped</figcaption>
-    </figure>
+    <div class="sr-compare sr-compare--system" aria-label="Delivered purple home versus proposed light direction">
+      <div class="sr-compare-item">
+        <figure class="sr-phone">
+          <img src="/images/scamranger/home.png" alt="Delivered home with saturated purple surfaces" width="402" height="874" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Delivered: brand on every surface</p>
+      </div>
+      <div class="sr-compare-item">
+        <figure class="sr-phone sr-phone--system">
+          <img src="/images/scamranger/system/home-light.png" alt="Proposed light-mode home with purple on actions only" loading="lazy" />
+        </figure>
+        <p class="sr-compare-cap">Proposed: light canvas, purple on actions</p>
+      </div>
+    </div>
 
     <h3 class="sec-subhead">What changed, and why</h3>
     <p class="sec-body">
@@ -545,12 +627,6 @@ const learnings = [
       Sofia Pro with an 18px content floor. Brand → Alias → Mapped → Components meant the rebrand after delivery
       was a token change.
     </p>
-
-    <h3 class="sec-subhead">Foundations</h3>
-    <figure class="case-fig sr-deck">
-      <img src="/images/scamranger/deck/19-foundations.png" alt="Typography scale and brand color palette foundations" loading="lazy" />
-      <figcaption>Type + color foundations from the portfolio review</figcaption>
-    </figure>
 
     <h3 class="sec-subhead">Token layers</h3>
     <p class="sec-body">
@@ -1006,13 +1082,13 @@ const learnings = [
     color: #5c6066;
   }
 
-  /* Figma-export matte — matches Enterprise Permissions figure treatment */
-  .sr-deck {
+  /* Content figures (diagrams / boards — not full slides) */
+  :global(.case-fig.sr-figure) {
     margin-top: 22px;
     background: #f5f5f5;
     padding: 22px;
   }
-  .sr-deck img {
+  :global(.case-fig.sr-figure img) {
     width: 100%;
     height: auto;
     display: block;
@@ -1020,20 +1096,104 @@ const learnings = [
     border-radius: 0;
     background: transparent;
   }
-  :global(.case-fig.sr-deck) {
-    background: #f5f5f5;
-    padding: 22px;
-  }
-  :global(.case-fig.sr-deck img) {
-    border: none;
-    border-radius: 0;
-    background: transparent;
-  }
-  :global(.case-fig.sr-deck figcaption) {
+  :global(.case-fig.sr-figure figcaption) {
     margin-top: 14px;
     padding: 0 2px;
   }
   .sr-findings {
+    margin-top: 22px;
+  }
+
+  /* Native scam lifecycle */
+  .sr-lifecycle {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 22px 18px 18px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.1);
+    border-radius: 12px;
+    position: relative;
+  }
+  .sr-lifecycle::before {
+    content: '';
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 42px;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #2f9e61 0%, #6b8f3a 35%, #a65a3a 65%, #c9a0a0 100%);
+    opacity: 0.85;
+  }
+  .sr-lifecycle-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .sr-lifecycle-n {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 2px solid var(--ink);
+    background: #fff;
+    color: var(--ink);
+  }
+  .sr-lifecycle-step.is-early .sr-lifecycle-n {
+    background: #d8f3e4;
+  }
+  .sr-lifecycle-step.is-mid .sr-lifecycle-n {
+    background: #f3e7d0;
+  }
+  .sr-lifecycle-step.is-late .sr-lifecycle-n {
+    background: #f0e0e0;
+  }
+  .sr-lifecycle-title {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sr-lifecycle-note {
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.35;
+    color: #a13a3a;
+    max-width: 11ch;
+  }
+  .sr-lifecycle-cap {
+    margin: 12px 0 0;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: #5c6066;
+  }
+
+  .sr-ia-pair {
+    display: grid;
+    grid-template-columns: 1.55fr 0.7fr;
+    gap: 16px;
+    margin-top: 22px;
+    align-items: start;
+  }
+  .sr-ia-pair :global(.case-fig) {
+    margin-top: 0;
+  }
+  .sr-compare--system {
+    grid-template-columns: repeat(2, minmax(0, 220px));
     margin-top: 22px;
   }
 
@@ -1496,6 +1656,28 @@ const learnings = [
     .sr-home-steps {
       grid-template-columns: repeat(2, 1fr);
     }
+    .sr-ia-pair {
+      grid-template-columns: 1fr;
+    }
+    .sr-lifecycle {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      padding: 18px 10px 14px;
+    }
+    .sr-lifecycle::before {
+      top: 36px;
+    }
+    .sr-lifecycle-n {
+      width: 30px;
+      height: 30px;
+      font-size: 10px;
+    }
+    .sr-lifecycle-title {
+      font-size: 12px;
+    }
+    .sr-lifecycle-note {
+      font-size: 11px;
+    }
     .sr-token-layers,
     .sr-mapped-grid,
     .sr-comp-examples {
@@ -1551,8 +1733,16 @@ const learnings = [
   }
   @media (max-width: 560px) {
     .sr-compare--dirs,
-    .sr-compare--learn {
+    .sr-compare--learn,
+    .sr-compare--system {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .sr-compare--system {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sr-lifecycle {
+      overflow-x: auto;
+      grid-template-columns: repeat(5, minmax(72px, 1fr));
     }
   }
 </style>
