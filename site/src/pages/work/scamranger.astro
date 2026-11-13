@@ -61,8 +61,30 @@ const homeIterations = [
   { src: '/images/scamranger/figures/home-03-structure.png', alt: 'Structure-set home iteration', label: '03 · Structure set', note: 'Tip, scan, bank notice, extras' },
   { src: '/images/scamranger/figures/home-04-ceo.png', alt: 'CEO-approved home the bank found too busy', label: '04 · CEO approved', note: 'Bank found it too busy' },
   { src: '/images/scamranger/figures/home-05-brand.png', alt: 'Brand-first home with large logo', label: '05 · Brand back in', note: 'A big logo with no job' },
-  { src: '/images/scamranger/figures/home-06-final-dark.png', alt: 'Final home dark mode with logo as status', label: '06 · Final dark', note: 'Logo becomes the status' },
-  { src: '/images/scamranger/figures/home-07-final-light.png', alt: 'Final home light mode with logo as status', label: '07 · Final light', note: 'Same structure, light mode' },
+  { src: '/images/scamranger/figures/home-06-final-dark.png', alt: 'Final home dark sent to engineering', label: '06 · Final dark', note: 'Sent to dev' },
+  { src: '/images/scamranger/figures/home-07-final-light.png', alt: 'Final home light sent to engineering', label: '07 · Final light', note: 'Sent to dev' },
+  { src: '/images/scamranger/figures/home-08-mode-dark.png', alt: 'You’re protected home dark mode, sent at the end', label: '08 · Mode dark', note: 'Sent at the end' },
+  { src: '/images/scamranger/figures/home-09-mode-light.png', alt: 'You’re protected home light mode, sent at the end', label: '09 · Mode light', note: 'Sent at the end' },
+];
+
+const proposedOnboarding = [
+  { src: '/images/scamranger/figures/proposed-welcome.png', alt: 'Proposed Welcome screen', label: 'Welcome' },
+  { src: '/images/scamranger/figures/proposed-setup-intro.png', alt: 'Proposed setup intro screen', label: 'Setup intro' },
+  { src: '/images/scamranger/figures/proposed-permission.png', alt: 'Proposed one-permission setup step', label: 'One permission per step' },
+  { src: '/images/scamranger/figures/proposed-protected.png', alt: 'Proposed You’re protected screen', label: 'You’re protected' },
+  { src: '/images/scamranger/figures/proposed-article.png', alt: 'Proposed Learning article screen', label: 'Learning article' },
+];
+
+const proposedLearnScan = [
+  { src: '/images/scamranger/figures/proposed-learning.png', alt: 'Proposed Learning Lab screen', label: 'Learning Lab' },
+  { src: '/images/scamranger/figures/proposed-scan.png', alt: 'Proposed Scan screen', label: 'Scan' },
+  { src: '/images/scamranger/figures/proposed-scan-sheet.png', alt: 'Proposed Scan sheet over Home', label: 'Scan sheet' },
+];
+
+const systemExamples = [
+  { src: '/images/scamranger/figures/system-welcome.png', alt: 'System Welcome screen', label: 'Welcome' },
+  { src: '/images/scamranger/figures/system-home.png', alt: 'System Home screen', label: 'Home' },
+  { src: '/images/scamranger/figures/system-learning.png', alt: 'System Learning lab screen', label: 'Learning lab' },
 ];
 
 const handoffGaps = [
@@ -156,41 +178,55 @@ const rationale = [
   },
 ];
 
-const modePair = [
-  { src: '/images/scamranger/system/home-dark.png', alt: 'Case study home in dark mode from the design system', label: 'Home · dark' },
-  { src: '/images/scamranger/system/home-light.png', alt: 'Case study home in light mode from the same components', label: 'Home · light' },
-];
-
-const coreScreens = [
-  { src: '/images/scamranger/system/protected.png', alt: 'You’re protected success screen after setup', label: 'You’re protected' },
-  { src: '/images/scamranger/system/learn-landing.png', alt: 'Learning Lab hub with Safety insights, Common scam types, and Skill builder', label: 'Learning Lab' },
-  { src: '/images/scamranger/system/learn-insights.png', alt: 'Safety insights article with sections and next control', label: 'Safety insights' },
-  { src: '/images/scamranger/system/learn-types.png', alt: 'Common scam types glossary list with letter indexes', label: 'Scam types' },
-];
-
-const surfaceElements = [
-  { name: 'surface/base', dark: '#22222A', light: '#F5F5F9', use: 'Page canvas' },
-  { name: 'surface/raised', dark: '#2F2C50', light: '#FFFFFF', use: 'Cards and sheets' },
-  { name: 'surface/tint', dark: '#37217E', light: '#E4E3FF', use: 'Chips, secondary, active' },
-  { name: 'surface/glow', dark: '#6444D5', light: '#CBC9FF', use: 'Top brand wash' },
-  { name: 'action/primary', dark: '#6444D5', light: '#6444D5', use: 'Primary buttons' },
-  { name: 'text/primary', dark: '#EBECF6', light: '#22222A', use: 'Headlines and body' },
-];
-
 const mappedExamples = [
-  { mapped: 'button/bg', alias: 'action/primary', note: 'Primary fill' },
-  { mapped: 'card/fill', alias: 'surface/raised', note: 'Card surface' },
-  { mapped: 'chip/bg', alias: 'surface/tint', note: 'Badge / tip chip' },
-  { mapped: 'tab/active-bg', alias: 'surface/tint', note: 'Active tab pill' },
-  { mapped: 'text/title', alias: 'text/primary', note: 'Headlines' },
-  { mapped: 'input/fill', alias: 'surface/raised', note: 'Field background' },
-];
-
-const tokenLayers = [
-  { name: 'Brand', body: '83 colours, 19 sizes. Raw OKLCH ramps—hidden from publishing.' },
-  { name: 'Alias', body: '30 colour tokens × Dark/Light. The only place modes exist.' },
-  { name: 'Mapped', body: '54 component tokens: button/, card/, chip/, tab-bar/… resolve through Alias.' },
-  { name: 'Components', body: 'Bind to Mapped only. Light mode is a mode change on the frame.' },
+  {
+    mapped: 'button/bg',
+    alias: 'action/primary',
+    note: 'Primary fill',
+    preview: 'button',
+    dark: '#6444D5',
+    light: '#6444D5',
+  },
+  {
+    mapped: 'card/fill',
+    alias: 'surface/raised',
+    note: 'Card surface',
+    preview: 'card',
+    dark: '#2F2C50',
+    light: '#FFFFFF',
+  },
+  {
+    mapped: 'chip/bg',
+    alias: 'surface/tint',
+    note: 'Badge / tip chip',
+    preview: 'chip',
+    dark: '#37217E',
+    light: '#E4E3FF',
+  },
+  {
+    mapped: 'tab/active-bg',
+    alias: 'surface/tint',
+    note: 'Active tab pill',
+    preview: 'tab',
+    dark: '#37217E',
+    light: '#E4E3FF',
+  },
+  {
+    mapped: 'text/title',
+    alias: 'text/primary',
+    note: 'Headlines',
+    preview: 'text',
+    dark: '#EBECF6',
+    light: '#22222A',
+  },
+  {
+    mapped: 'input/fill',
+    alias: 'surface/raised',
+    note: 'Field background',
+    preview: 'input',
+    dark: '#2F2C50',
+    light: '#FFFFFF',
+  },
 ];
 
 const learnings = [
@@ -341,8 +377,8 @@ const learnings = [
     </p>
     <figure class="case-fig sr-figure">
       <img
-        src="/images/scamranger/figures/audit-filtering.png"
-        alt="Filtering setup screen with numbered accessibility and flow callouts"
+        src="/images/scamranger/figures/audit-filtering.png?v=annotated"
+        alt="Filtering setup screen with numbered on-screen identifiers and accessibility and flow callouts"
         loading="lazy"
       />
       <figcaption>Filtering critique: leave-the-app friction, weak feedback, contrast, and tap targets</figcaption>
@@ -489,10 +525,10 @@ const learnings = [
 
   <section class="sec">
     <div class="sec-label">HOME</div>
-    <h2 class="sec-heading">Home went through six iterations with CEO and bank feedback.</h2>
+    <h2 class="sec-heading">Home went through many iterations with CEO and bank feedback.</h2>
     <p class="sec-body">
       From a flat live stack, through a quest concept and a CEO-approved pass the bank rejected as too busy,
-      to a final where the logo becomes the status signal.
+      to a final sent to dev—then a dark/light status-first pair sent at the end.
     </p>
 
     <div class="sr-home-iter" aria-label="Home iteration stages from Figma">
@@ -501,10 +537,10 @@ const learnings = [
           <div class="sr-phone">
             <img src={s.src} alt={s.alt} loading="lazy" />
           </div>
-          <figcaption>
+          <p class="sr-compare-cap">
             <span class="sr-home-iter-label">{s.label}</span>
             <span class="sr-home-iter-note">{s.note}</span>
-          </figcaption>
+          </p>
         </figure>
       ))}
     </div>
@@ -558,33 +594,39 @@ const learnings = [
       ))}
     </div>
 
-    <div class="sr-compare sr-compare--system" aria-label="Proposed dark and light home from the design system">
-      <div class="sr-compare-item">
-        <figure class="sr-phone sr-phone--system">
-          <img src="/images/scamranger/figures/system-home-dark.png" alt="Proposed home in dark mode" loading="lazy" />
-        </figure>
-        <p class="sr-compare-cap">Proposed · dark</p>
-      </div>
-      <div class="sr-compare-item">
-        <figure class="sr-phone sr-phone--system">
-          <img src="/images/scamranger/figures/system-home-light.png" alt="Proposed home in light mode with purple on actions only" loading="lazy" />
-        </figure>
-        <p class="sr-compare-cap">Proposed · light</p>
-      </div>
-    </div>
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/figures/slide-home-modes.png"
+        alt="Final home dark and light from one Alias switch"
+        loading="lazy"
+      />
+      <figcaption>Home · one switch, dark and light</figcaption>
+    </figure>
 
     <h3 class="sec-subhead">Proposed system screens</h3>
     <p class="sec-body">
-      Setup through scan, results, and Learning Lab—same components, mode on the frame.
+      From the Slide exports page—onboarding and reading, then Learning Lab, Scan, and scan sheet. Not shipped.
     </p>
-    <figure class="case-fig sr-figure">
-      <img
-        src="/images/scamranger/figures/proposed-system.png"
-        alt="Proposed system screens in light and dark modes across core flows"
-        loading="lazy"
-      />
-      <figcaption>Proposed direction mocked in the system—not shipped</figcaption>
-    </figure>
+    <div class="sr-phones sr-phones--proposed" aria-label="Proposed onboarding and reading screens">
+      {proposedOnboarding.map((s) => (
+        <figure class="sr-phone-cap">
+          <div class="sr-phone">
+            <img src={s.src} alt={s.alt} loading="lazy" />
+          </div>
+          <figcaption>{s.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+    <div class="sr-phones sr-phones--proposed-3" aria-label="Proposed Learning, Scan, and Scan sheet">
+      {proposedLearnScan.map((s) => (
+        <figure class="sr-phone-cap">
+          <div class="sr-phone">
+            <img src={s.src} alt={s.alt} loading="lazy" />
+          </div>
+          <figcaption>{s.label}</figcaption>
+        </figure>
+      ))}
+    </div>
 
     <h3 class="sec-subhead">What changed, and why</h3>
     <p class="sec-body">
@@ -619,112 +661,105 @@ const learnings = [
       was a token change.
     </p>
 
-    <h3 class="sec-subhead">Token layers</h3>
+    <h3 class="sec-subhead">Foundations · type and colour</h3>
     <p class="sec-body">
-      Brand holds raw values. Alias gives them meaning and is where Dark and Light live. Mapped names them per
-      component. Components bind to Mapped only.
+      From the Foundations page—Sofia Pro scale, OKLCH ramps, and contrast rules that keep hue swaps contrast-safe.
     </p>
-    <div class="sr-token-layers" aria-label="Four-layer token stack">
-      {tokenLayers.map((layer, i) => (
-        <div class="sr-token-layer">
-          <div class="sr-token-layer-num">{String(i + 1).padStart(2, '0')}</div>
-          <div class="sr-token-layer-name">{layer.name}</div>
-          <p class="sr-token-layer-body">{layer.body}</p>
-        </div>
-      ))}
+    <figure class="case-fig sr-figure sr-figure--type">
+      <img
+        src="/images/scamranger/figures/foundations-type.png"
+        alt="Type scale — Sofia Pro from the Foundations page"
+        loading="lazy"
+      />
+      <figcaption>Type Scale — Sofia Pro</figcaption>
+    </figure>
+    <div class="sr-foundations-pair">
+      <figure class="case-fig sr-figure">
+        <img
+          src="/images/scamranger/figures/foundations-ramps.png"
+          alt="Colour ramps OKLCH derived from the Foundations page"
+          loading="lazy"
+        />
+        <figcaption>Colour ramps — OKLCH derived</figcaption>
+      </figure>
+      <figure class="case-fig sr-figure">
+        <img
+          src="/images/scamranger/figures/foundations-contrast.png"
+          alt="Contrast matrix and rules from the Foundations page"
+          loading="lazy"
+        />
+        <figcaption>Contrast Matrix + Rules</figcaption>
+      </figure>
     </div>
 
-    <h4 class="sr-token-sub">Alias · modes</h4>
-    <div class="sr-surface-elements" aria-label="Alias surface and action tokens across dark and light">
-      <div class="sr-surface-head" aria-hidden="true">
-        <span>Token</span>
-        <span>Dark</span>
-        <span>Light</span>
-        <span>Use</span>
-      </div>
-      {surfaceElements.map((el) => (
-        <div class="sr-surface-el">
-          <div class="sr-surface-name">{el.name}</div>
-          <span class="sr-surface-swatch" style={`background:${el.dark}`} title={`Dark ${el.dark}`}></span>
-          <span
-            class:list={['sr-surface-swatch', { 'has-border': el.light === '#FFFFFF' || el.light === '#F5F5F9' }]}
-            style={`background:${el.light}`}
-            title={`Light ${el.light}`}
-          ></span>
-          <div class="sr-surface-use">{el.use}</div>
-        </div>
-      ))}
-    </div>
+    <h3 class="sec-subhead">Token architecture</h3>
+    <p class="sec-body">
+      Brand → Alias → Mapped → Components. Alias is the only place Dark and Light live; components bind to Mapped
+      only.
+    </p>
+    <figure class="case-fig sr-figure">
+      <img
+        src="/images/scamranger/figures/token-architecture.png"
+        alt="Token architecture diagram: Brand to Alias to Mapped to Components, with Alias dark and light surface and text tokens"
+        loading="lazy"
+      />
+      <figcaption>Token architecture · Alias dark / light</figcaption>
+    </figure>
 
     <h4 class="sr-token-sub">Mapped · component roles</h4>
     <p class="sr-token-note">Mapped names resolve through Alias—one mode, no Brand references in the library.</p>
     <div class="sr-mapped-grid" aria-label="Mapped tokens resolving to Alias">
       {mappedExamples.map((m) => (
         <div class="sr-mapped">
-          <div class="sr-mapped-name">{m.mapped}</div>
-          <div class="sr-mapped-arrow" aria-hidden="true">→</div>
-          <div class="sr-mapped-alias">{m.alias}</div>
-          <div class="sr-mapped-note">{m.note}</div>
+          <div class="sr-mapped-preview" aria-hidden="true" data-preview={m.preview}>
+            {m.preview === 'button' && <span class="sr-mapped-demo sr-mapped-demo--btn">Scan a message</span>}
+            {m.preview === 'card' && (
+              <span class="sr-mapped-demo sr-mapped-demo--card">
+                <span class="sr-mapped-demo-chip">Today’s tip</span>
+                <span class="sr-mapped-demo-title">Fake friends online</span>
+              </span>
+            )}
+            {m.preview === 'chip' && <span class="sr-mapped-demo sr-mapped-demo--chip">Today’s tip</span>}
+            {m.preview === 'tab' && (
+              <span class="sr-mapped-demo sr-mapped-demo--tabs">
+                <span class="is-active">Home</span>
+                <span>Scan</span>
+                <span>Learn</span>
+              </span>
+            )}
+            {m.preview === 'text' && <span class="sr-mapped-demo sr-mapped-demo--text">You’re protected</span>}
+            {m.preview === 'input' && (
+              <span class="sr-mapped-demo sr-mapped-demo--input">Paste the message…</span>
+            )}
+            <span class="sr-mapped-swatches">
+              <span class="sr-mapped-swatch" style={`background:${m.dark}`} title="Dark"></span>
+              <span
+                class:list={['sr-mapped-swatch', { 'has-border': m.light === '#FFFFFF' }]}
+                style={`background:${m.light}`}
+                title="Light"
+              ></span>
+            </span>
+          </div>
+          <div class="sr-mapped-meta">
+            <div class="sr-mapped-name">{m.mapped}</div>
+            <div class="sr-mapped-arrow" aria-hidden="true">→</div>
+            <div class="sr-mapped-alias">{m.alias}</div>
+            <div class="sr-mapped-note">{m.note}</div>
+          </div>
         </div>
       ))}
     </div>
 
-    <h4 class="sr-token-sub">Components · bind to Mapped</h4>
-    <p class="sr-token-note">Live CSS from Mapped roles. Rebrand stays a token swap.</p>
-    <div class="sr-comp-examples" aria-label="Component examples bound to Mapped tokens">
-      <div class="sr-comp-ex">
-        <div class="sr-comp-ex-label">Button · button/bg</div>
-        <div class="sr-comp-ex-live">
-          <button type="button" class="sr-ex-btn" tabindex="-1">Scan a message</button>
-          <button type="button" class="sr-ex-btn is-secondary" tabindex="-1">I’ve done this</button>
-        </div>
-      </div>
-      <div class="sr-comp-ex">
-        <div class="sr-comp-ex-label">Card · card/fill + chip/bg</div>
-        <div class="sr-comp-ex-live">
-          <div class="sr-ex-card">
-            <span class="sr-ex-chip">Today’s tip</span>
-            <div class="sr-ex-card-title">Fake friends online</div>
-            <p class="sr-ex-card-body">Impersonators copy people you know, then ask for money.</p>
-          </div>
-        </div>
-      </div>
-      <div class="sr-comp-ex">
-        <div class="sr-comp-ex-label">Tab · tab/active-bg</div>
-        <div class="sr-comp-ex-live">
-          <div class="sr-ex-tabs" aria-hidden="true">
-            <span class="is-active">Home</span>
-            <span>Scan</span>
-            <span>Results</span>
-            <span>Learn</span>
-            <span>Settings</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <h3 class="sec-subhead">Dark and light in the system</h3>
+    <h3 class="sec-subhead">Screens in the system</h3>
     <p class="sec-body">
-      Case study home from the design-system file—same components, dark and light.
+      A few examples from the case-study set—Welcome, Home, and Learning lab.
     </p>
-    <div class="sr-phones sr-phones--modes" aria-label="Case study home in dark and light">
-      {modePair.map((s) => (
-        <figure class="sr-phone sr-phone--system">
-          <img src={s.src} alt={s.alt} loading="lazy" />
-          <figcaption>{s.label}</figcaption>
-        </figure>
-      ))}
-    </div>
-
-    <h3 class="sec-subhead">Core screens</h3>
-    <p class="sec-body">
-      From the design-system case study set: setup success, Learning Lab, insights, and scam types—buttons, cards,
-      lists, and nav on the proposed tokens.
-    </p>
-    <div class="sr-phones sr-phones--core" aria-label="Core screens from the design system case study set">
-      {coreScreens.map((s) => (
-        <figure class="sr-phone sr-phone--system">
-          <img src={s.src} alt={s.alt} loading="lazy" />
+    <div class="sr-phones sr-phones--system-examples" aria-label="Example screens from the system">
+      {systemExamples.map((s) => (
+        <figure class="sr-phone-cap">
+          <div class="sr-phone">
+            <img src={s.src} alt={s.alt} loading="lazy" />
+          </div>
           <figcaption>{s.label}</figcaption>
         </figure>
       ))}
@@ -1091,6 +1126,13 @@ const learnings = [
     margin-top: 14px;
     padding: 0 2px;
   }
+  :global(.case-fig.sr-figure--type) {
+    max-width: 520px;
+  }
+  :global(.case-fig.sr-figure--type img) {
+    width: 100%;
+    max-width: 520px;
+  }
   .sr-findings {
     margin-top: 22px;
   }
@@ -1206,9 +1248,11 @@ const learnings = [
   }
   .sr-home-iter {
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns: repeat(9, minmax(96px, 1fr));
     gap: 10px;
     margin-top: 22px;
+    overflow-x: auto;
+    padding-bottom: 4px;
   }
   .sr-home-iter-item {
     margin: 0;
@@ -1217,7 +1261,7 @@ const learnings = [
   .sr-home-iter-item .sr-phone {
     margin: 0;
   }
-  .sr-home-iter-item figcaption {
+  .sr-home-iter-item .sr-compare-cap {
     margin-top: 8px;
     display: flex;
     flex-direction: column;
@@ -1247,23 +1291,46 @@ const learnings = [
   .sr-phones--lofi {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+  .sr-phones--proposed {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .sr-phones--proposed-3,
+  .sr-phones--system-examples {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    max-width: 720px;
+  }
+  .sr-phone-cap {
+    margin: 0;
+    min-width: 0;
+  }
+  .sr-phone-cap figcaption {
+    margin-top: 10px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    color: #5c6066;
+  }
   .sr-phone {
     margin: 0;
     position: relative;
-    background: #0B0718;
-    border-radius: 22px;
+    background: transparent;
+    border-radius: 18px;
     overflow: hidden;
-    border: 1px solid rgba(123, 92, 248, 0.28);
-    box-shadow: 0 12px 28px rgba(8, 5, 42, 0.18);
+    border: none;
+    outline: none;
+    box-shadow: 0 10px 22px rgba(29, 42, 51, 0.1);
   }
   .sr-phone img {
     display: block;
     width: 100%;
     height: auto;
+    border-radius: inherit;
   }
   .sr-phone--lofi {
     background: #F5F6F7;
-    border-color: rgba(29, 42, 51, 0.12);
+    border: 1px solid rgba(29, 42, 51, 0.1);
     border-radius: 10px;
     box-shadow: none;
   }
@@ -1462,154 +1529,164 @@ const learnings = [
   .sr-mapped-grid {
     margin-top: 14px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
+    max-width: 720px;
   }
   .sr-mapped {
     background: #fff;
     border: 1px solid rgba(29, 42, 51, 0.1);
     border-radius: 10px;
-    padding: 14px 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .sr-mapped-preview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    padding: 10px 10px 12px;
+    background: #f5f5f9;
+  }
+  .sr-mapped-swatches {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: flex;
+    gap: 3px;
+  }
+  .sr-mapped-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(29, 42, 51, 0.12);
+  }
+  .sr-mapped-swatch.has-border {
+    border-color: rgba(29, 42, 51, 0.2);
+  }
+  .sr-mapped-demo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+  }
+  .sr-mapped-demo--btn {
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: #6444d5;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .sr-mapped-demo--card {
+    width: 100%;
+    max-width: 132px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 9px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.08);
+    box-shadow: 0 2px 8px rgba(29, 42, 51, 0.05);
+  }
+  .sr-mapped-demo-chip,
+  .sr-mapped-demo--chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 18px;
+    padding: 0 6px;
+    border-radius: 5px;
+    background: #e4e3ff;
+    color: #37217e;
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .sr-mapped-demo-title {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #22222a;
+  }
+  .sr-mapped-demo--tabs {
+    gap: 2px;
+    padding: 2px;
+    border-radius: 999px;
+    background: #fff;
+  }
+  .sr-mapped-demo--tabs span {
+    padding: 4px 7px;
+    border-radius: 999px;
+    font-size: 9px;
+    color: #5c6066;
+  }
+  .sr-mapped-demo--tabs span.is-active {
+    background: #e4e3ff;
+    color: #37217e;
+    font-weight: 600;
+  }
+  .sr-mapped-demo--text {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: #22222a;
+    letter-spacing: -0.02em;
+  }
+  .sr-mapped-demo--input {
+    width: 100%;
+    max-width: 132px;
+    min-height: 28px;
+    padding: 0 8px;
+    border-radius: 7px;
+    background: #fff;
+    border: 1px solid rgba(29, 42, 51, 0.14);
+    color: #8a8f98;
+    font-size: 10px;
+    justify-content: flex-start;
+  }
+  .sr-mapped-meta {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    gap: 6px 8px;
+    gap: 4px 6px;
     align-items: center;
+    padding: 8px 10px 10px;
+    border-top: 1px solid rgba(29, 42, 51, 0.08);
   }
   .sr-mapped-name,
   .sr-mapped-alias {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--ink);
   }
   .sr-mapped-arrow {
     color: var(--muted-3);
-    font-size: 12px;
+    font-size: 10px;
   }
   .sr-mapped-note {
     grid-column: 1 / -1;
     font-family: var(--font-body);
-    font-size: 13px;
+    font-size: 11px;
+    line-height: 1.35;
     color: #5c6066;
   }
-  .sr-comp-examples {
+  .sr-foundations-pair {
     margin-top: 14px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 14px;
+    align-items: start;
   }
-  .sr-comp-ex {
-    background: #fff;
-    border: 1px solid rgba(29, 42, 51, 0.1);
-    border-radius: 12px;
-    padding: 14px 16px 16px;
-  }
-  .sr-comp-ex-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: var(--muted-3);
-    margin-bottom: 12px;
-  }
-  .sr-comp-ex-live {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px;
-    border-radius: 10px;
-    background: #F5F5F9;
-  }
-  .sr-ex-btn {
-    appearance: none;
-    border: 0;
-    border-radius: 14px;
-    min-height: 48px;
-    padding: 0 18px;
-    font-family: var(--font-body);
-    font-size: 17px;
-    font-weight: 600;
-    background: #6444D5;
-    color: #fff;
-    cursor: default;
-  }
-  .sr-ex-btn.is-secondary {
-    background: #E4E3FF;
-    color: #37217E;
-  }
-  .sr-ex-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 14px 16px;
-    border: 1px solid rgba(29, 42, 51, 0.08);
-  }
-  .sr-ex-chip {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: #E4E3FF;
-    color: #5032B1;
-    font-family: var(--font-body);
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .sr-ex-card-title {
-    margin-top: 10px;
-    font-family: var(--font-heading);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .sr-ex-card-body {
-    margin: 6px 0 0;
-    font-family: var(--font-body);
-    font-size: 14px;
-    line-height: 1.45;
-    color: #5c6066;
-  }
-  .sr-ex-tabs {
-    display: flex;
-    justify-content: space-between;
-    gap: 4px;
-    padding: 8px 6px;
-    background: #fff;
-    border-radius: 14px;
-  }
-  .sr-ex-tabs span {
-    flex: 1;
-    text-align: center;
-    font-family: var(--font-body);
-    font-size: 11px;
-    color: #5c6066;
-    padding: 10px 4px;
-    border-radius: 999px;
-  }
-  .sr-ex-tabs span.is-active {
-    background: #E4E3FF;
-    color: #37217E;
-    font-weight: 600;
-  }
-  .sr-phones--modes {
-    grid-template-columns: repeat(2, minmax(0, 280px));
-    justify-content: start;
-  }
-  .sr-phones--core {
-    grid-template-columns: repeat(4, 1fr);
+  .sr-foundations-pair :global(.case-fig) {
+    margin-top: 0;
   }
   .sr-phone--system {
-    background: #F5F5F9;
-    border-color: rgba(29, 42, 51, 0.12);
-    box-shadow: 0 10px 24px rgba(29, 42, 51, 0.08);
-  }
-  .sr-phone--system figcaption {
-    margin: 0;
-    padding: 10px 12px 12px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.03em;
-    color: #5c6066;
-    background: #fff;
-    border-top: 1px solid rgba(29, 42, 51, 0.08);
+    background: transparent;
+    box-shadow: 0 10px 22px rgba(29, 42, 51, 0.1);
   }
   /* Impact / takeaways */
   .sr-impact .sec-heading {
@@ -1676,6 +1753,14 @@ const learnings = [
     .sr-phones--audit {
       grid-template-columns: repeat(2, 1fr);
     }
+    .sr-phones--proposed {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .sr-phones--proposed-3,
+    .sr-phones--system-examples {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: none;
+    }
     .sr-phones--lofi {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
@@ -1707,12 +1792,8 @@ const learnings = [
     }
     .sr-token-layers,
     .sr-mapped-grid,
-    .sr-comp-examples {
+    .sr-foundations-pair {
       grid-template-columns: 1fr;
-    }
-    .sr-phones--modes,
-    .sr-phones--core {
-      grid-template-columns: repeat(2, 1fr);
     }
     .sr-surface-head {
       display: none;
@@ -1759,6 +1840,11 @@ const learnings = [
     }
   }
   @media (max-width: 560px) {
+    .sr-phones--proposed,
+    .sr-phones--proposed-3,
+    .sr-phones--system-examples {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
     .sr-compare--dirs,
     .sr-compare--learn,
     .sr-compare--system {
